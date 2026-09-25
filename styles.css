@@ -3803,3 +3803,7 @@ body.is-project main { padding-bottom: clamp(56px, 8vw, 96px) !important; }
   .lp__hint .hint-d { display: none; }
   .lp__hint .hint-m { display: inline; }
 }
+/* phones: multi-line headings break into even lines */
+@media (max-width: 720px) {
+  h1, h2, h3, h4, .lp__label, .carousel__subtitle, .cv__role { text-wrap: balance; }
+}

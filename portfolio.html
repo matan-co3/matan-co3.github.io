@@ -345,7 +345,7 @@
       }
       document.getElementById("aboutBody").innerHTML =
         '<div class="cv reveal">' +
-          '<div class="cv__lead"><p class="cv__role">' + CV.role.split(" · ").map(function (t) { return '<span class="nowrap">' + esc(t) + '</span>'; }).join(" · ") + '</p>' +
+          '<div class="cv__lead"><p class="cv__role">' + CV.role.split(", ").map(function (t, i, all) { return '<span class="nowrap">' + esc(t) + (i < all.length - 1 ? "," : "") + '</span>'; }).join(" ") + '</p>' +
             CV.summary.map(function (t) { return "<p>" + esc(t) + "</p>"; }).join("") +
             '<a class="cv__pdf" href="' + CV.pdf + '" target="_blank" rel="noopener" download>' +
               '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v8.5M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
@@ -403,6 +403,9 @@
         return { base: base, ink: base - m.actualBoundingBoxAscent };
       }
       function fit() {
+        // the hero is hidden while Works/About is open (e.g. arriving from a
+        // project) - measuring it then gives zeros, so wait until it shows
+        if (!line.getBoundingClientRect().width) return;
         var sur = document.getElementById("heroSur"), lab = document.querySelector(".hero__introlabel");
         if (!mq.matches) {
           name.style.fontSize = intro.style.marginLeft = intro.style.width = "";
@@ -648,6 +651,9 @@
           history.replaceState(null, "", id === "top" ? location.pathname : "#" + id);
           document.querySelectorAll(".navpill[data-spy]").forEach(function (p) { p.classList.toggle("is-active", p.dataset.spy === id); });
           document.querySelectorAll("#" + id + " .reveal").forEach(function (el) { el.classList.add("is-in"); });
+          // whatever just came into view (the hero, on the way home) lays
+          // itself out again now that it can be measured
+          window.dispatchEvent(new Event("resize"));
           requestAnimationFrame(function () {
             veil.classList.remove("is-on");
           });

@@ -145,5 +145,27 @@
     initLightbox(); initNav(); initTransitions();
   });
 
+  // PHONES - no heading ends on a lonely last word: the last two words of a
+  // longer heading are tied together (only where the pair still fits the line)
+  PF.noWidows = function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    document.querySelectorAll("h1, h2, h3, h4, .lp__label, .carousel__subtitle, .project__next strong, .cv__role").forEach(function (el) {
+      if (el.dataset.nw || !el.offsetParent) return;
+      var words = el.textContent.trim().split(/\s+/);
+      if (words.length < 4) return;
+      var tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), last = null, n;
+      while ((n = tw.nextNode())) if (/\S/.test(n.data)) last = n;
+      if (!last) return;
+      var before = last.data;
+      // tie the last gap; if the word before it is a separator (- · &), tie that gap too
+      var t = before.replace(/\s+(\S+)\s*$/, "\u00a0$1");
+      t = t.replace(/\s+([-·&])\u00a0/, "\u00a0$1\u00a0");
+      if (t === before) return;
+      last.data = t; el.dataset.nw = "1";
+      if (el.scrollWidth > el.clientWidth + 1) { last.data = before; }   // pair doesn't fit - leave it
+    });
+  };
+  window.addEventListener("load", function () { PF.noWidows(); setTimeout(PF.noWidows, 700); });
+
   window.PF = PF;
 })();
