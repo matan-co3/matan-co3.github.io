@@ -2928,6 +2928,29 @@
   });
 </script>
 <script>
+  /* WIDER THAN A PHONE - the live SecureOT prototype is laid out for a desktop
+     window; in the ~1000px column its 4-card rows wrapped to 3 + 1. Below
+     1280px wide the page is rendered at 1280 and scaled down whole to the
+     frame, so every row keeps its desktop layout (nothing cut, nothing wraps). */
+  window.addEventListener("load", function () {
+    if (window.matchMedia("(max-width: 720px)").matches) return;
+    document.querySelectorAll(".guide-embed").forEach(function (box) {
+      var f = box.querySelector("iframe"); if (!f || !/prototypes\//.test(f.getAttribute("src") || "")) return;
+      var DW = 1280;
+      box.style.position = "relative";
+      function fit() {
+        var w = box.clientWidth, h = box.clientHeight;
+        if (!w) return;
+        if (w >= DW) { f.style.width = f.style.height = f.style.transform = ""; return; }
+        var sc = w / DW;
+        f.style.width = DW + "px"; f.style.height = (h / sc) + "px";
+        f.style.transform = "scale(" + sc + ")"; f.style.transformOrigin = "0 0";
+      }
+      fit(); window.addEventListener("resize", fit);
+    });
+  });
+</script>
+<script>
   /* PHONES - live prototypes built for desktop (SecureOT): the site is rendered
      at its desktop width and scaled down whole into a phone-shaped window, so
      nothing is cut off (scroll inside it); a button opens it full screen. */
