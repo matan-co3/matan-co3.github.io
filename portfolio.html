@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matan Cohen - Design Portfolio</title>
+  <meta name="description" content="Matan Cohen - designer working across product, brand, and marketing, from landing pages and campaigns to UX/UI and AI-assisted creative work." />
+  <!-- link previews (LinkedIn, WhatsApp, email…). og:image works best as a full
+       address: once the site has its domain, write it in front of the path,
+       e.g. https://your-domain/images/og-share.jpg -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Matan Cohen - Design Portfolio" />
+  <meta property="og:description" content="Matan Cohen - designer working across product, brand, and marketing, from landing pages and campaigns to UX/UI and AI-assisted creative work." />
+  <meta property="og:image" content="images/og-share.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300;400;500;600&family=Outfit:wght@200..500&family=Caveat:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=20260929a" />
+  <!-- favicon: the drawn M from the nav/hero -->
+  <link rel="icon" type="image/png" sizes="64x64" href="images/favicon-m-64.png?v=20260923d" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-m-32.png?v=20260923d" />
+  <link rel="apple-touch-icon" href="images/favicon-m-180.png?v=20260923d" />
+</head>
+<body class="newhome">
+  <div class="page-fade"></div>
+
+  <!-- Five-zone header: avatar island · section pills · centred wordmark ·
+       outbound pills · contact. "nav--split" keeps this layout scoped to this
+       page, so the plain header on the project pages is untouched. -->
+  <header class="nav nav--split" id="nav">
+    <div class="nav__side nav__side--start">
+      <!-- Monogram - the same drawn M as in the hero name. It is the way
+           home (no "Home" pill), and redraws itself on hover. -->
+      <a class="nav__avatar nav__mono" href="#top" aria-label="Matan Cohen - home">
+        <svg class="mono-m" viewBox="0 0 112 100" aria-hidden="true"><path pathLength="1" d="M3 98 C 16 68, 27 32, 38 7 C 40 2, 44 3, 44 9 C 45 32, 46 56, 48 76 C 48 81, 52 81, 54 76 C 63 54, 76 26, 89 7 C 92 2, 96 4, 95 9 C 90 40, 84 70, 84 90 C 84 99, 96 100, 106 92"/></svg>
+      </a>
+      <nav class="nav__pills" aria-label="Sections">
+        <a class="navpill" data-spy="projects" href="#projects">Works</a>
+        <a class="navpill" data-spy="about" href="#about">About</a>
+      </nav>
+    </div>
+
+    <div class="nav__side nav__side--end">
+      <a class="navpill navpill--solid" href="#contact" aria-label="Contact">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="1.6" y="3.6" width="12.8" height="8.8" rx="1.6" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M2.2 4.8L8 8.8l5.8-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Contact</span>
+      </a>
+      <!-- phones: one menu button instead of the pills -->
+      <button class="nav__burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
+        <svg viewBox="0 0 32 20" aria-hidden="true"><path d="M3 5 C 12 4, 21 6, 29 5"/><path d="M3 15 C 12 16, 21 14, 29 15"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- phone menu: drops down from the top -->
+  <div class="navscrim" id="navScrim"></div>
+  <div class="navmenu" id="navMenu" aria-hidden="true">
+    <div class="navmenu__top">
+      <a class="nav__mono navmenu__home" href="#top" data-menu="top" aria-label="Matan Cohen - home">
+        <svg class="mono-m" viewBox="0 0 112 100" aria-hidden="true"><path pathLength="1" d="M3 98 C 16 68, 27 32, 38 7 C 40 2, 44 3, 44 9 C 45 32, 46 56, 48 76 C 48 81, 52 81, 54 76 C 63 54, 76 26, 89 7 C 92 2, 96 4, 95 9 C 90 40, 84 70, 84 90 C 84 99, 96 100, 106 92"/></svg>
+      </a>
+      <button class="navmenu__close" id="navClose" type="button" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 L 19 19"/><path d="M19 5 L 5 19"/></svg>
+      </button>
+    </div>
+    <nav class="navmenu__links" aria-label="Menu">
+      <a href="#projects" data-menu="projects">Works</a>
+      <a href="#about" data-menu="about">About</a>
+      <a href="#contact" data-menu="contact">Contact</a>
+    </nav>
+  </div>
+
+  <main id="top">
+    <!-- Hero - one screen, laid out on the Katerina reference: a 12-column
+         grid, the name large on the left, a small [intro] label with a short
+         line under it, the portrait square on the right under its "/26" tag,
+         and "Scroll down" bottom-left level with the photo's bottom edge.
+         The M in the name is the Sacha Dubois move: one letter swapped for a
+         thin drawn line, its tail running into the "a". It draws itself once
+         when the page opens. -->
+    <section class="phero" id="phero">
+      <div class="phero__inner">
+        <div class="hero" id="hero">
+          <p class="hero__hey">Hey, I’m</p>
+          <h1 class="hero__name" aria-label="Matan Cohen">
+            <span class="hero__shrink" id="heroShrink"><svg class="name-m" id="nameM" viewBox="0 0 112 100" aria-hidden="true"><path pathLength="1" d="M3 98 C 16 68, 27 32, 38 7 C 40 2, 44 3, 44 9 C 45 32, 46 56, 48 76 C 48 81, 52 81, 54 76 C 63 54, 76 26, 89 7 C 92 2, 96 4, 95 9 C 90 40, 84 70, 84 90 C 84 99, 96 100, 106 92"/></svg><span aria-hidden="true"><span class="d-atan">atan</span> <span class="hero__sur" id="heroSur">C<span class="d-o">o</span>hen<span class="d-dot">.</span></span></span></span>
+          </h1>
+          <p class="hero__introlabel">[what I do]</p>
+          <p class="hero__hint" aria-hidden="true">tap around to play</p>
+          <p class="hero__intro" id="heroIntro" data-text="I design with AI across products, landing pages, campaigns, and content&nbsp;- turning complex ideas into clear, engaging experiences. Currently designing at Powtoon, with a focus on UX/UI, design systems, and the details that make things&nbsp;work.">I design with AI across products, landing pages, campaigns, and content&nbsp;- turning complex ideas into clear, engaging experiences. Currently designing at Powtoon, with a focus on UX/UI, design systems, and the details that make things&nbsp;work.</p>
+          <a class="hero__scroll" href="#projects">Scroll down</a>
+        </div>
+        <!-- Portrait that looks at the cursor. Every face is from the same
+             shot, so swapping them reads as her moving, not as a slideshow.
+             With the cursor on the photo, or at rest, she looks straight at
+             you. -->
+        <figure class="phero__photo" id="face">
+          <!-- One static photo (body, background, framing never change) with
+               only the face swapped on top: each state is the same shot's face
+               area, feathered, at the identical position. -->
+          <div class="face__frame">
+            <img class="face__base" src="images/face-base.webp?v=20260925x" alt="Matan Cohen" width="720" height="720" draggable="false">
+            <img class="face__f is-on" src="images/face-neutral.webp?v=20260925x" alt="" draggable="false">
+            <img class="face__full" src="images/face-contact.webp?v=20260925x" alt="" draggable="false">
+          </div>
+        </figure>
+        <!-- invisible ruler: the right edge of grid column 8, which the name
+             is fitted to (and the intro ends on) -->
+        <span class="phero__ruler" id="heroRuler" aria-hidden="true"></span>
+        <span class="phero__ruler phero__ruler--intro" id="heroRuler2" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <section class="section section--tight" id="projects">
+      <div class="marquee" id="marquee" aria-label="Selected images"></div>
+      <div class="section__head reveal">
+        <h2 class="section__title">
+          <span class="catfilter" id="catFilter">
+            <button class="catfilter__trigger" id="catFilterTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <svg class="catfilter__arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="catfilter__label" id="catFilterLabel">All Works</span>
+            </button>
+            <ul class="catfilter__menu" id="catFilterMenu" role="listbox"></ul>
+          </span>
+        </h2>
+      </div>
+      <div class="pgrid" id="pgrid"></div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="section__head reveal">
+        <h2 class="section__title">About</h2>
+      </div>
+      <div class="about" id="aboutBody"></div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div id="contactBody" class="reveal"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span id="footName">Matan Cohen</span>
+    <span class="footer__made"></span>
+    <span class="footer__year"></span>
+  </footer>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+  <script>
+  /* ---- HOME PAGE RENDER ---- */
+  (function () {
+    var P = window.PORTFOLIO || {};
+    var esc = window.PF.esc;
+
+    document.getElementById("footName").textContent = P.name || "";
+    document.querySelector(".footer__year").textContent = "© " + new Date().getFullYear();
+
+    // THE DRAWN M - traced once in the hero as the page opens, and again in
+    // the nav monogram whenever it is hovered.
+    (function () {
+      function draw(svg) {
+        if (!svg) return;
+        svg.classList.remove("is-drawing"); void svg.getBoundingClientRect();
+        svg.classList.add("is-drawing");
+      }
+      var heroM = document.getElementById("nameM");
+      setTimeout(function () { draw(heroM); }, 350);
+      var mono = document.querySelector(".nav__mono");
+      if (mono) mono.addEventListener("mouseenter", function () { draw(mono.querySelector("svg")); });
+    })();
+
+    // MARQUEE (duplicate items for a seamless loop)
+    var withThumb = (P.projects || []).filter(function (p) { return p.thumb; });
+    if (withThumb.length) {
+      var items = withThumb.concat(withThumb).map(function (p) {
+        return '<a class="marq__item" href="project.html?id=' + p.id + '" data-nav="1">' +
+               '<img loading="lazy" src="' + esc(p.thumb) + '" alt="' + esc(p.title) + '">' +
+               '<span>' + esc(p.title) + '</span></a>';
+      }).join("");
+      document.getElementById("marquee").innerHTML = '<div class="marq__track">' + items + '</div>';
+    }
+
+    // GROUP MAP - the filter shows these 8 groups. A project's "category"
+    // (its visible eyebrow label, e.g. "Branding", "Motion") is usually one
+    // of them directly; "altCategories" adds any further group a project
+    // honestly belongs to (see content.js). Four categories - "Interactive",
+    // "Photography", "Print Design", and "Editorial Design" - are kept as
+    // more accurate eyebrow text than any of the 8 would be, so they don't
+    // match a group on their own and rely entirely on altCategories (or, for
+    // Hypoxia/Wedding Invitation/Hayao Miyazaki, just the Playground rule
+    // below) for their filter membership.
+    var GROUP_ORDER = ["Product Design", "Branding", "Web Design", "Content & Campaigns", "Motion", "Illustration", "Game Design", "Playground"];
+
+    // Every playground-type project also answers to "Playground" on top of
+    // whatever group(s) its category/altCategories give it - one project,
+    // several honest filters.
+    function groupsFor(p) {
+      var groups = [];
+      [p.category].concat(p.altCategories || []).filter(Boolean).forEach(function (c) {
+        if (GROUP_ORDER.indexOf(c) !== -1 && groups.indexOf(c) === -1) groups.push(c);
+      });
+      if (p.type === "playground" && groups.indexOf("Playground") === -1) groups.push("Playground");
+      return groups;
+    }
+
+    // Same eyebrow format as project.html's project__cat: "Playground · X"
+    // for playground pieces, plain "X" (plus year, if it has one) for work.
+    // Uppercasing is done in CSS (.pcard__cat), not here.
+    function catLine(p) {
+      var parts = [];
+      if (p.type === "playground") parts.push("Playground");
+      if (p.category) parts.push(p.category);
+      if (p.year && !p.hideCardYear) parts.push(p.year);   // hideCardYear: no year on the card
+      return parts.map(esc).join(" · ");
+    }
+
+    // PROJECT GRID
+    document.getElementById("pgrid").innerHTML = (P.projects || []).map(function (p) {
+      var media = p.thumb
+        ? '<span class="pcard__media"><img loading="lazy" src="' + esc(p.thumb) + '" alt="' + esc(p.title) + '"></span>'
+        : '<span class="pcard__media pcard__media--empty"><span class="ph">' + esc(p.title) + '</span><span class="hint">add image</span></span>';
+      return '<a class="pcard reveal" data-type="' + esc(p.type) + '" data-groups="' + esc(groupsFor(p).join("|")) + '" href="project.html?id=' + p.id + '" data-nav="1">' +
+        media +
+        '<span class="pcard__meta"><span class="pcard__title">' + esc(p.title) + '</span>' +
+        // catLine is "" for a project with no category and no year - no
+        // "undefined" on the card.
+        '<span class="pcard__cat">' + catLine(p) + '</span></span>' +
+      '</a>';
+    }).join("");
+
+    // CATEGORY FILTER (dropdown) - fixed group order (not alphabetical),
+    // "All" first.
+    var catFilter = document.getElementById("catFilter");
+    var catTrigger = document.getElementById("catFilterTrigger");
+    var catLabel = document.getElementById("catFilterLabel");
+    var catMenu = document.getElementById("catFilterMenu");
+
+    catMenu.innerHTML = ['<li role="option" aria-selected="true"><button type="button" class="catfilter__option is-active" data-cat="all">All</button></li>']
+      .concat(GROUP_ORDER.map(function (g) {
+        return '<li role="option" aria-selected="false"><button type="button" class="catfilter__option" data-cat="' + esc(g) + '">' + esc(g) + '</button></li>';
+      })).join("");
+
+    function closeCatMenu() {
+      catFilter.classList.remove("is-open");
+      catTrigger.setAttribute("aria-expanded", "false");
+    }
+    function openCatMenu() {
+      catFilter.classList.add("is-open");
+      catTrigger.setAttribute("aria-expanded", "true");
+    }
+
+    catTrigger.addEventListener("click", function (e) {
+      e.stopPropagation();
+      if (catFilter.classList.contains("is-open")) closeCatMenu(); else openCatMenu();
+    });
+    document.addEventListener("click", function (e) {
+      if (!catFilter.contains(e.target)) closeCatMenu();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { closeCatMenu(); catTrigger.focus(); }
+    });
+
+    catMenu.addEventListener("click", function (e) {
+      var b = e.target.closest(".catfilter__option"); if (!b) return;
+      catMenu.querySelectorAll(".catfilter__option").forEach(function (x) {
+        x.classList.remove("is-active");
+        x.closest("li").setAttribute("aria-selected", "false");
+      });
+      b.classList.add("is-active");
+      b.closest("li").setAttribute("aria-selected", "true");
+
+      var cat = b.dataset.cat;
+      catLabel.textContent = cat === "all" ? "All Works" : b.textContent;
+
+      document.querySelectorAll("#pgrid .pcard").forEach(function (c) {
+        var cardGroups = c.dataset.groups ? c.dataset.groups.split("|") : [];
+        c.style.display = (cat === "all" || cardGroups.indexOf(cat) !== -1) ? "" : "none";
+      });
+
+      closeCatMenu();
+      catTrigger.focus();
+    });
+
+    // ABOUT - same skills/experience/education table as the original site;
+    // only the intro paragraph is swapped for this page, leaning marketing
+    // and AI instead of the more product-balanced original. Shallow-copied
+    // so content.js's shared P.about object itself is never touched.
+    // ABOUT + RESUME - this page's own version (content.js stays as the
+    // original site uses it). Structure after a good product-designer resume:
+    // one-line role, short summary, a PDF download, then Experience with
+    // bolded lead-ins, Education, and grouped Skills.
+    (function () {
+      var CV = {
+        role: "Designer · Product, Brand & Marketing · AI",
+        summary: [
+          "Designer with a B.Des in Visual Communication from HIT. I design across product, brand, and marketing - landing pages, campaigns, presentations, and UX/UI - using AI throughout the process, from first concept to final image and video.",
+          "Currently designing at Powtoon. I bring strong visual thinking, fast self-learning, and ownership from brief to launch."
+        ],
+        pdf: "Matan-Cohen-CV-2026.pdf",
+        experience: [
+          { role: "Marketing Designer", org: "Powtoon", years: "2025 – Present", points: [
+            ["AI launches", "Campaigns for AI products including Scenario AI, Anything2Video, AI Avatars, and AI Translation - across landing pages, social, carousels, and email."],
+            ["Events", "Visual design for Learning Technologies London and World of Learning, including one-pagers, stage decks, and booth graphics."],
+            ["Guides & sales content", "AI-adoption guides across 11 industries, a Veo prompt-writing guide, and enterprise presentations and one-pagers."],
+            ["AI production", "Generative image and video tools including Veo, Seedance, and Midjourney as part of the everyday design workflow."]
+          ]},
+          { role: "Graphic Designer", org: "Bad Boy Studio", years: "2024 – 2025",
+            note: "Social content, promotional graphics, and marketing visuals, working directly with the studio owner from concept to delivery." },
+          { role: "Freelance Designer", org: "Independent · Good Sap Studio", years: "2022 – 2023", points: [
+            ["Branding", "Logos and redesigns, brand assets, T-shirt design, and promotional video."],
+            ["Good Sap Studio", "Illustration-led marketing across social content, digital ads, banners, and campaign assets."]
+          ]},
+          { role: "Network Computer Manager & Instructor", org: "IDF", years: "2018 – 2020", points: [
+            ["", "Led and trained a unit of ~30 staff and 200 cadets in networking, Windows, and Office."],
+            ["", "Certified instructor responsible for training, assessments, and ongoing professional feedback."]
+          ]}
+        ],
+        education: [
+          { role: "B.Des in Visual Communication", org: "HIT, Holon Institute of Technology", years: "2021 – 2025",
+            note: "Branding, UX/UI, typography, and illustration, with projects spanning marketing strategy, AI-generated image and video, and interactive work in Unity." }
+        ],
+        skills: [
+          ["Design", "Campaigns & social, landing pages, presentations, branding & identity, illustration, motion, typography"],
+          ["AI & emerging tech", "Image & video generation, prompt design, AI-assisted workflows, vibe coding"],
+          ["Tools", "Figma, Illustrator, Photoshop, InDesign, After Effects, Premiere, Adobe XD, Unity, AI tools"],
+          ["Languages", "Hebrew - native · English - fluent"]
+        ]
+      };
+      function entry(e) {
+        var pts = (e.points || []).map(function (p) {
+          return "<li>" + (p[0] ? "<strong>" + esc(p[0]) + ":</strong> " : "") + esc(p[1]) + "</li>";
+        }).join("");
+        return '<div class="cv__entry"><div class="cv__when">' + esc(e.years) + '</div><div class="cv__what">' +
+          '<h4>' + esc(e.role) + ' <span>- ' + esc(e.org) + '</span></h4>' +
+          (e.note ? '<p class="cv__note">' + esc(e.note) + '</p>' : '') + (pts ? "<ul>" + pts + "</ul>" : "") + "</div></div>";
+      }
+      document.getElementById("aboutBody").innerHTML =
+        '<div class="cv reveal">' +
+          '<div class="cv__lead"><p class="cv__role">' + CV.role.split(" · ").map(function (t) { return '<span class="nowrap">' + esc(t) + '</span>'; }).join(" · ") + '</p>' +
+            CV.summary.map(function (t) { return "<p>" + esc(t) + "</p>"; }).join("") +
+            '<a class="cv__pdf" href="' + CV.pdf + '" target="_blank" rel="noopener" download>' +
+              '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v8.5M4.5 7.5 8 11l3.5-3.5M3 13.5h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+              '<span>Download resume (PDF)</span></a></div>' +
+          '<h3 class="cv__head">Experience</h3>' + CV.experience.map(entry).join("") +
+          '<h3 class="cv__head">Education</h3>' + CV.education.map(entry).join("") +
+          '<h3 class="cv__head">Skills</h3><dl class="cv__skills">' +
+            CV.skills.map(function (k) { return "<dt>" + esc(k[0]) + "</dt><dd>" + esc(k[1]) + "</dd>"; }).join("") + "</dl>" +
+          '<h3 class="cv__head">Off the clock</h3><div class="cv__life">' +
+            '<p>I run on healthy FOMO - design, friends, family, and a workout squeezed in somewhere. I also love to travel for new cultures, aesthetics and fresh perspectives. ' +
+            'Every now and then I still pick up a pencil, and I try to learn something new every day. Oh, and I watch far too many AI reels. Most of them end with me trying to make one myself.</p>' +
+            '<div class="cv__photos">' +
+              '<figure class="is-on"><img src="images/me-1.webp" alt="Matan on a bike, travelling" loading="lazy"><figcaption>Somewhere in Vietnam</figcaption></figure>' +
+           '<figure><img src="images/me-4.webp?v=20260925b" alt="Rows of hand-painted conical hats in a workshop" loading="lazy"><figcaption>A whole floor of hand-painted hats</figcaption></figure>' +
+           '<figure><img src="images/me-5.webp?v=20260925b" alt="Carved wooden doors opening onto a temple courtyard" loading="lazy"><figcaption>Framed, literally</figcaption></figure>' +
+              '<figure><img src="images/me-2.webp" alt="Matan on a zipline over a forest" loading="lazy"><figcaption>First of all, yes.</figcaption></figure>' +
+           '<figure><img src="images/me-6.webp?v=20260925b" alt="A woodcarver shaping small figures by hand" loading="lazy"><figcaption>Watching a woodcarver work</figcaption></figure>' +
+           '<figure><img src="images/me-3.webp" alt="Pencil sketches of eyes" loading="lazy"><figcaption>From my sketchbook</figcaption></figure>' +
+            '</div></div>' +
+        "</div>";
+    })();
+    // this page's contact: same as content.js, without Behance
+    var homeContact = {}; for (var ck in (P.contact || {})) homeContact[ck] = P.contact[ck];
+    homeContact.links = (homeContact.links || []).filter(function (l) { return !/behance/i.test(l.label); });
+    window.PF.renderContact(document.getElementById("contactBody"), homeContact);
+
+    // HERO FIT - all measured, so it holds at every width:
+    //  1. the name is sized so its period lands on the right edge of col 8;
+    //  2. the intro is three lines, split where they come out most equal,
+    //     starting on column 3 ([what I do] sits in columns 1–2) and
+    //     sized so the longer line ends exactly under the name's period;
+    //  3. the name sits exactly midway: the gap from "Hey, I'm" (baseline)
+    //     to the name's tops equals the gap from the name's baseline to the
+    //     intro's first cap line. Text metrics come from canvas, so it's the
+    //     visible letters that are spaced, not their line boxes.
+    (function () {
+      var name = document.querySelector(".hero__name");
+      var line = document.querySelector(".hero__shrink");
+      var hey = document.querySelector(".hero__hey");
+      var intro = document.getElementById("heroIntro");
+      var r1 = document.getElementById("heroRuler");
+      if (!name || !line || !intro || !r1 || !hey) return;
+      var mq = window.matchMedia("(min-width: 901px) and (orientation: landscape), (min-width: 1200px)");
+      var cv = document.createElement("canvas").getContext("2d");
+      function metrics(el, sample) {
+        var cs = getComputedStyle(el);
+        cv.font = cs.fontWeight + " " + cs.fontSize + " " + cs.fontFamily;
+        var m = cv.measureText(sample), fs = parseFloat(cs.fontSize);
+        var lh = cs.lineHeight === "normal" ? fs * 1.2 : parseFloat(cs.lineHeight);
+        var A = m.fontBoundingBoxAscent, D = m.fontBoundingBoxDescent;
+        var top = el.getBoundingClientRect().top + parseFloat(cs.paddingTop);
+        var base = top + (lh - (A + D)) / 2 + A;           // first-line baseline
+        return { base: base, ink: base - m.actualBoundingBoxAscent };
+      }
+      function fit() {
+        var sur = document.getElementById("heroSur"), lab = document.querySelector(".hero__introlabel");
+        if (!mq.matches) {
+          name.style.fontSize = intro.style.marginLeft = intro.style.width = "";
+          // the name is sized for Outfit; if that font is late or fails, the
+          // wider fallback would run off the screen - scale it down to fit
+          if (name.scrollWidth > name.clientWidth + 1)
+            name.style.fontSize = (parseFloat(getComputedStyle(name).fontSize) * name.clientWidth / name.scrollWidth * 0.985).toFixed(2) + "px";
+          hey.style.marginBottom = intro.style.marginTop = "";
+          if (lab) lab.style.marginTop = "";
+          // phone: the hint on the [what I do] line ends where the name ends
+          var hn = document.querySelector(".hero__hint");
+          if (hn) {
+            hn.style.marginRight = "0px";
+            var gap = hn.getBoundingClientRect().right - line.getBoundingClientRect().right;
+            hn.style.marginRight = Math.max(0, gap).toFixed(1) + "px";
+          }
+          // phone: the name sits exactly midway between "Hey, I'm" and [what I do]
+          // (measured on the letters themselves: Hey's baseline, the name's cap
+          // line and baseline, the label's cap line)
+          if (lab) {
+            name.style.top = "0px";
+            var hb0 = metrics(hey, "H"), nb0 = metrics(name, "C"), lb0 = metrics(lab, "W");
+            var above = nb0.ink - hb0.base, below = lb0.ink - nb0.base;
+            name.style.position = "relative";
+            name.style.top = ((below - above) / 2).toFixed(1) + "px";
+          }
+          if (intro.querySelector(".hero__introline")) {          // back to one flowing paragraph
+            intro.textContent = intro.getAttribute("data-text");
+            intro.innerHTML = intro.innerHTML.replace(/\bAI\b/, '<span class="d-ai">AI</span>');
+          }
+          return;
+        }
+        name.style.top = "";
+        // 1
+        name.style.fontSize = "100px";
+        var L = line.getBoundingClientRect().left;
+        var target = r1.getBoundingClientRect().right - L;
+        name.style.fontSize = (100 * target * 0.9 / line.getBoundingClientRect().width).toFixed(2) + "px";   // 90% of col 6: a touch smaller
+        var right = line.getBoundingClientRect().right;
+        // 2
+        var r2 = document.getElementById("heroRuler2");
+        var sl = r2.getBoundingClientRect().left, W = right - sl;
+        intro.style.marginLeft = (sl - L).toFixed(1) + "px";
+        intro.style.width = "auto"; intro.style.fontSize = "17px";
+        var words = intro.getAttribute("data-text").replace(/&nbsp;/g, "\u00a0").split(" ");
+        var probe = document.createElement("span");
+        probe.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;font:" + getComputedStyle(intro).font;
+        document.body.appendChild(probe);
+        function w(t) { probe.textContent = t; return probe.getBoundingClientRect().width; }
+        // as many lines as the text needs at ~17px, split so the longest line is
+        // as short as possible (balanced), then sized so it ends at the period
+        var total = w(words.join(" ")), k = Math.max(2, Math.ceil(total * (15 / 17) * 1.04 / W));   // aim for ~15px text
+        var ww = words.map(w), sp1 = w(" "), n = words.length;
+        function span(i, j) { var t = 0; for (var q = i; q < j; q++) t += ww[q]; return t + sp1 * (j - i - 1); }
+        var memo = {};
+        function best(i, lines) {                      // min over splits of the longest line
+          var key = i + "," + lines; if (memo[key]) return memo[key];
+          if (lines === 1) return (memo[key] = { m: span(i, n), cuts: [] });
+          var r = { m: 1e9, cuts: [] };
+          for (var j = i + 1; j <= n - lines + 1; j++) {
+            var here = span(i, j); if (here >= r.m) break;
+            var rest = best(j, lines - 1), m = Math.max(here, rest.m);
+            if (m < r.m) r = { m: m, cuts: [j].concat(rest.cuts) };
+          }
+          return (memo[key] = r);
+        }
+        // same longest line, but the breaks spread as evenly as possible
+        // (no short line in the middle of the block)
+        var M = best(0, k).m + 0.5, memo2 = {};
+        function even(i, lines) {
+          var key = i + "," + lines; if (memo2[key]) return memo2[key];
+          if (lines === 1) { var s1 = span(i, n); return (memo2[key] = s1 <= M ? { c: (M - s1) * (M - s1), cuts: [] } : { c: 1e18, cuts: [] }); }
+          var r = { c: 1e18, cuts: [] };
+          for (var j = i + 1; j <= n - lines + 1; j++) {
+            var here = span(i, j); if (here > M) break;
+            var rest = even(j, lines - 1), c = (M - here) * (M - here) + rest.c;
+            if (c < r.c) r = { c: c, cuts: [j].concat(rest.cuts) };
+          }
+          return (memo2[key] = r);
+        }
+        var ev = even(0, k);
+        var cuts = [0].concat(ev.c < 1e18 ? ev.cuts : best(0, k).cuts, [n]), bestL = [];
+        for (var c = 0; c < cuts.length - 1; c++) bestL.push(words.slice(cuts[c], cuts[c + 1]).join(" "));
+        var longest = Math.max.apply(null, bestL.map(w));
+        probe.remove();
+        intro.innerHTML = "";
+        bestL.forEach(function (t) { var sp = document.createElement("span"); sp.className = "hero__introline"; sp.textContent = t; intro.appendChild(sp); });
+        intro.innerHTML = intro.innerHTML.replace(/\bAI\b/, '<span class="d-ai">AI</span>');   // hook for the "AI" doodle
+        intro.style.fontSize = Math.max(13, Math.min(22, 17 * W / longest)).toFixed(2) + "px";
+        // 3
+        hey.style.marginBottom = intro.style.marginTop = "0px";
+        var nm = parseFloat(getComputedStyle(name).fontSize), G = nm * 0.55, G2 = nm * 0.95;   // "Hey, I'm" → name as before; name → [what I do] a little more air
+        var h = metrics(hey, "H"), n = metrics(name, "C"), i = metrics(intro, "T");
+        hey.style.marginBottom = Math.max(0, G - (n.ink - h.base)).toFixed(1) + "px";
+        n = metrics(name, "C");
+        i = metrics(intro, "T");
+        intro.style.marginTop = (G2 - (i.ink - n.base)).toFixed(1) + "px";
+        if (lab) lab.style.marginTop = intro.style.marginTop;
+      }
+      fit();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener("loadingdone", fit);
+      window.addEventListener("load", fit);
+      window.addEventListener("resize", fit, { passive: true });
+    })();
+
+    // FACE - cursor-led gaze + the idea beat.
+    // One face per compass direction (viewer's point of view), each checked
+    // against the pupils in its reference:
+    //   N up · NE up-right (towards Contact) · E right · SE down-right · S down · SW downleft
+    //   W side (looking left, mouth closed) · NW upleft2 (towards Work / About)
+    //   over the name → wow (open mouth) · over the intro → side (reading)
+    //   near her face → neutral (at the camera); plus blink and smile.
+    (function () {
+      var fig = document.getElementById("face");
+      if (!fig) return;
+      var frame = fig.querySelector(".face__frame");
+      var NAMES = ["up", "upright", "right", "downright", "down", "downleft", "side", "wow", "upleft2", "blink", "smile"];
+      var imgs = { neutral: frame.querySelector(".face__f") };
+      function load() {
+        NAMES.forEach(function (n) {
+          var im = new Image();
+          im.className = "face__f"; im.alt = ""; im.draggable = false;
+          im.src = "images/face-" + n + ".webp?v=20260925x";   // version: busts old cached faces
+          frame.appendChild(im);
+          imgs[n] = im;
+        });
+      }
+      if (document.readyState === "complete") load(); else window.addEventListener("load", load);
+
+      // cross-dissolve on top of the previous face - never a see-through gap
+      var shown = "neutral", gaze = "neutral", beat = false, timers = [], z = 1;
+      function show(n) {
+        var fullR = frame.querySelector(".face__full");
+        if (fullR) fullR.classList.toggle("is-read", n === "read");   // phone: eyes down on the text above her
+        if (n === "read") return;
+        var im = imgs[n];
+        if (!im || !im.complete || n === shown) return;
+        var prev = imgs[shown];
+        im.style.zIndex = ++z; im.classList.add("is-on");
+        clearTimeout(im._off);
+        prev._off = setTimeout(function () { if (prev !== imgs[shown]) prev.classList.remove("is-on"); }, 220);
+        shown = n;
+      }
+      // 8 compass sectors from her eyes to the cursor
+      // file names ≠ directions for the right side - checked pupil by pupil:
+      //   face-right.webp = up-right · face-upright.webp = level right · face-downright.webp = down-right
+      var TOUCH = window.matchMedia("(hover: none)").matches;
+      var SECTOR = { N: "up", NE: "right", E: "upright", SE: "downright",
+                     S: "down", SW: "downleft", W: "side", NW: "upleft2" };
+      // Two reading targets override the compass: over the name she looks at
+      // it open-mouthed ("oh!"); over the intro she reads it, mouth closed.
+      var nameEl = document.querySelector(".hero__name"),
+          introEls = [document.getElementById("heroIntro"), document.querySelector(".hero__introlabel")];
+      function over(el, x, y, pad) {
+        if (!el) return false;
+        var b = el.getBoundingClientRect();
+        return x >= b.left - pad && x <= b.right + pad && y >= b.top - pad && y <= b.bottom + pad;
+      }
+      function gazeFor(x, y) {
+        if (over(nameEl, x, y, 12)) return "wow";
+        if (introEls.some(function (el) { return over(el, x, y, 12); })) {
+          // desktop/tablet: the intro is beside her → she reads it sideways.
+          // phone: it is above her → she looks up at it (left or right of centre)
+          var fb = fig.getBoundingClientRect(), ib = introEls[0].getBoundingClientRect();
+          if (ib.bottom <= fb.top + 4) return "read";
+          return "side";
+        }
+        // anything above the photo (the nav: Work / About on the left,
+        // Contact on the right) - look up that way, however far across it is
+        var fr = fig.getBoundingClientRect();
+        if (y < fr.top - 20) {
+          var ddx = x - (fr.left + fr.width / 2);
+          if (ddx < -fr.width * .35) return "upleft2";
+          if (ddx > fr.width * .35) return "right";          // up-right photo (towards Contact)
+          return "up";
+        }
+        var r = fig.getBoundingClientRect();
+        var ex = r.left + r.width * .50, ey = r.top + r.width * .44;   // between the eyes
+        var dx = x - ex, dy = y - ey;
+        if (TOUCH) {
+          if (x >= r.left + r.width * .285 && x <= r.left + r.width * .645 && y >= r.top + r.height * .23 && y <= r.top + r.height * .645) return "neutral";
+        } else if (Math.hypot(dx, dy) < r.width * .2) return "neutral";
+        var a = Math.atan2(dy, dx) * 180 / Math.PI;                     // 0 = right, 90 = down
+        var k = ["E", "SE", "S", "SW", "W", "NW", "N", "NE"][((Math.round(a / 45) % 8) + 8) % 8];
+        return SECTOR[k];
+      }
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      window.addEventListener("mousemove", function (e) {
+        gaze = gazeFor(e.clientX, e.clientY);
+        if (!beat) show(gaze);
+      }, { passive: true });
+      document.addEventListener("mouseleave", function () { gaze = "neutral"; if (!beat) show(gaze); });
+
+      // cursor on the photo itself: she looks straight at you - the same
+      // face as when the mouse isn't moving
+      if (!TOUCH) fig.addEventListener("mouseenter", function () { beat = true; show("neutral"); });
+      if (window.matchMedia("(hover: none)").matches) {
+        var scT = null;
+        window.addEventListener("scroll", function () {
+          if (document.body.dataset.view || window.scrollY > fig.getBoundingClientRect().bottom + window.scrollY) return;
+          show("read"); clearTimeout(scT);
+          scT = setTimeout(function () { show("neutral"); }, 700);
+        }, { passive: true });
+      }
+      // cursor on Contact: the whole frame switches to her typing, eyes down
+      var full = frame.querySelector(".face__full"), cta = document.querySelector(".nav .navpill--solid");
+      if (full && cta) {
+        cta.addEventListener("mouseenter", function () { full.classList.add("is-on"); });
+        cta.addEventListener("mouseleave", function () { full.classList.remove("is-on"); });
+      }
+      if (!TOUCH) fig.addEventListener("mouseleave", function () { beat = false; show(gaze); });
+      (function blink() {
+        setTimeout(function () {
+          if (!beat && ["neutral", "side", "right", "downleft", "downright", "down", "upleft2"].indexOf(shown) > -1) {
+            var back = shown; show("blink");
+            setTimeout(function () { if (!beat && shown === "blink") show(back); }, 140);
+          }
+          blink();
+        }, 3500 + Math.random() * 3500);
+      })();
+      // Off the clock: one photo at a time, next one every 4s
+      var figs = document.querySelectorAll(".cv__photos figure"), fi = 0;
+      if (figs.length > 1) setInterval(function () {
+        figs[fi].classList.remove("is-on"); fi = (fi + 1) % figs.length; figs[fi].classList.add("is-on");
+      }, 4000);
+      var ph = document.querySelector(".cv__photos");
+      if (ph) ph.addEventListener("click", function () { ph.classList.toggle("show-cap"); });
+    })();
+
+    // NAV AS PAGES - Works / About / Contact show only that section (no hero,
+    // no other sections above or below); the M brings the full home back.
+    // Works opens straight on "All Works" (the strip is hidden) and a
+    // work-in-progress sign is drawn beside the heading.
+    (function () {
+      var veil = document.createElement("div");
+      veil.className = "jump-veil"; document.body.appendChild(veil);
+      function go(id) {
+        veil.classList.add("is-on");
+        setTimeout(function () {
+          if (id === "top") delete document.body.dataset.view; else document.body.dataset.view = id;
+          window.scrollTo({ top: 0, behavior: "instant" });
+          history.replaceState(null, "", id === "top" ? location.pathname : "#" + id);
+          document.querySelectorAll(".navpill[data-spy]").forEach(function (p) { p.classList.toggle("is-active", p.dataset.spy === id); });
+          document.querySelectorAll("#" + id + " .reveal").forEach(function (el) { el.classList.add("is-in"); });
+          requestAnimationFrame(function () {
+            veil.classList.remove("is-on");
+          });
+        }, 160);
+      }
+      document.querySelectorAll('.nav a[href^="#"]').forEach(function (a) {
+        a.addEventListener("click", function (e) {
+          var id = a.getAttribute("href").slice(1);
+          if (id !== "top" && !document.getElementById(id)) return;
+          e.preventDefault(); go(id);
+        });
+      });
+      window.showPage = go;
+      // phone menu
+      var menu = document.getElementById("navMenu"), burger = document.getElementById("navBurger");
+      function setMenu(open) {
+        if (!menu || !burger) return;
+        menu.classList.toggle("is-open", open);
+        var sc = document.getElementById("navScrim"); if (sc) sc.classList.toggle("is-open", open);
+        menu.setAttribute("aria-hidden", open ? "false" : "true"); burger.setAttribute("aria-expanded", open ? "true" : "false");
+        burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        document.body.classList.toggle("menu-open", open);
+      }
+      // the header hint shows only while the hero is on screen
+      (function () {
+        var hero = document.getElementById("phero");
+        function hint() { document.body.classList.toggle("on-hero", !document.body.dataset.view && hero && window.scrollY < hero.offsetHeight * 0.5); }
+        hint(); window.addEventListener("scroll", hint, { passive: true });
+        new MutationObserver(hint).observe(document.body, { attributes: true, attributeFilter: ["data-view"] });
+      })();
+      if (burger) burger.addEventListener("click", function () { setMenu(!menu.classList.contains("is-open")); });
+      var closeBtn = document.getElementById("navClose");
+      if (closeBtn) closeBtn.addEventListener("click", function () { setMenu(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
+      var scr = document.getElementById("navScrim"); if (scr) scr.addEventListener("click", function () { setMenu(false); });
+      if (menu) menu.querySelectorAll("[data-menu]").forEach(function (a) {
+        a.addEventListener("click", function (e) { e.preventDefault(); setMenu(false); go(a.dataset.menu); });
+      });
+      // arriving from a project page ("← All work", Work, About, Contact):
+      // open that page straight away, not the hero
+      var start = location.hash.slice(1);
+      if (["projects", "about", "contact"].indexOf(start) > -1) {
+        document.body.dataset.view = start;
+        window.scrollTo(0, 0);
+        document.querySelectorAll(".navpill[data-spy]").forEach(function (p) { p.classList.toggle("is-active", p.dataset.spy === start); });
+        document.querySelectorAll("#" + start + " .reveal").forEach(function (el) { el.classList.add("is-in"); });
+        setTimeout(function () { window.scrollTo(0, 0); }, 60);
+      }
+    })();
+
+    // WORKS SIGN - a hand-drawn "work in progress" A-frame sign beside the
+    // All Works heading: when you open Works, and on hovering the heading.
+    (function () {
+      var head = document.querySelector("#projects .section__head");
+      var title = document.querySelector("#projects .section__title");
+      if (!head || !title) return;
+      var NS = "http://www.w3.org/2000/svg", on = false;
+      var COLORS = ["#E8849F", "#F0663F", "#3E5BDB", "#3F9A6B", "#E9A928"], ci = Math.floor(Math.random() * 5);
+      // an open box with a pencil and a puzzle piece - the "work" doodle
+      var P = [
+        ["M24 52 C 24 66, 24 80, 25 95 C 38 96, 50 97, 62 98 C 62 84, 62 70, 62 56 C 50 55, 36 53, 24 52", 0.0, 0.25],   // front
+        ["M62 56 C 70 53, 78 50, 86 47 C 86 61, 86 75, 86 88 C 78 91, 70 94, 62 98", 0.225, 0.175],                       // side
+        ["M24 52 C 16 57, 10 62, 6 66 C 20 68, 34 70, 48 71 C 53 66, 58 61, 62 56", 0.375, 0.175],                        // left flap
+        ["M86 47 C 90 52, 94 56, 97 59 C 89 63, 81 66, 73 68 C 69 64, 65 60, 62 56", 0.5, 0.15],                        // right flap
+        ["M24 52 C 32 49, 40 46, 48 44 C 60 44, 74 45, 86 47", 0.6, 0.125],                                             // back rim
+        ["M40 50 C 37 38, 33 26, 30 16 L 36 13 C 39 24, 43 36, 47 48 M30 16 C 30 12, 31 9, 32 7 C 34 9, 35 11, 36 13", 0.675, 0.2],   // pencil
+        ["M58 45 C 58 38, 58 31, 58 25 C 61 25, 63 24, 63 21 C 63 17, 69 17, 69 21 C 69 24, 71 25, 74 25 C 74 32, 74 39, 74 45", 0.825, 0.2],   // puzzle piece
+        ["M10 28 L 12 33 L 17 33 L 13 36 L 15 41 L 10 38 L 5 41 L 7 36 L 3 33 L 8 33 Z", 0.975, 0.15]                   // star
+      ];
+      function draw() {
+        var lab = document.getElementById("catFilterLabel") || title;
+        if (lab.textContent.trim() !== "All Works") return;   // only on "All Works", not on a filtered category
+        if (on) return; on = true;
+        var t = lab.getBoundingClientRect(), hb = head.getBoundingClientRect();
+        var fs = parseFloat(getComputedStyle(lab).fontSize), lh = t.height;
+        var base = t.top + (lh + fs * 0.72) / 2, cap = base - fs * 0.72;     // the title's cap line and baseline
+        var h = (base - cap) * 1.4, w = h;   // taller than the caps, still sitting on the baseline
+        var svg = document.createElementNS(NS, "svg");
+        svg.setAttribute("viewBox", "0 0 100 100"); svg.setAttribute("class", "works-sign");
+        svg.style.cssText = "left:" + (t.right - hb.left + 18) + "px;top:" + (base - h - hb.top) + "px;width:" + w + "px;height:" + h + "px;--dc:" + COLORS[ci];
+        ci = (ci + 1) % COLORS.length;
+        P.forEach(function (d) {
+          var p = document.createElementNS(NS, "path");
+          p.setAttribute("d", d[0]); p.setAttribute("pathLength", "1"); p.setAttribute("class", "doodle-line");
+          p.style.animationDelay = d[1] + "s"; p.style.animationDuration = d[2] + "s"; svg.appendChild(p);
+        });
+        head.appendChild(svg);
+        setTimeout(function () { svg.classList.add("is-gone"); }, 3000);
+        setTimeout(function () { svg.remove(); on = false; }, 3450);
+      }
+      // switching to a category clears a sign that is still on screen
+      var labEl = document.getElementById("catFilterLabel");
+      if (labEl && window.MutationObserver) new MutationObserver(function () {
+        if (labEl.textContent.trim() !== "All Works") head.querySelectorAll(".works-sign").forEach(function (sv) { sv.remove(); });
+        on = false;
+      }).observe(labEl, { childList: true, characterData: true, subtree: true });
+      // only when the pointer is on the words themselves, not the whole row
+      (document.getElementById("catFilterTrigger") || title).addEventListener("mouseenter", draw);
+      window.drawWorksSign = draw;
+    })();
+
+    // DOODLES - hand-drawn notes that appear where you touch the hero, one at
+    // a time, then fade after ~4.5s. Each gets one colour from a small palette
+    // that sits well on the black-and-white page, a new colour every time.
+    //   the "o" of Cohen  → a heart on it, or a smiley drawn inside it (random)
+    //   the M             → "change the M to pink fur" is written… and it happens
+    //   empty space       → rest the cursor between the name and the photo: a
+    //                       short "second thought" is written right there
+    //   the period        → uses the real period: "?" … then "!" … scribbled out
+    //   [what I do]       → a heart
+    //   "Hey, I'm"        → an arrow from it to the photo: "that's me"
+    //   the intro         → "AI" gets circled, with a note
+    //   Contact (nav)     → its envelope folds into a paper plane and flies off (separate, below)
+    // Hover on desktop, tap on touch screens.
+    (function () {
+      var hero = document.getElementById("phero");
+      var name = document.querySelector(".hero__name");
+      if (!hero || !name) return;
+      var NS = "http://www.w3.org/2000/svg", busy = false;
+      var COLORS = ["#E8849F", "#F0663F", "#3E5BDB", "#3F9A6B", "#E9A928"];   // pink · coral · cobalt · green · amber
+      var ci = Math.floor(Math.random() * COLORS.length);
+      var layer = document.createElement("div"); layer.className = "doodles"; hero.appendChild(layer);
+      // line weight = the hero M's line before it was matched to the letters (then ×.7 in CSS)
+      function weight() {
+        var fs = parseFloat(getComputedStyle(name).fontSize);
+        layer.style.setProperty("--dw", (4.8 / 100 * 0.86 * fs).toFixed(2) + "px");
+      }
+      weight(); window.addEventListener("resize", weight, { passive: true });
+
+      function textBox(el) {                              // the text itself, not its (grid-wide) box
+        var r = document.createRange(); r.selectNodeContents(el);
+        var q = r.getBoundingClientRect(), h = hero.getBoundingClientRect();
+        return { x: q.left - h.left, y: q.top - h.top, w: q.width, h: q.height };
+      }
+      function box(el) {
+        var r = el.getBoundingClientRect(), h = hero.getBoundingClientRect();
+        return { x: r.left - h.left, y: r.top - h.top, w: r.width, h: r.height };
+      }
+      function svgAt(x, y, w, h, vb) {
+        var s = document.createElementNS(NS, "svg");
+        s.setAttribute("viewBox", vb || "0 0 100 100");
+        s.style.cssText = "position:absolute;overflow:visible;left:" + x + "px;top:" + y + "px;width:" + w + "px;height:" + h + "px";
+        layer.appendChild(s); return s;
+      }
+      function stroke(svg, d, delay, dur) {
+        var p = document.createElementNS(NS, "path");
+        p.setAttribute("d", d); p.setAttribute("pathLength", "1"); p.setAttribute("class", "doodle-line");
+        p.style.animationDelay = (delay || 0) + "s"; p.style.animationDuration = (dur || .6) + "s";
+        // the pen is non-scaling, so in an SVG drawn larger than its viewBox the
+        // dash would end before the line does - stretch the dash to match
+        var vb = svg.viewBox && svg.viewBox.baseVal, sc = vb && vb.width ? parseFloat(svg.style.width) / vb.width : 1;
+        if (sc > 1) { p.style.strokeDasharray = sc; p.style.strokeDashoffset = sc; }
+        svg.appendChild(p); return p;
+      }
+      function heart(svg, cx, cy, sz, d) {                // hand-drawn heart, outline then filled
+        var p = stroke(svg, HEART, d || 0, .45);
+        p.setAttribute("transform", "translate(" + (cx - sz / 2) + " " + (cy - sz / 2) + ") scale(" + (sz / 100) + ")");
+        p.style.animationDelay = (d || 0) + "s, " + ((d || 0) + .4) + "s";
+        p.style.animationDuration = ".45s, .25s";
+        return p;
+      }
+      function done(nodes, after, then) {
+        setTimeout(function () {
+          nodes.forEach(function (n) { n.classList.add("is-gone"); });
+          setTimeout(function () { nodes.forEach(function (n) { n.remove(); }); if (then) then(); busy = false; }, 450);
+        }, after || 3000);
+      }
+      function write(text, x, y, onEnd) {
+        var t = document.createElement("div"); t.className = "doodle-text";
+        t.style.left = x + "px"; t.style.top = y + "px"; layer.appendChild(t);
+        var i = 0; (function next() {
+          if (i <= text.length) { t.textContent = text.slice(0, i++); setTimeout(next, 22 + Math.random() * 22); }
+          else if (onEnd) onEnd();
+        })();
+        return t;
+      }
+      var HEART = "M52 86 C 40 74, 14 58, 12 38 C 10 22, 28 14, 40 24 C 46 29, 49 35, 50 40 C 52 30, 60 18, 74 18 C 90 18, 93 36, 84 50 C 76 64, 62 74, 52 86 Z";
+      var PROMPTS = ["make the a’s rounder?", "more air here", "what if it waved hello", "kerning check ✓", "try it lowercase…"];
+
+      function onO(el) {                                  // a smiley drawn inside the o, in black
+        var b = box(el);
+        var cx = b.x + b.w / 2, cy = b.y + b.h * 0.62, r = b.w * 0.3;
+        var f = svgAt(cx - r, cy - r, r * 2, r * 2); f.style.setProperty("--dc", "#000");
+        stroke(f, "M34 34 L 34 42", 0, .15); stroke(f, "M66 34 L 66 42", .12, .15);
+        stroke(f, "M26 60 C 38 78, 62 78, 74 58", .28, .35);
+        done([f]);
+      }
+      var fur = null;
+      function onM(el) {
+        var b = box(el);
+        var hy = textBox(document.querySelector(".hero__hey"));
+        var nm = textBox(name.querySelector(".hero__shrink"));
+        var t = write("prompt: make the M pink & fluffy", hy.x, (hy.y + hy.h + nm.y) / 2 - 13, function () {   // between "Hey, I'm" and the name
+          if (!fur) { fur = new Image(); fur.className = "name-fur"; fur.alt = ""; fur.src = "images/m-fur.webp"; layer.appendChild(fur); }
+          var m = box(el); var pad = m.h * 0.12;
+          fur.style.cssText = "left:" + (m.x - pad) + "px;top:" + (m.y - pad) + "px;width:" + (m.w + pad * 2) + "px;height:" + (m.h + pad * 2) + "px";
+          requestAnimationFrame(function () { fur.classList.add("is-on"); el.classList.add("is-furred"); });
+          setTimeout(function () { fur.classList.remove("is-on"); el.classList.remove("is-furred"); }, 1700);
+        });
+        t.style.color = "#E8849F";                       // this one is always pink
+        done([t], 3000);
+      }
+      // the "second thoughts" land in an empty patch of the hero, not on the name
+      function emptySpot() {                              // the open band between the name and the photo
+        var n = textBox(name.querySelector(".hero__shrink")), ph = box(document.getElementById("face")), it = box(document.getElementById("heroIntro"));
+        var ys = [n.y - 50, n.y + n.h * 0.35, it.y + it.h * 0.3, it.y + it.h + 40];
+        return { left: n.x + n.w + 40, right: ph.x - 30, y: ys[Math.floor(Math.random() * ys.length)] };
+      }
+      function onAtanUnused(el) {
+        var sp = emptySpot(), txt = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
+        var t = write(txt, 0, sp.y);
+        // measure the finished line, then keep it inside the gap
+        var probe = document.createElement("div"); probe.className = "doodle-text"; probe.style.visibility = "hidden"; probe.textContent = txt;
+        layer.appendChild(probe); var w = probe.getBoundingClientRect().width; probe.remove();
+        var room = sp.right - sp.left - w;
+        t.style.left = (sp.left + Math.max(0, room) * Math.random()) + "px";
+        done([t]);
+      }
+      function onDot(el) {
+        // the real period is the dot; only the strokes above it are drawn
+        var b = box(el), fs = b.h, dotX = b.x + b.w * 0.5, base = b.y + fs * 0.78;
+        var h = fs * 0.5, w = h * 0.6;
+        var q = svgAt(dotX - w * 0.5, base - h - fs * 0.12, w, h, "0 0 60 100");
+        stroke(q, "M6 30 C 4 6, 54 2, 54 28 C 54 46, 30 50, 30 78", 0, .6);
+        setTimeout(function () { q.classList.add("is-gone"); }, 900);
+        var e = svgAt(dotX - w * 0.5, base - h - fs * 0.12, w, h, "0 0 60 100");
+        stroke(e, "M30 4 C 31 30, 29 54, 30 80", 1.1, .3);
+        // a quick, loopy, slanted scribble - as if crossed out by hand
+        stroke(e, "M-8 70 C 8 52, 20 30, 34 12 C 40 4, 28 10, 20 24 C 10 42, 2 62, 14 58 C 28 52, 44 26, 58 8 C 64 2, 54 6, 46 20 C 36 38, 26 60, 36 66 C 48 72, 62 44, 72 26",
+          1.6, .6);
+        done([q, e], 3000);
+      }
+      function onLabel(el) {                              // [what I do] → a heart
+        var lb = textBox(el), sz = lb.h * 1.05;
+        var hs = svgAt(lb.x + lb.w + 6, lb.y - sz * 0.3, sz, sz);
+        heart(hs, 50, 50, 100, 0); done([hs]);
+      }
+      function onHey(el) {                                // "Hey, I'm" → arrow to the photo: "that's me"
+        var ph = document.getElementById("face"); if (!ph) { busy = false; return; }
+        var h = textBox(el), p = box(ph);
+        if (p.y > h.y + h.h + 120) {                      // phone: the photo is far below
+          // the arrow runs out to the right margin, down it (clear of the text), and
+          // bends into the photo's top-right corner, over the posters - not her face
+          var sx = h.x + h.w + 14, sy = h.y + h.h * 0.55;
+          // down the right margin to the light-blue wall beside her (right of the
+          // photo, clear of her face), then a short straight jab in from the right
+          var edge = hero.clientWidth - 9, ey = p.y + p.h * 0.39;
+          var tx = p.x + p.w * 0.765 + 8, ty = ey + 24;             // where the words start
+          var ex = tx + 14, eyT = ty - 6;                             // arrow tip, just above the first letter
+          var INK = "#111111";
+          layer.style.setProperty("--dc", INK);
+          var sv = svgAt(0, 0, hero.clientWidth, hero.clientHeight, "0 0 " + hero.clientWidth + " " + hero.clientHeight);
+          // down the margin, curve in, then a short straight run down-left onto the words
+          stroke(sv, "M" + sx + " " + sy + " C " + (edge - 10) + " " + (sy - 2) + ", " + edge + " " + (sy + 6) + ", " + edge + " " + (sy + 40) +
+                 " L " + edge + " " + (eyT - 50) + " C " + edge + " " + (eyT - 26) + ", " + (ex + 26) + " " + (eyT - 22) + ", " + (ex + 12) + " " + (eyT - 12) +
+                 " L " + ex + " " + eyT, 0, .8);
+          var an = Math.atan2(12, -12), LL = 11, AA = 0.5;
+          stroke(sv, "M" + (ex - LL * Math.cos(an - AA)) + " " + (eyT - LL * Math.sin(an - AA)) + " L " + ex + " " + eyT + " L " + (ex - LL * Math.cos(an + AA)) + " " + (eyT - LL * Math.sin(an + AA)), .75, .2);
+          var tm = write("that’s me", tx, ty);
+          tm.style.fontSize = "22px"; tm.style.fontWeight = "700";
+          tm.style.transform = "rotate(46deg)";                   // the same diagonal as before
+          tm.style.color = INK;
+          done([sv, tm]);
+          return;
+        }
+        var x0 = h.x + h.w + 12, y0 = h.y + h.h * 0.55, x1 = p.x + p.w * 0.35, y1 = p.y - 14;
+        var svg = svgAt(0, 0, hero.clientWidth, hero.clientHeight, "0 0 " + hero.clientWidth + " " + hero.clientHeight);
+        var my = Math.min(y0, y1) - 60, cx2 = x1 - 120, cy2 = my - 10;
+        stroke(svg, "M" + x0 + " " + y0 + " C " + (x0 + 180) + " " + my + ", " + cx2 + " " + cy2 + ", " + x1 + " " + y1, 0, .7);
+        // arrowhead: two equal barbs either side of the curve's direction at its tip
+        var ang = Math.atan2(y1 - cy2, x1 - cx2), L = 16, A = 0.5;
+        var bx1 = x1 - L * Math.cos(ang - A), by1 = y1 - L * Math.sin(ang - A);
+        var bx2 = x1 - L * Math.cos(ang + A), by2 = y1 - L * Math.sin(ang + A);
+        stroke(svg, "M" + bx1 + " " + by1 + " L " + x1 + " " + y1 + " L " + bx2 + " " + by2, .65, .2);
+        var t = write("that’s me", (x0 + x1) / 2 - 30, my - 30);
+        done([svg, t]);
+      }
+      function onScroll(el) {                             // "Scroll down" → a hand-drawn arrow pointing down
+        var b = textBox(el), hh = b.h * 2.4, ww = hh * 0.5;
+        var svg = svgAt(b.x + b.w + 10, b.y - hh * 0.3, ww, hh, "0 0 40 80");
+        stroke(svg, "M20 4 C 21 24, 19 46, 20 72", 0, .35);
+        stroke(svg, "M8 58 C 13 63, 17 68, 20 73 C 24 67, 28 62, 33 57", .3, .2);
+        done([svg]);
+      }
+      function onIntro(el) {                              // circle "AI" with a note
+        var ai = el.querySelector(".d-ai"); if (!ai) { busy = false; return; }
+        var b = box(ai), padX = b.w * 0.45, padY = b.h * 0.35;
+        var svg = svgAt(b.x - padX, b.y - padY, b.w + padX * 2, b.h + padY * 2);
+        stroke(svg, "M60 6 C 92 6, 100 40, 96 60 C 90 92, 30 98, 8 72 C -6 50, 10 12, 54 8 C 70 6, 86 12, 90 20", 0, .8);
+        var t = write("the fun part", b.x + b.w + padX + 8, b.y - padY - 24);
+        done([svg, t]);
+      }
+
+      // the intro is rebuilt by the fit script; tag "AI" whenever that happens
+      function tagAI() {
+        var intro = document.getElementById("heroIntro"); if (!intro || intro.querySelector(".d-ai")) return;
+        var line = intro.querySelector(".hero__introline") || intro;
+        line.innerHTML = line.innerHTML.replace(/\bAI\b/, '<span class="d-ai">AI</span>');
+      }
+      tagAI(); setTimeout(tagAI, 600);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { setTimeout(tagAI, 50); });
+      window.addEventListener("resize", function () { setTimeout(tagAI, 50); }, { passive: true });
+
+      function ticTacToe(x, y, sz) {                       // X · O grid, won with a line of hearts
+        var t = svgAt(x, y, sz, sz), d = 0;
+        ["M32 10 C 33 40, 35 70, 38 96", "M64 6 C 66 38, 69 68, 72 94", "M4 36 C 34 34, 66 33, 96 32", "M4 66 C 34 64, 66 62, 96 61"]
+          .forEach(function (g) { stroke(t, g, d, .14); d += .09; });
+        // moves in game order, one element at a time; the win line comes last
+        var X = function (x, y) { return ["M" + x + " " + y + " L " + (x + 11) + " " + (y + 12), "M" + (x + 11) + " " + (y - 1) + " L " + (x + 2) + " " + (y + 13)]; };
+        var O = function (x, y) { return ["M" + (x + 2) + " " + y + " C " + (x - 7) + " " + (y - 1) + ", " + (x - 9) + " " + (y + 13) + ", " + (x - 1) + " " + (y + 14) + " C " + (x + 7) + " " + (y + 15) + ", " + (x + 9) + " " + (y + 3) + ", " + (x + 1) + " " + (y - 0.5) + " C " + (x - 2) + " " + (y - 1) + ", " + (x - 4) + " " + (y + 1) + ", " + (x - 4) + " " + (y + 3)]; };   // overlaps its start, like a real pen O
+        var moves = [X(10, 14), [50, 50], O(47, 12), X(10, 45), [22, 80], X(80, 44), O(84, 74), X(47, 76), [79, 22]];
+        moves.forEach(function (m) {
+          if (typeof m[0] === "number") { heart(t, m[0], m[1], 14, d); d += .2; }
+          else { m.forEach(function (q) { stroke(t, q, d, .08); d += .06; }); d += .05; }
+        });
+        stroke(t, "M8 96 C 36 66, 64 36, 94 6", d + .05, .3);
+        return t;
+      }
+
+      // one loop-petal flower, drawn in a single pen line from its centre:
+      // out along one side of a petal, round the tip, back to the centre, next petal
+      // three flowers laid out like the reference, drawn one after another
+      var FLOWERS = [[47, 44, 31, 5, -1.95, [.05, -.04, .08, 0, -.06], [0, .1, -.06, .05, -.08]],
+                     [112, 64, 30, 6, -1.3, [.06, -.08, .1, -.02, .04, -.06], [0, .06, -.08, .04, .07, -.05]],
+                     [54, 106, 25, 5, -1.35, [0, .08, -.05, .1, -.04], [.04, -.06, .08, 0, -.05]]];
+      function petals(cx, cy, R, n, rot, wob, aw) {
+        var d = "M" + cx + " " + cy;
+        for (var i = 0; i < n; i++) {
+          var a = rot + i * 2 * Math.PI / n + (aw[i % aw.length] || 0), r = R * (1 + (wob[i % wob.length] || 0));
+          var ux = Math.cos(a), uy = Math.sin(a), px = -uy, py = ux, w = r * 0.44;
+          var P = function (k, s) { return (cx + ux * r * k + px * w * s).toFixed(1) + " " + (cy + uy * r * k + py * w * s).toFixed(1); };
+          d += " C " + P(.35, -.35) + ", " + P(.8, -.75) + ", " + P(.98, -.3) +
+               " C " + P(1.08, .05) + ", " + P(.95, .6) + ", " + P(.7, .5) +
+               " C " + P(.45, .38) + ", " + P(.15, .12) + ", " + cx + " " + cy;
+        }
+        return d;
+      }
+      function flowers(cx, cy) {
+        // drawn at 1:1 (viewBox = pixel size): with the non-scaling pen, a scaled-up
+        // viewBox would make the dash shorter than the line and leave gaps
+        var sz = 150, k = sz / 150, f = svgAt(cx - sz / 2, cy - sz / 2, sz, sz, "0 0 " + sz + " " + sz);
+        FLOWERS.forEach(function (v, i) { stroke(f, petals(v[0] * k, v[1] * k, v[2] * k, v[3], v[4], v[5], v[6]), i * .6, .55); });
+        return f;
+      }
+
+      function vibe(cx, cy) {                               // ( vibe coding is the best !! )
+        var txt = "vibe coding is the best !!";
+        var probe = document.createElement("div"); probe.className = "doodle-text"; probe.style.visibility = "hidden"; probe.textContent = txt;
+        layer.appendChild(probe); var w = probe.getBoundingClientRect().width, hh = parseFloat(getComputedStyle(probe).fontSize); probe.remove();
+        var tx = cx - w / 2, ty = cy - hh / 2, tilt = Math.tan(3 * Math.PI / 180);   // the text is rotated -3° around its left end
+        var L = svgAt(tx - 18, ty - hh * 0.25, 12, hh * 1.5, "0 0 20 50");
+        stroke(L, "M16 2 C 2 14, 2 36, 16 48", 0, .2);
+        var t = write(txt, tx, ty);
+        var R = svgAt(tx + w + 6, ty - hh * 0.25 - (w + 12) * tilt, 12, hh * 1.5, "0 0 20 50");
+        stroke(R, "M4 2 C 18 14, 18 36, 4 48", txt.length * .03, .2);
+        return [L, t, R];
+      }
+
+      // One hero listener, fixed spots only:
+      //   the M, the "o" and the period (padded boxes around the letters),
+      //   and two points in the empty space between the name and the photo:
+      //   one draws tic-tac-toe, the other ( vibe coding is the best !! ).
+      (function () {
+        var tmr = null, lastSpot = "";
+        function near(el, x, y, pad) {
+          var b = box(el); return x > b.x - pad && x < b.x + b.w + pad && y > b.y + b.h * .1 - pad && y < b.y + b.h + pad;
+        }
+        function spots() {
+          var sp = emptySpot(), n = textBox(name.querySelector(".hero__shrink")), it = box(document.getElementById("heroIntro"));
+          var gw = sp.right - sp.left;
+          return {
+            ttt:  { x: sp.left + gw * 0.32, y: (n.y + it.y + it.h) / 2 + 10, r: 70 },
+            vibe: { x: sp.left + gw * 0.62, y: n.y - 30, r: 60 },
+            // the open corner under the intro, left of the photo's bottom
+            flow: { x: sp.left + gw * 0.58, y: Math.max(it.y + it.h, box(document.getElementById("face")).y + box(document.getElementById("face")).h) + 20, r: 70 }
+          };
+        }
+        hero.addEventListener("mousemove", function (e) {
+          var h = hero.getBoundingClientRect(), x = e.clientX - h.left, y = e.clientY - h.top;
+          var m = name.querySelector(".name-m"), o = name.querySelector(".d-o"), dot = name.querySelector(".d-dot");
+          var S = spots(), spot = "";
+          if (m && near(m, x, y, 4)) spot = "m";
+          else if (o && near(o, x, y, 12)) spot = "o";
+          else if (dot && near(dot, x, y, 20)) spot = "dot";
+          else if (Math.hypot(x - S.ttt.x, y - S.ttt.y) < S.ttt.r) spot = "ttt";
+          else if (Math.hypot(x - S.vibe.x, y - S.vibe.y) < S.vibe.r) spot = "vibe";
+          else if (Math.hypot(x - S.flow.x, y - S.flow.y) < S.flow.r) spot = "flow";
+          if (spot === lastSpot) return;
+          clearTimeout(tmr);
+          if (!spot) { lastSpot = ""; return; }
+          if (busy) return;                      // try again on the next move once free
+          lastSpot = spot;
+          tmr = setTimeout(function () {
+            if (busy) return; busy = true;
+            layer.style.setProperty("--dc", COLORS[ci]); ci = (ci + 1) % COLORS.length;
+            if (spot === "m") onM(m);
+            else if (spot === "o") onO(o);
+            else if (spot === "dot") onDot(dot);
+            else if (spot === "ttt") { var sz = 110; done([ticTacToe(S.ttt.x - sz / 2, S.ttt.y - sz / 2, sz)], 3000); }
+            else if (spot === "flow") done([flowers(S.flow.x, S.flow.y)], 3000);
+            else done(vibe(S.vibe.x, S.vibe.y));
+          }, spot === "ttt" || spot === "vibe" || spot === "flow" ? 60 : 0);
+        });
+        hero.addEventListener("mouseleave", function () { clearTimeout(tmr); lastSpot = ""; });
+      })();
+
+      var map = [
+                 [document, ".hero__introlabel", onLabel], [document, ".hero__scroll", onScroll], [document, ".hero__hey", onHey], [document, "#heroIntro", onIntro]];
+      map.forEach(function (m) {
+        var el = m[0].querySelector(m[1]); if (!el) return;
+        function go(e) {
+          if (busy) return; busy = true;
+          layer.style.setProperty("--dc", COLORS[ci]); ci = (ci + 1) % COLORS.length;
+          m[2](el);
+        }
+        el.addEventListener("mouseenter", go);
+        el.addEventListener("click", go);           // tap on touch screens
+      });
+      // PHONE (no hover):
+      //  · a one-time handwritten hint beside "Hey, I'm"
+      //  · tapping the photo draws, in turn, the flowers (top-right corner) and
+      //    the tic-tac-toe (bottom-right, over the laptop) - both only overlap
+      //    the photo's edges, never her face
+      if (window.matchMedia("(hover: none)").matches) {
+        var fig = document.getElementById("face"), heyEl = document.querySelector(".hero__hey"), turn = 0;
+        setTimeout(function () {
+          var seen = false; try { seen = sessionStorage.getItem("tapDemo") === "1"; sessionStorage.setItem("tapDemo", "1"); } catch (e) {}
+          var lab = document.querySelector(".hero__introlabel");
+          if (seen || busy || !lab || document.body.dataset.view || window.scrollY > 40) return;
+          lab.click();                                    // the heart beside [what I do] - the same thing a tap does
+          var hn = document.querySelector(".hero__hint"); if (hn) hn.classList.add("is-flash");
+        }, 1400);
+        if (fig) fig.addEventListener("click", function () {
+          if (busy) return; busy = true;
+          // over the photo: light pastel ink, and both doodles sit on the darker,
+          // busy posters at the top corners (not on the pale laptop, not on her)
+          var LIGHT = ["#FFD6E0", "#FFF0A8", "#CFF5E1", "#D6E4FF"];
+          layer.style.setProperty("--dc", LIGHT[turn % LIGHT.length]);
+          var p = box(fig);
+          if (turn++ % 2 === 0) done([flowers(p.x + p.w - 78, p.y + 80)], 3000);
+          else { var sz = 90; done([ticTacToe(p.x + 8, p.y + 10, sz)], 3000); }
+        });
+      }
+
+      // "tap around to play" (phones): blinks until the visitor has set off three
+      // doodles themselves, then goes for good; while a doodle is on screen it
+      // steps aside so nothing lands on it
+      (function () {
+        var hint = document.querySelector(".hero__hint"); if (!hint) return;
+        var taps = 0; try { taps = +sessionStorage.getItem("tapCount") || 0; } catch (e) {}
+        if (taps >= 3) { hint.classList.add("is-done"); return; }
+        hint.classList.add("is-blinking");
+        hero.addEventListener("click", function (e) {
+          if (!e.isTrusted) return;
+          setTimeout(function () {
+            if (!layer.children.length) return;         // only taps that actually drew something
+            taps++; try { sessionStorage.setItem("tapCount", taps); } catch (er) {}
+            if (taps >= 3) { hint.classList.remove("is-blinking"); hint.classList.add("is-done"); }
+          }, 60);
+        });
+        new MutationObserver(function () { hint.classList.toggle("is-held", layer.children.length > 0); })
+          .observe(layer, { childList: true });
+      })();
+
+      // taps for the hot-area spots on touch screens
+      [[".name-m", onM], [".d-o", onO], [".d-dot", onDot]].forEach(function (m) {
+        var el = name.querySelector(m[0]); if (!el) return;
+        el.addEventListener("click", function () { if (busy) return; busy = true; layer.style.setProperty("--dc", COLORS[ci]); ci = (ci + 1) % COLORS.length; m[1](el); });
+      });
+    })();
+
+    // CONTACT - a quick hand-drawn loop around the pill on hover, like
+    // circling something important in pen.
+    (function () {
+      var btn = document.querySelector(".nav .navpill--solid");
+      if (!btn) return;
+      var NS = "http://www.w3.org/2000/svg", on = false;
+      btn.addEventListener("mouseenter", function () {
+        if (on) return; on = true;
+        var r = btn.getBoundingClientRect(), padX = 16, padY = 11;
+        var svg = document.createElementNS(NS, "svg");
+        svg.setAttribute("viewBox", "0 0 100 100"); svg.setAttribute("preserveAspectRatio", "none");
+        svg.setAttribute("class", "cta-loop");
+        svg.style.cssText = "left:" + (r.left - padX) + "px;top:" + (r.top - padY) + "px;width:" + (r.width + padX * 2) + "px;height:" + (r.height + padY * 2) + "px";
+        var p = document.createElementNS(NS, "path");
+        p.setAttribute("d", "M60 6 C 88 4, 100 26, 98 50 C 96 80, 56 96, 24 90 C 4 86, -2 52, 8 30 C 18 10, 46 2, 84 12");
+        p.setAttribute("pathLength", "1"); svg.appendChild(p); document.body.appendChild(svg);
+        setTimeout(function () { svg.classList.add("is-gone"); }, 3000);
+        setTimeout(function () { svg.remove(); on = false; }, 3500);
+      });
+    })();
+
+    // ABOUT - hovering the section title draws a one-line flower beside it
+    // (same pen line and palette as the hero doodles).
+    (function () {
+      var h2 = document.querySelector("#about .section__title");
+      if (!h2) return;
+      // hover target = the word "About" only, not the full-width heading row
+      var title = document.createElement("span");
+      title.textContent = h2.textContent; h2.textContent = ""; h2.appendChild(title);
+      var NS = "http://www.w3.org/2000/svg", on = false;
+      var COLORS = ["#E8849F", "#F0663F", "#3E5BDB", "#3F9A6B", "#E9A928"], ci = Math.floor(Math.random() * 5);
+      var FLOWER = [
+        ["M48 58 C 38 30, 44 6, 58 6 C 72 6, 70 30, 52 52 C 66 40, 90 32, 94 42 C 98 54, 76 58, 56 58 C 70 64, 76 84, 66 88 C 56 92, 50 74, 50 62 C 44 74, 30 90, 22 84 C 14 76, 30 62, 46 58 C 30 58, 6 56, 8 42 C 10 30, 36 34, 48 56 C 52 80, 50 108, 50 134", 0, 1.6],
+        ["M26 124 C 40 116, 58 106, 62 96 C 65 87, 56 86, 52 97 C 49 106, 50 118, 50 130", 1.5, .5]
+      ];
+      function draw(e) {
+        if (on) return; on = true;
+        var r = document.createRange(); r.selectNodeContents(title);
+        var t = r.getBoundingClientRect(), sec = document.getElementById("about").getBoundingClientRect();
+        var fs = parseFloat(getComputedStyle(title).fontSize);
+        var base = t.top + (t.height + fs * 0.72) / 2, cap = base - fs * 0.72;   // cap line and baseline of "About"
+        var h = base - cap + 8, w = h * 100 / 128;
+        var svg = document.createElementNS(NS, "svg");
+        svg.setAttribute("viewBox", "0 6 100 128"); svg.setAttribute("class", "about-flower");
+        svg.style.cssText = "left:" + (t.right - sec.left + 14) + "px;top:" + (cap - 8 - sec.top) + "px;width:" + w + "px;height:" + h + "px;--dc:" + COLORS[ci];
+        ci = (ci + 1) % COLORS.length;
+        FLOWER.forEach(function (f) {
+          var p = document.createElementNS(NS, "path");
+          p.setAttribute("d", f[0]); p.setAttribute("pathLength", "1"); p.setAttribute("class", "doodle-line");
+          p.style.animationDelay = f[1] + "s"; p.style.animationDuration = f[2] + "s";
+          svg.appendChild(p);
+        });
+        document.getElementById("about").appendChild(svg);
+        setTimeout(function () { svg.classList.add("is-gone"); }, 3000);
+        setTimeout(function () { svg.remove(); on = false; }, 3450);
+      }
+      title.addEventListener("mouseenter", draw);
+      title.addEventListener("click", draw);
+      window.drawAboutFlower = draw;
+    })();
+
+    // PHONE: the All Works / About doodles draw when their heading comes into view
+    (function () {
+      if (!window.matchMedia("(hover: none)").matches || !("IntersectionObserver" in window)) return;
+      [["#projects .section__head", function () { return window.drawWorksSign; }],
+       ["#about .section__title", function () { return window.drawAboutFlower; }]].forEach(function (t) {
+        var el = document.querySelector(t[0]); if (!el) return;
+        new IntersectionObserver(function (es) {
+          es.forEach(function (e) { if (e.isIntersecting) { var f = t[1](); if (f) setTimeout(f, 350); } });
+        }, { threshold: 1 }).observe(el);
+      });
+    })();
+
+    // NAV SCROLL SPY - fills in the active pill for whichever section the
+    // page is actually sitting on, so the active state means something
+    // instead of being decoration.
+    (function () {
+      var pills = Array.prototype.slice.call(document.querySelectorAll(".navpill[data-spy]"));
+      if (!pills.length) return;
+      var marks = pills.map(function (p) {
+        return { id: p.dataset.spy, el: document.getElementById(p.dataset.spy) };
+      }).filter(function (m) { return m.el; });
+      var ticking = false;
+      function update() {
+        ticking = false;
+        if (document.body.dataset.view) return;      // a nav page is open: its pill stays lit
+        // a section counts as "current" once its top passes a third of the way
+        // down the viewport
+        var line = window.scrollY + window.innerHeight * 0.34;
+        var current = null;   // still on the hero: nothing lit
+        marks.forEach(function (m) {
+          var top = m.el.getBoundingClientRect().top + window.scrollY;
+          if (top <= line) current = m.id;
+        });
+        pills.forEach(function (p) { p.classList.toggle("is-active", p.dataset.spy === current); });
+      }
+      window.addEventListener("scroll", function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      window.addEventListener("resize", update, { passive: true });
+      update();
+    })();
+
+    // motion
+    window.PF.stagger("#pgrid");
+    window.PF.stagger(".skills");
+    window.PF.initReveal();
+    window.PF.heroIn();
+  })();
+  </script>
+</body>
+</html>

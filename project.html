@@ -1,0 +1,3054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project - Matan Cohen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Outfit:wght@200..500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=20260929a" />
+  <link rel="icon" type="image/png" sizes="64x64" href="images/favicon-m-64.png?v=20260923d" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-m-32.png?v=20260923d" />
+  <link rel="apple-touch-icon" href="images/favicon-m-180.png?v=20260923d" />
+</head>
+<body class="is-project">
+  <div class="page-fade"></div>
+
+  <header class="nav" id="nav">
+    <a href="portfolio.html" class="nav__logo nav__mono" data-nav="1" aria-label="Matan Cohen - home"><svg class="mono-m" viewBox="0 0 112 100" aria-hidden="true"><path pathLength="1" d="M3 98 C 16 68, 27 32, 38 7 C 40 2, 44 3, 44 9 C 45 32, 46 56, 48 76 C 48 81, 52 81, 54 76 C 63 54, 76 26, 89 7 C 92 2, 96 4, 95 9 C 90 40, 84 70, 84 90 C 84 99, 96 100, 106 92"/></svg></a>
+    <nav class="nav__links">
+      <a href="portfolio.html#projects" data-nav="1">Works</a>
+      <a href="portfolio.html#about" data-nav="1">About</a>
+      <a href="portfolio.html#contact" class="nav__cta" data-nav="1">Contact</a>
+    </nav>
+    <button class="nav__burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
+        <svg viewBox="0 0 32 20" aria-hidden="true"><path d="M3 5 C 12 4, 21 6, 29 5"/><path d="M3 15 C 12 16, 21 14, 29 15"/></svg>
+      </button>
+  </header>
+  <!-- phone menu: drops down from the top -->
+  <div class="navscrim" id="navScrim"></div>
+  <div class="navmenu" id="navMenu" aria-hidden="true">
+    <div class="navmenu__top">
+      <a class="nav__mono navmenu__home" href="portfolio.html" data-menu="top" aria-label="Matan Cohen - home">
+        <svg class="mono-m" viewBox="0 0 112 100" aria-hidden="true"><path pathLength="1" d="M3 98 C 16 68, 27 32, 38 7 C 40 2, 44 3, 44 9 C 45 32, 46 56, 48 76 C 48 81, 52 81, 54 76 C 63 54, 76 26, 89 7 C 92 2, 96 4, 95 9 C 90 40, 84 70, 84 90 C 84 99, 96 100, 106 92"/></svg>
+      </a>
+      <button class="navmenu__close" id="navClose" type="button" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 L 19 19"/><path d="M19 5 L 5 19"/></svg>
+      </button>
+    </div>
+    <nav class="navmenu__links" aria-label="Menu">
+      <a href="portfolio.html#projects" data-nav="1">Works</a>
+      <a href="portfolio.html#about" data-nav="1">About</a>
+      <a href="portfolio.html#contact" data-nav="1">Contact</a>
+    </nav>
+  </div>
+
+  <main id="top">
+    <article class="project" id="project"></article>
+  </main>
+
+  <footer class="footer">
+    <span>Matan Cohen</span>
+    <span class="footer__made"></span>
+    <span class="footer__year"></span>
+  </footer>
+
+  <script src="content.js?v=20260929b"></script>
+<script>
+  /* videos with a play button: show the first frame (a still of it) right away
+     and download the video itself only once it is played */
+  function PV(src) { return /^images\/(?!sl_)[\w.-]+\.mp4$/.test(src || "") ? ' preload="metadata" poster="' + src.replace(/\.mp4$/, "-poster.jpg") + '"' : ""; }
+</script>
+  <script src="app.js"></script>
+  <script>
+  /* ---- PROJECT PAGE RENDER ---- */
+  (function () {
+    var P = window.PORTFOLIO || {};
+    var esc = window.PF.esc;
+    document.querySelector(".footer__year").textContent = "© " + new Date().getFullYear();
+
+    var id = new URLSearchParams(location.search).get("id");
+    var list = P.projects || [];
+    var i = id ? list.findIndex(function (p) { return p.id === id; }) : 0;
+    if (i < 0) i = 0;
+    var p = list[i];
+    // phones: Anything to Video's banners open on the mobile web banner, then
+    // the desktop one (each size keeps pointing at its own file)
+    if (p && p.id === "anything-to-video" && window.matchMedia("(max-width: 720px)").matches) {
+      (p.extraGuides || []).forEach(function (eg) {
+        var ss = eg.className === "a2v-banner" && eg.sizeSwitch;
+        if (!ss || ss._mob) return;
+        ss.sizes.forEach(function (z, k) { if (z.frame == null) z.frame = k; });
+        var t = ss.sizes[0]; ss.sizes[0] = ss.sizes[1]; ss.sizes[1] = t; ss._mob = true;
+      });
+    }
+    var root = document.getElementById("project");
+    if (p) document.body.setAttribute("data-project", p.id);
+    // Opt-in shared-column layout: every fluid visual (single image, stack,
+    // row, grid, feed) spans the exact same left/right edges as the text
+    // column, with square corners and left-aligned sub-labels - the system
+    // established for Waiters Protest, reusable by any project going forward.
+    if (p && p.sharedColumn) document.body.classList.add("shared-column");
+
+    if (!p) {
+      root.innerHTML = '<p class="project__miss">Project not found. <a href="portfolio.html" data-nav="1">Back to all works →</a></p>';
+      window.PF.initReveal();
+      return;
+    }
+
+    document.title = p.title + " - Matan Cohen";
+
+    function row(label, val) {
+      return val ? '<div class="cs__meta-row"><dt>' + label + '</dt><dd>' + val + '</dd></div>' : '';
+    }
+
+    // "matchDeviceHeights": the laptop and phone sit in one grid row, so they
+    // already start on the same line - this makes them end on it too, without
+    // stretching either one. The laptop is left alone (its screen height comes
+    // from its own aspect-ratio); the phone is scaled by width, its screen
+    // taking height from an aspect-ratio in CSS, so the design inside keeps
+    // its real proportions.
+    //
+    // The phone's rendered height is affine in its width - the screen scales,
+    // the frame's own padding doesn't - so rather than assume a single ratio,
+    // probe two widths once and solve for height = a·width + b. Everything
+    // then comes from the stylesheet instead of numbers hard-coded here.
+    //
+    // One helper for every layout that pairs the two devices (lp, slides, and
+    // a guide slot's lpMock), so they can't drift apart.
+    function matchDevicePair(laptopEl, phoneEl) {
+      if (!laptopEl || !phoneEl) return function () {};
+      var phoneFit = null;
+      function measurePhoneFit() {
+        var prev = phoneEl.style.width;
+        function heightAt(w) {
+          phoneEl.style.width = w + "px";
+          return phoneEl.getBoundingClientRect().height;
+        }
+        var h1 = heightAt(200), h2 = heightAt(400);
+        phoneEl.style.width = prev;
+        if (!h1 || !h2 || h2 === h1) return null;
+        var a = (h2 - h1) / 200;
+        return { a: a, b: h1 - a * 200 };
+      }
+      function sync() {
+        if (!phoneFit) phoneFit = measurePhoneFit();
+        if (!phoneFit) return;
+        // The phone's column is content-sized, so narrowing the phone widens
+        // the laptop, which changes the height the phone has to match. Each
+        // pass shrinks that error, and it stops as soon as the two heights
+        // agree to within half a pixel.
+        for (var pass = 0; pass < 8; pass++) {
+          var laptopH = laptopEl.getBoundingClientRect().height;
+          if (laptopH <= 80) return;
+          if (Math.abs(phoneEl.getBoundingClientRect().height - laptopH) < 0.5) break;
+          var w = (laptopH - phoneFit.b) / phoneFit.a;
+          if (!(w > 60)) return;
+          phoneEl.style.width = w + "px";
+        }
+      }
+      var syncRaf = null;
+      window.addEventListener("resize", function () {
+        if (syncRaf) cancelAnimationFrame(syncRaf);
+        syncRaf = requestAnimationFrame(sync);
+      });
+      return sync;
+    }
+    var tools = (p.tools || []).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join("");
+    var toolsRow = tools ? '<div class="cs__meta-row"><dt>Tools</dt><dd><div class="tags">' + tools + '</div></dd></div>' : '';
+
+    var metaDl =
+      '<dl class="cs__meta reveal">' +
+        // Overview only fills in for a project with neither an about
+        // paragraph nor its own tagline showing up in the header (e.g.
+        // Waiters Protest) - a project that already shows its tagline as the
+        // big line under the title (e.g. SecureOT, once its about paragraph
+        // is removed) shouldn't get that same line repeated here in a small
+        // meta row underneath.
+        (p.about || p.tagline ? '' : row("Overview", esc(p.tagline))) +
+        row("Goal", esc(p.goal)) +
+        row("My role", esc(p.role)) +
+        row("Challenge", esc(p.challenge)) +
+        row("Decisions", esc(p.decisions)) +
+        toolsRow +
+        row("Outcome", esc(p.outcome)) +
+      '</dl>';
+
+    // visuals: horizontal strip (layout:"strip") or stacked column
+    var allImgs = [];
+    if (p.cover) allImgs.push(p.cover);
+    (p.images || []).forEach(function (im) { allImgs.push(im); });
+
+    var gifsHtml = "";
+    if (p.gifs && (p.gifs.items || []).length) {
+      var multiGif = p.gifs.items.length > 1;
+      // "simple" gifs (currently just AI Avatar's format switcher) skip the
+      // section heading entirely, show the format as a plain caption (not
+      // the bold lp__label styling) right above the image, and move the
+      // page count below the image - the site's usual count position -
+      // instead of sharing a row with the format above it. Left as an
+      // opt-in flag so the original heading+shared-row layout (veo3-guide,
+      // World of Learning) stays exactly as it was.
+      if (p.gifs.simple) {
+        gifsHtml =
+          // Optional heading above a "simple" gifs block - off by default
+          // (that's the whole point of "simple"), but some projects still
+          // want a section title above the format switcher without taking on
+          // the rest of the non-simple layout (shared format/count row, etc).
+          (p.gifs.label ? '<div class="lp__label lp__label--guide">' + esc(p.gifs.label) + '</div>' : '') +
+          '<div class="carousel__format" id="gfFormat"></div>' +
+          '<div class="carousel__stage carousel__stage--side" id="gfStage">' +
+            (multiGif ? '<button class="carousel__arrow carousel__arrow--prev" id="gfPrev" aria-label="Previous gif">‹</button>' : '') +
+            '<figure class="media--img carousel__figure"><div id="gfMedia"></div></figure>' +
+            (multiGif ? '<button class="carousel__arrow carousel__arrow--next" id="gfNext" aria-label="Next gif">›</button>' : '') +
+          '</div>' +
+          (multiGif ? '<div class="carousel__meta" style="justify-content:flex-end"><span class="carousel__count" id="gfCount"></span></div>' : '');
+      } else {
+        // "countBelow": the format label stays in its usual row above the
+        // stage, but the page count moves to its own row under the image,
+        // right-aligned - the site's usual count position - instead of
+        // sharing the top row with the format.
+        var countBelowGifs = !!p.gifs.countBelow;
+        gifsHtml =
+          '<div class="lp__label lp__label--guide">' + esc(p.gifs.label || "GIFs") + '</div>' +
+          // With the count moved below, the top row holds nothing but the
+          // format - so it's a plain size line (.carousel__subtitle, the
+          // small uppercase style every other format line on the site uses:
+          // the sizeSwitch blocks in Scenario AI, Anything to Video and
+          // Evergreen) rather than the bold 18px display type it inherited
+          // from sharing a row with the page count.
+          (countBelowGifs
+            ? '<div class="carousel__subtitle gifs__format" id="gfFormat"></div>'
+            : '<div class="carousel__meta" id="gfMeta"><span id="gfFormat"></span>' + (multiGif ? '<span class="carousel__count" id="gfCount"></span>' : '') + '</div>') +
+          '<div class="carousel__stage carousel__stage--side" id="gfStage">' +
+            (multiGif ? '<button class="carousel__arrow carousel__arrow--prev" id="gfPrev" aria-label="Previous gif">‹</button>' : '') +
+            '<figure class="media--img carousel__figure"><div id="gfMedia"></div></figure>' +
+            (multiGif ? '<button class="carousel__arrow carousel__arrow--next" id="gfNext" aria-label="Next gif">›</button>' : '') +
+          '</div>' +
+          (multiGif && countBelowGifs ? '<div class="carousel__meta" style="justify-content:flex-end"><span class="carousel__count" id="gfCount"></span></div>' : '');
+      }
+    }
+
+    var bodyHtml;
+    if (p.layout === "lp") {
+      var onePagerHtml = "";
+      if (p.onePager && (p.onePager.images || []).length) {
+        onePagerHtml =
+          '<div class="lp__label lp__label--guide">' + esc(p.onePager.label || "One pager") + '</div>' +
+          '<div class="carousel__stage carousel__stage--side" id="opStage">' +
+            '<button class="carousel__arrow carousel__arrow--prev" id="opPrev" aria-label="Previous page">‹</button>' +
+            '<figure class="media--img carousel__figure"><img id="opImg" alt=""></figure>' +
+            '<button class="carousel__arrow carousel__arrow--next" id="opNext" aria-label="Next page">›</button>' +
+          '</div>' +
+          '<div class="carousel__meta" style="justify-content:flex-end"><span class="carousel__count" id="opCount"></span></div>';
+      }
+      bodyHtml =
+        '<div class="project__lead">' + metaDl + '</div>' +
+        '<div class="lp__label">' + esc(p.lpHeading || "Landing page - web &amp; mobile") + '</div>' +
+        '<div class="lp__grid">' +
+          // Same pair of device sub-labels every laptop + phone mockup carries.
+          '<div class="carousel__subtitle carousel__subtitle--web">Web</div>' +
+          '<div class="carousel__subtitle carousel__subtitle--mobile">Mobile</div>' +
+          '<div class="mock mock--laptop">' +
+            '<div class="mock__lid"><div class="mock__cam"></div>' +
+              (p.embedWeb
+                ? '<div class="mock__screen mock__screen--embed" id="lpWebScreen"><iframe class="mock__embed" src="' + esc(p.embedWeb) + '" allowfullscreen loading="lazy"></iframe></div>'
+                : '<div class="mock__screen" id="lpWebScreen">' +
+                    (p.navWeb ? '<div class="mock__nav mock__nav--strip"><img src="' + esc(p.navWeb) + '" alt="Powtoon"></div>' : '') +
+                    '<img src="' + esc(p.lpWeb) + '" alt="' + esc(p.title) + ' (web)">' +
+                  '</div>') +
+            '</div><div class="mock__base"></div>' +
+          '</div>' +
+          '<div class="mock mock--phone">' +
+            '<span class="mock__btn mock__btn--silent"></span><span class="mock__btn mock__btn--vup"></span><span class="mock__btn mock__btn--vdn"></span><span class="mock__btn mock__btn--pwr"></span>' +
+            '<div class="mock__island"></div>' +
+            '<div class="mock__screen mock__screen--phone" id="lpMobileScreen">' +
+              '<div class="mock__nav mock__nav--strip mock__nav--strip-phone"><div class="mock__statusgap"></div>' +
+              (p.navMobile ? '<img src="' + esc(p.navMobile) + '" alt="Powtoon">' : '') +
+              '</div>' +
+              '<img src="' + esc(p.lpMobile) + '" alt="' + esc(p.title) + ' (mobile)">' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="lp__hint" id="lpHint"><span class="hint-d">Click &amp; drag to scroll</span><span class="hint-m">Scroll inside to see the full page</span></div>' +
+        onePagerHtml;
+    } else if (p.layout === "slides" && (p.slides || []).length) {
+      var tabs = p.slides.map(function (s, ti) {
+        return '<button class="ctab" data-i="' + ti + '">' + esc(s.label) + '</button>';
+      }).join("");
+      bodyHtml =
+        '<div class="project__lead">' + metaDl + '</div>' +
+        '<div class="carousel reveal" id="carousel">' +
+          // A sub-heading naming what the tabs below it choose between.
+          '<div class="lp__label lp__label--guide">' + esc(p.tabsHeading || "Industries") + '</div>' +
+          '<div class="carousel__tabs" id="carTabs">' + tabs + '</div>' +
+          '<div class="lp__grid">' +
+            '<div class="carousel__subtitle carousel__subtitle--web">Web</div>' +
+            '<div class="carousel__subtitle carousel__subtitle--mobile">Mobile</div>' +
+            '<div class="mock mock--laptop">' +
+              '<div class="mock__lid">' +
+                '<div class="mock__cam"></div>' +
+                '<div class="mock__screen" id="lpWebScreen">' +
+                  '<div class="mock__nav mock__nav--web"><img class="mock__logo" src="images/powtoon-logo.png" alt="Powtoon"></div>' +
+                  '<img class="lp__body--web" id="lpWeb" alt="">' +
+                '</div>' +
+              '</div>' +
+              '<div class="mock__base"></div>' +
+            '</div>' +
+            '<div class="mock mock--phone">' +
+              '<span class="mock__btn mock__btn--silent"></span>' +
+              '<span class="mock__btn mock__btn--vup"></span>' +
+              '<span class="mock__btn mock__btn--vdn"></span>' +
+              '<span class="mock__btn mock__btn--pwr"></span>' +
+              '<div class="mock__island"></div>' +
+              '<div class="mock__screen mock__screen--phone" id="lpMobileScreen">' +
+                '<div class="mock__nav mock__nav--strip mock__nav--strip-phone"><div class="mock__statusgap"></div><img id="lpNavMobile" alt="Powtoon"></div>' +
+                '<img class="lp__body--mobile" id="lpMobile" alt="">' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="lp__hint" id="lpHint"><span class="hint-d">Click &amp; drag to scroll</span><span class="hint-m">Scroll inside to see the full page</span></div>' +
+          '<div class="lp__label lp__label--guide">The guide</div>' +
+          '<div class="carousel__stage">' +
+            '<button class="carousel__arrow carousel__arrow--prev" id="carPrev" aria-label="Previous slide">‹</button>' +
+            '<figure class="media--img carousel__figure"><img id="carImg" alt=""></figure>' +
+            '<button class="carousel__arrow carousel__arrow--next" id="carNext" aria-label="Next slide">›</button>' +
+          '</div>' +
+          '<div class="carousel__meta"><span id="carLabel"></span><span class="carousel__count" id="carCount"></span></div>' +
+        '</div>';
+    } else if (p.layout === "guide" && (p.guide || p.guide2 || p.guide3 || p.guide4 || p.guide5)) {
+      function guideSectionHtml(g, stageId, prevId, nextId, imgId, countId) {
+        if (!g || (!g.count && !g.lpMock && !g.video)) return "";
+        var multi = g.count > 1;
+        // A guide can optionally carry a shared "groupLabel" (a big heading
+        // rendered once above a set of related carousels, e.g. two versions
+        // of the same feature) - its own "label" then renders as a smaller
+        // subtitle right above that specific carousel. "subtitleOnly" lets a
+        // later guide in the same group skip repeating the big heading.
+        var headingHtml = "";
+        if (g.groupLabel) headingHtml += '<div class="lp__label lp__label--guide">' + esc(g.groupLabel) + '</div>';
+        // "sections" carousels (one carousel, several categories bundled in
+        // order) get a subtitle that isn't fixed text - its content is set
+        // and updated per-frame by initGuideCarousel as you page through.
+        if (g.sections) {
+          headingHtml += '<div class="carousel__subtitle" id="' + stageId + 'Sub"></div>';
+        } else if (g.label) {
+          headingHtml += (g.groupLabel || g.subtitleOnly)
+            ? '<div class="carousel__subtitle">' + esc(g.label) + '</div>'
+            : '<div class="lp__label lp__label--guide">' + esc(g.label) + '</div>';
+        } else if (!g.groupLabel && !g.noLabel) {
+          headingHtml += '<div class="lp__label lp__label--guide">The guide</div>';
+        }
+        // Optional pair of small subtitles sitting side by side right above
+        // the image - e.g. a single image bundling two halves ("Color
+        // palette" + "Typography") that each deserve their own label without
+        // splitting the asset into two separate images.
+        var subLabelsHtml = "";
+        if (g.subLabels && g.subLabels.length === 2) {
+          subLabelsHtml =
+            '<div class="carousel__collabels">' +
+              '<span class="carousel__subtitle">' + esc(g.subLabels[0]) + '</span>' +
+              '<span class="carousel__subtitle">' + esc(g.subLabels[1]) + '</span>' +
+            '</div>';
+        }
+        // Optional plain "video" slot - a single self-contained video (e.g. a
+        // screen recording), same framed box as an image, no carousel/arrows.
+        if (g.video) {
+          return (
+            headingHtml +
+            '<div class="carousel__stage carousel__stage--side" id="' + stageId + '">' +
+              '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>' +
+              '<figure class="media--img carousel__figure"><video src="' + esc(g.video) + '"' + (g.autoplay ? ' autoplay muted loop playsinline' : PV(g.video) + ' controls playsinline') + '></video></figure>' +
+              '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>' +
+            '</div>'
+          );
+        }
+        // Optional static "mockup" image shown above the pageable carousel -
+        // same figure box treatment (incl. invisible arrow placeholders) so
+        // it lines up exactly with the carousel below it.
+        var mockupHtml = g.mockup
+          ? '<div class="carousel__stage carousel__stage--side" id="' + stageId + 'Mock">' +
+              '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>' +
+              '<figure class="media--img carousel__figure"><img src="' + esc(g.mockup) + '" alt=""></figure>' +
+              '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>' +
+            '</div>'
+          : '';
+        // Optional "lpMock" - a laptop + phone device mockup instead of a plain
+        // carousel, for a guide slot that's really a landing page. If there's
+        // more than one web design (e.g. registration page + replay page),
+        // clickable tabs above the mockup switch which one shows in the laptop.
+        if (g.lpMock) {
+          var mtabs = g.lpMock.tabs || [];
+          var tabsHtml = mtabs.length > 1
+            ? '<div class="carousel__tabs" id="' + stageId + 'Tabs">' +
+                mtabs.map(function (t, ti) { return '<button class="ctab" data-i="' + ti + '">' + esc(t.label) + '</button>'; }).join("") +
+              '</div>'
+            : '';
+          // Optional sticky "header" strip (e.g. just the logo row, cropped
+          // from the real screenshot) pinned above the scrolling body, so the
+          // logo stays visible the whole time you scroll - same pinned-strip
+          // treatment used elsewhere (mock__nav--strip), just reusable per guide.
+          var webHdrHtml = g.lpMock.header
+            ? '<div class="mock__nav mock__nav--strip"><img src="' + esc(g.lpMock.header) + '" alt="Powtoon"></div>' : '';
+          var mobHdrHtml = g.lpMock.mobileHeader
+            ? '<div class="mock__nav mock__nav--strip mock__nav--strip-phone"><div class="mock__statusgap"></div><img src="' + esc(g.lpMock.mobileHeader) + '" alt="Powtoon"></div>' : '';
+          // Optional per-instance screen sizing override, so a specific landing
+          // page can show exactly down to a chosen point unscrolled without
+          // touching the shared/global mockup size everywhere else. "webAspect"
+          // keeps the laptop screen's real web proportions (e.g. a 1920×1080
+          // design → "16 / 9") at whatever width it renders - height:auto lets
+          // aspect-ratio drive the height instead of the fixed default.
+          var webScreenStyle = g.lpMock.webAspect
+            ? ' style="height:auto;aspect-ratio:' + g.lpMock.webAspect + '"'
+            : (g.lpMock.webScreenHeight ? ' style="height:' + g.lpMock.webScreenHeight + 'px"' : "");
+          var mobScreenStyle = g.lpMock.mobileScreenHeight ? ' style="height:' + g.lpMock.mobileScreenHeight + 'px"' : "";
+          // Optional sub-labels sitting right above each device (e.g. "Landing
+          // page web" above the laptop, "Landing page mobile" above the phone).
+          var webLabelHtml = g.lpMock.webLabel ? '<div class="carousel__subtitle carousel__subtitle--web">' + esc(g.lpMock.webLabel) + '</div>' : "";
+          var mobLabelHtml = g.lpMock.mobileLabel ? '<div class="carousel__subtitle carousel__subtitle--mobile">' + esc(g.lpMock.mobileLabel) + '</div>' : "";
+          return (
+            headingHtml +
+            '<div class="lp__grid' + (g.lpMock.stacked ? ' lp__grid--stacked' : '') + '">' +
+              webLabelHtml +
+              tabsHtml +
+              '<div class="mock mock--laptop">' +
+                '<div class="mock__lid"><div class="mock__cam"></div>' +
+                  '<div class="mock__screen" id="' + stageId + 'WebScreen"' + webScreenStyle + '>' + webHdrHtml + '<img id="' + stageId + 'Web" alt=""></div>' +
+                '</div><div class="mock__base"></div>' +
+              '</div>' +
+              mobLabelHtml +
+              '<div class="mock mock--phone">' +
+                '<span class="mock__btn mock__btn--silent"></span><span class="mock__btn mock__btn--vup"></span><span class="mock__btn mock__btn--vdn"></span><span class="mock__btn mock__btn--pwr"></span>' +
+                '<div class="mock__island"></div>' +
+                '<div class="mock__screen mock__screen--phone" id="' + stageId + 'MobileScreen"' + mobScreenStyle + '>' + mobHdrHtml + '<img id="' + stageId + 'Mobile" alt=""></div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="lp__hint" id="' + stageId + 'Hint"><span class="hint-d">Click &amp; drag to scroll</span><span class="hint-m">Scroll inside to see the full page</span></div>'
+          );
+        }
+        return (
+          headingHtml +
+          subLabelsHtml +
+          mockupHtml +
+          '<div class="carousel__stage carousel__stage--side" id="' + stageId + '">' +
+            (multi ? '<button class="carousel__arrow carousel__arrow--prev" id="' + prevId + '" aria-label="Previous page">‹</button>' : '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>') +
+            '<figure class="media--img carousel__figure"><img id="' + imgId + '" alt=""></figure>' +
+            (multi ? '<button class="carousel__arrow carousel__arrow--next" id="' + nextId + '" aria-label="Next page">›</button>' : '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>') +
+          '</div>' +
+          (multi && !g.hideCount
+            ? (g.progressBar
+                ? '<div class="carousel__meta" style="justify-content:flex-end"><div class="carousel__progress" id="' + countId + '"><span class="carousel__progress-fill"></span></div></div>'
+                : '<div class="carousel__meta" style="justify-content:flex-end"><span class="carousel__count" id="' + countId + '"></span></div>')
+            : '')
+        );
+      }
+      // Wrap each guide slot in its own block so consecutive "works" inside
+      // one project (Landing page, Social posts, Instagram story, Emails...)
+      // get real breathing room between them (see .guide-block + .guide-block).
+      function wrapBlock(html) { return html ? '<div class="guide-block">' + html + '</div>' : ""; }
+      var guideHtml = wrapBlock(guideSectionHtml(p.guide, "gdStage", "gdPrev", "gdNext", "gdImg", "gdCount"));
+      var guide2Html = wrapBlock(guideSectionHtml(p.guide2, "gd2Stage", "gd2Prev", "gd2Next", "gd2Img", "gd2Count"));
+      var guide3Html = wrapBlock(guideSectionHtml(p.guide3, "gd3Stage", "gd3Prev", "gd3Next", "gd3Img", "gd3Count"));
+      var guide4Html = wrapBlock(guideSectionHtml(p.guide4, "gd4Stage", "gd4Prev", "gd4Next", "gd4Img", "gd4Count"));
+      var guide5Html = wrapBlock(guideSectionHtml(p.guide5, "gd5Stage", "gd5Prev", "gd5Next", "gd5Img", "gd5Count"));
+      bodyHtml =
+        '<div class="project__lead">' + metaDl + '</div>' +
+        guideHtml +
+        guide2Html +
+        guide3Html +
+        guide4Html +
+        guide5Html;
+    } else if (p.layout === "strip") {
+      var strip = allImgs.map(function (im) { return window.PF.imgBox(im, p.title); }).join("");
+      // No placeholder fallback here: unlike other layouts, a "strip" project
+      // with no images at all (e.g. everything's shown further down via
+      // stack/extraGuides instead) simply has no strip row - showing an
+      // empty dashed placeholder box would be worse than showing nothing.
+      bodyHtml =
+        '<div class="project__lead">' + metaDl + '</div>' +
+        (strip ? '<div class="strip reveal">' + strip + '</div>' : '');
+    } else {
+      var visuals = allImgs.map(function (im) { return window.PF.imgBox(im, p.title); }).join("");
+      if (!visuals) visuals = window.PF.imgBox("", p.title, "4 / 3");
+      bodyHtml =
+        '<div class="cs__body">' + metaDl +
+          '<div class="cs__visuals">' + visuals + '</div>' +
+        '</div>';
+    }
+
+    // gifsHtml (built up top, alongside metaDl) used to only get appended
+    // inside the "lp" and "guide" layout branches - moved here so any layout
+    // (including "strip" or the plain default) can carry a "gifs" block too,
+    // same "regardless of layout" treatment as stack/extraGuides below.
+    bodyHtml += gifsHtml;
+
+    // Optional extra block appended after the main body, regardless of
+    // layout: a heading followed by a set of images stacked directly on top
+    // of one another with no gap (e.g. printed booklet spreads shown as one
+    // continuous flip-through, cover first then each page in order).
+    var stackHtml = "";
+    if (p.stack && (p.stack.images || []).length) {
+      stackHtml =
+        '<div class="guide-block">' +
+          (p.stack.label ? '<div class="lp__label lp__label--guide">' + esc(p.stack.label) + '</div>' : '') +
+          '<div class="img-stack">' +
+            p.stack.images.map(function (im) { return '<img src="' + esc(im) + '" alt="">'; }).join("") +
+          '</div>' +
+        '</div>';
+    }
+
+    // Optional set of extra single-image sections appended after the stack
+    // (each its own heading + one image, or a heading shared by a couple of
+    // stacked "parts" - e.g. one image split in two so each half can carry
+    // its own small sublabel with naturally-matching spacing), for projects
+    // whose main layout isn't "guide" but still want a few simple labeled
+    // images further down the page. Reuses the #gdStage/#gd2Stage/... ids
+    // (and their existing CSS sizing) the "guide" layout uses elsewhere -
+    // safe since this project's own layout never renders those ids itself.
+    var extraGuidesHtml = "";
+    // Flip-through carousels declared inside extraGuides, collected here and
+    // wired up after the page is in the DOM - so a paged set (e.g. a LinkedIn
+    // carousel) can sit at its real position in a run of blocks instead of
+    // being pushed to the end with the guide/guide2… slots.
+    var extraCarousels = [];
+    // Synchronized "size switcher" blocks declared inside extraGuides: several
+    // designs shown side by side, all paging through the same shared list of
+    // sizes via one set of arrows (e.g. two evergreen posts, each exported at
+    // 3 social sizes, flipping together rather than each needing its own
+    // carousel). Collected here and wired up after the page is in the DOM,
+    // same pattern as extraCarousels above.
+    var sizeSwitches = [];
+    // A paged set can be built from short clips instead of stills (a carousel
+    // whose slides are animated, or a size switcher over video ads). The
+    // element that gets its src swapped is a <video> rather than an <img>;
+    // everything else - the frame naming, the arrows, the count - is identical,
+    // so the same init code drives both.
+    function pagedMediaTag(id, isVideo) {
+      return isVideo
+        ? '<video id="' + id + '" autoplay muted loop playsinline preload="metadata"></video>'
+        : '<img id="' + id + '" alt="">';
+    }
+    if (p.extraGuides && p.extraGuides.length) {
+      var extraStageIds = ["gdStage", "gd2Stage", "gd3Stage", "gd4Stage", "gd5Stage"];
+      var stageCursor = 0;
+      var ownStageCursor = 0;
+      // Borrowing the #gdStage… ids brings their CSS sizing along, which is
+      // usually the point - but it also means an id-keyed rule outranks any
+      // per-block class rule, so a block that wants its own size can never
+      // override it. "ownStage: true" opts out into a private id instead, the
+      // same escape the inline carousels take, leaving the block's own class
+      // (eg. via className) free to size it.
+      function nextStageId(own) {
+        if (own) return "egImg" + (ownStageCursor++);
+        var id = extraStageIds[stageCursor] || ("egStage" + stageCursor);
+        stageCursor++;
+        return id;
+      }
+      function subLabelsHtmlFor(labels) {
+        return (labels && labels.length)
+          ? '<div class="carousel__collabels">' +
+              labels.map(function (t) { return '<span class="carousel__subtitle">' + esc(t) + '</span>'; }).join("") +
+            '</div>'
+          : "";
+      }
+      function mdBold(text) {
+        // Escapes the text, then turns a **bold** span into a real <b> -
+        // just enough "markdown" to let one lead word/phrase in a caption
+        // (e.g. the term a caption is defining) render bold, same as the
+        // reference material being matched.
+        var out = esc(text);
+        return out.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+      }
+      function figureHtmlFor(image, stageId, fluid) {
+        return (
+          '<div class="carousel__stage carousel__stage--side' + (fluid ? ' carousel__stage--fluid' : '') + '" id="' + stageId + '">' +
+            '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>' +
+            '<figure class="media--img carousel__figure"><img src="' + esc(image) + '" alt=""></figure>' +
+            '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>' +
+          '</div>'
+        );
+      }
+      function videoHtmlFor(video, stageId, fluid, sound, auto) {
+        // Same framed box as a plain image (figureHtmlFor), but for a short
+        // self-contained clip (e.g. a screen recording of the animated gifs,
+        // or an Instagram highlight) - muted/looping/inline so it behaves
+        // like a living photo rather than needing a play button hunted down.
+        // "sound" opts a specific clip out of that default (e.g. a feature
+        // demo whose whole point is what it sounds like) - it still starts
+        // paused via the native controls rather than autoplaying with audio.
+        return (
+          '<div class="carousel__stage carousel__stage--side' + (fluid ? ' carousel__stage--fluid' : '') + '" id="' + stageId + '">' +
+            '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>' +
+            '<figure class="media--img carousel__figure"><video src="' + esc(video) + '"' + (auto ? ' autoplay muted loop playsinline' : PV(video) + ' controls playsinline loop' + (sound ? '' : ' muted')) + '></video></figure>' +
+            '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>' +
+          '</div>'
+        );
+      }
+      extraGuidesHtml = p.extraGuides.map(function (eg) {
+        // A plain caption line with no image and no section heading - e.g. a
+        // short editorial/poetic line dropped between photos in a photo
+        // essay. Rendered lighter than a real section (no big lp__label
+        // heading, no large inter-section gap) so it reads as part of the
+        // flowing sequence rather than announcing a new named part of the
+        // project.
+        // A className opts out: a heading-less paragraph that carries one
+        // (SecureOT's conclusions under each research board) wants the normal
+        // left-aligned .guide-prose setting, not this centered italic caption,
+        // so it falls through to the prose branch below and styles its own
+        // spacing from that class.
+        if (eg.text && !eg.label && !eg.className && !eg.image && !eg.row && !eg.columns && !eg.parts && !eg.grid && !eg.stack && !eg.split) {
+          return '<div class="guide-caption">' + esc(eg.text) + '</div>';
+        }
+        var blockClass = "guide-block" + (eg.align === "left" ? " guide-block--left" : "") + (eg.className ? " " + eg.className : "");
+        var innerHtml;
+        if (eg.carousel && eg.carousel.count) {
+          // A paged set flipped through in place - same stage, arrows, count
+          // and image naming (images/sl_<key>_NN.<ext>) as the guide-slot
+          // carousels, just declared inline so it keeps its position in the
+          // sequence of blocks around it.
+          // Its own id namespace rather than the shared gdStage/gd2Stage pool,
+          // so the fixed-size boxes keyed to those ids elsewhere don't capture
+          // it - an inline carousel sizes from its own class instead.
+          var cid = "egCar" + extraCarousels.length;
+          var cmulti = eg.carousel.count > 1;
+          extraCarousels.push({ cfg: eg.carousel, ids: {
+            stage: cid, prev: cid + "Prev", next: cid + "Next",
+            img: cid + "Img", count: cid + "Count", sub: cid + "Sub"
+          } });
+          innerHtml =
+            subLabelsHtmlFor(eg.subLabels) +
+            (eg.carousel.sections ? '<div class="carousel__subtitle" id="' + cid + 'Sub"></div>' : '') +
+            '<div class="carousel__stage carousel__stage--side carousel__stage--eg" id="' + cid + '">' +
+              (cmulti
+                ? '<button class="carousel__arrow carousel__arrow--prev" id="' + cid + 'Prev" aria-label="Previous page">‹</button>'
+                : '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>') +
+              '<figure class="media--img carousel__figure">' + pagedMediaTag(cid + "Img", eg.carousel.ext === "mp4") + '</figure>' +
+              (cmulti
+                ? '<button class="carousel__arrow carousel__arrow--next" id="' + cid + 'Next" aria-label="Next page">›</button>'
+                : '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>') +
+            '</div>' +
+            // "hideCount" the same as a guide-slot carousel: when each frame is
+            // its own named thing (a set of export sizes, say), the subtitle
+            // above already says which one is showing and an "n / total" under
+            // it reads as noise.
+            (cmulti && !eg.carousel.hideCount
+              ? '<div class="carousel__meta" style="justify-content:flex-end"><span class="carousel__count" id="' + cid + 'Count"></span></div>'
+              : '');
+        } else if (eg.sizeSwitch && (eg.sizeSwitch.designs || []).length && (eg.sizeSwitch.sizes || []).length) {
+          // Several designs shown side by side, all paging through the same
+          // shared sizes array via ONE set of arrows - e.g. two evergreen
+          // posts, each exported at 3 social sizes, changing together. Each
+          // design's frames follow the usual images/sl_<key>_NN.<ext> naming.
+          var ssid = "egSize" + sizeSwitches.length;
+          sizeSwitches.push({ cfg: eg.sizeSwitch, ids: {
+            stage: ssid, prev: ssid + "Prev", next: ssid + "Next",
+            sub: ssid + "Sub", count: ssid + "Count",
+            imgs: eg.sizeSwitch.designs.map(function (_, di) { return ssid + "Img" + di; })
+          } });
+          var ssMulti = eg.sizeSwitch.sizes.length > 1;
+          innerHtml =
+            '<div class="carousel__subtitle" id="' + ssid + 'Sub"></div>' +
+            '<div class="carousel__stage carousel__stage--side sizeswitch" id="' + ssid + '">' +
+              (ssMulti
+                ? '<button class="carousel__arrow carousel__arrow--prev" id="' + ssid + 'Prev" aria-label="Previous size">‹</button>'
+                : '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>') +
+              // "cols" fixes how many sit on a line: the row becomes a grid of
+              // N equal columns, so a set bigger than that wraps into tidy rows
+              // (six clips as two rows of three) and - crucially - keeps the
+              // same rows at every size, since a story-shaped frame is narrower
+              // than a square one and would otherwise all fit on one line.
+              '<div class="sizeswitch__grid' + (eg.sizeSwitch.cols ? ' sizeswitch__grid--cols' : '') + '"' +
+                (eg.sizeSwitch.cols ? ' style="--sw-cols:' + eg.sizeSwitch.cols + '"' : '') + '>' +
+                eg.sizeSwitch.designs.map(function (d, di) {
+                  return '<div class="sizeswitch__col">' +
+                    (d.label ? '<div class="carousel__subtitle sizeswitch__label">' + esc(d.label) + '</div>' : '') +
+                    pagedMediaTag(ssid + "Img" + di, (d.ext || eg.sizeSwitch.ext) === "mp4") +
+                  '</div>';
+                }).join("") +
+                // An optional fixed piece riding along at the end of the grid -
+                // something that belongs beside the paged set but has only one
+                // version of its own (a meme next to the ticket sizes).
+                (eg.sizeSwitch.still
+                  ? '<div class="sizeswitch__col sizeswitch__col--still">' +
+                      (eg.sizeSwitch.still.label ? '<div class="carousel__subtitle sizeswitch__label">' + esc(eg.sizeSwitch.still.label) + '</div>' : '') +
+                      '<img src="' + esc(eg.sizeSwitch.still.image) + '" alt="">' +
+                    '</div>'
+                  : '') +
+              '</div>' +
+              (ssMulti
+                ? '<button class="carousel__arrow carousel__arrow--next" id="' + ssid + 'Next" aria-label="Next size">›</button>'
+                : '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>') +
+            '</div>' +
+            (ssMulti ? '<div class="carousel__meta" style="justify-content:flex-end"><span class="carousel__count" id="' + ssid + 'Count"></span></div>' : '');
+        } else if (eg.chips && eg.chips.length) {
+          // A short list of one-word attributes spread across the column under
+          // one heading (e.g. a brand's values) - read as a set at a glance,
+          // so they sit on one line rather than stacking as a list.
+          innerHtml =
+            subLabelsHtmlFor(eg.subLabels) +
+            '<div class="guide-chips">' +
+              eg.chips.map(function (c) { return '<span class="guide-chips__item">' + esc(c) + '</span>'; }).join("") +
+            '</div>';
+        } else if (eg.imageGrid && (eg.imageGrid.images || []).length) {
+          // Several images in a fixed number of columns, each keeping its own
+          // proportions (unlike .guide-grid, which crops everything square).
+          // For a set of screen mockups that share one aspect ratio this lays
+          // them out exactly as the source board does.
+          innerHtml =
+            // Optional plain caption line (e.g. a format spec) above the
+            // subLabels row and the grid itself - its own line rather than
+            // sharing a row with "Static"/"Motion" or similar column headers.
+            (eg.imageGrid.caption ? '<div class="carousel__subtitle guide-imagegrid__caption">' + esc(eg.imageGrid.caption) + '</div>' : '') +
+            subLabelsHtmlFor(eg.subLabels) +
+            // "fitFirstToRest": the first cell holds a much taller piece than
+            // the ones stacked beside it (a 9:16 story next to two landscape
+            // posts, say). It keeps its own proportions and is scaled by
+            // height after layout, so it finishes on the same line as the last
+            // of the others instead of running past them.
+            // "equalHeights": the cells sit in a row at one shared height, each
+            // keeping its own proportions, so a set of pieces photographed or
+            // printed at the same height (booth panels, banners) lines up top
+            // and bottom the way it did in the room. Widths come out
+            // proportional to each piece's aspect ratio.
+            '<div class="guide-imagegrid"' + (eg.imageGrid.fitFirstToRest ? ' data-fit-first="1"' : '') +
+              (eg.imageGrid.equalHeights ? ' data-equal-heights="1"' : '') +
+              ' style="--imagegrid-cols:' + (eg.imageGrid.cols || 2) + '">' +
+              eg.imageGrid.images.map(function (im) {
+                // An entry can carry its own label, which then sits directly
+                // above that cell rather than in a shared row across the whole
+                // block - so a name lines up over the picture it belongs to.
+                var isVideo = typeof im !== "string" && im.video;
+                var src = typeof im === "string" ? im : (im.video || im.image);
+                var label = typeof im === "string" ? "" : im.label;
+                var media = isVideo
+                  ? (im.autoplay ? '<video src="' + esc(src) + '" autoplay muted loop playsinline></video>' : '<video src="' + esc(src) + '"' + PV(src) + ' controls playsinline loop muted></video>')
+                  : '<img src="' + esc(src) + '" alt="">';
+                return '<div class="guide-imagegrid__item">' +
+                  (label ? '<div class="carousel__subtitle">' + esc(label) + '</div>' : '') +
+                  media +
+                '</div>';
+              }).join("") +
+            '</div>';
+        } else if (eg.table && (eg.table.rows || []).length) {
+          // A two-column reference table where the left cell is itself a
+          // titled note (a term plus its explanation) and the right cell is a
+          // short value - e.g. mapping each job a system has to do onto the
+          // interface that serves it.
+          var th = eg.table.head || [];
+          innerHtml =
+            subLabelsHtmlFor(eg.subLabels) +
+            '<div class="guide-table">' +
+              (th.length
+                ? '<div class="guide-table__row guide-table__row--head">' +
+                    '<div class="guide-table__c">' + esc(th[0] || "") + '</div>' +
+                    '<div class="guide-table__c">' + esc(th[1] || "") + '</div>' +
+                  '</div>'
+                : '') +
+              eg.table.rows.map(function (r) {
+                return '<div class="guide-table__row">' +
+                    '<div class="guide-table__c">' +
+                      (r.title ? '<h3 class="guide-table__title">' + esc(r.title) + '</h3>' : '') +
+                      (r.text ? '<p class="guide-table__text">' + esc(r.text) + '</p>' : '') +
+                    '</div>' +
+                    '<div class="guide-table__c guide-table__value">' + esc(r.value || "") + '</div>' +
+                  '</div>';
+              }).join("") +
+            '</div>';
+        } else if (eg.cards && eg.cards.length) {
+          // A set of short titled notes laid out in columns under one heading
+          // (e.g. a project's purpose split into six goals). Text only - the
+          // titles carry the weight and each blurb sits under its own title,
+          // so it reads as a spec sheet rather than a wall of prose.
+          innerHtml =
+            subLabelsHtmlFor(eg.subLabels) +
+            '<div class="guide-cards" style="--guide-cards-cols:' + (eg.cardCols || 2) + '">' +
+              eg.cards.map(function (c) {
+                return '<div class="guide-cards__item">' +
+                  (c.title ? '<h3 class="guide-cards__title">' + esc(c.title) + '</h3>' : '') +
+                  (c.text ? '<p class="guide-cards__text">' + esc(c.text) + '</p>' : '') +
+                '</div>';
+              }).join("") +
+            '</div>';
+        } else if (eg.text && !eg.image && !eg.video && !eg.row && !eg.columns && !eg.parts && !eg.grid && !eg.stack && !eg.split && !eg.embed) {
+          // A named prose section: heading (rendered below, same as any other
+          // block) with a paragraph under it - e.g. "Target audience", or a
+          // one-line "Platform" spec.
+          // Line breaks in the copy are kept - a spec like an audience
+          // description is often written as a couple of short lines rather
+          // than one running paragraph.
+          // "statement" is an optional short line rendered above the prose in
+          // heavier display type - for the one line a spec's paragraph exists
+          // to explain (e.g. SecureOT's "Transparent Security. Concrete
+          // Resilience." concept line), so it reads as the takeaway rather
+          // than blending into the paragraph.
+          // The paragraph itself now runs through mdBold rather than a plain
+          // escape, so a **phrase** can be bolded inline - used for the
+          // "what I took from it" clause in a research conclusion, so a quick
+          // scan down the page catches the takeaway without reading every
+          // full sentence.
+          innerHtml = subLabelsHtmlFor(eg.subLabels) +
+            (eg.statement ? '<p class="guide-statement">' + esc(eg.statement) + '</p>' : '') +
+            '<p class="guide-prose">' + mdBold(eg.text).replace(/\n/g, "<br>") + '</p>';
+        } else if (eg.spread && eg.spread.image) {
+          // A magazine-style pairing: one photo, and a short caption sitting
+          // beside it in the empty gutter rather than under it. "side" is
+          // which side the IMAGE sits on (default right); the caption takes
+          // the other side.
+          var imgSide = eg.spread.side === "left" ? "left" : "right";
+          innerHtml =
+            '<div class="guide-spread guide-spread--image-' + imgSide + '">' +
+              '<div class="guide-spread__media"><img src="' + esc(eg.spread.image) + '" alt=""></div>' +
+              (eg.spread.caption ? '<div class="guide-spread__caption">' + mdBold(eg.spread.caption) + '</div>' : "") +
+            '</div>';
+        } else if (eg.columns && (eg.columns.images || []).length) {
+          // Two (or more) large, naturally-sized images side by side (e.g. a
+          // wide sketch sheet next to one narrow colored figure) - unlike
+          // "row", each column keeps its own real size rather than being
+          // squeezed to a shared small card width, so a wide multi-panel
+          // sheet and a single tall figure can sit next to each other at a
+          // scale where the detail actually reads.
+          innerHtml =
+            '<div class="guide-columns">' +
+              eg.columns.images.map(function (im) {
+                var isVideo = typeof im !== "string" && im.video;
+                var src = typeof im === "string" ? im : (im.video || im.image);
+                var label = typeof im === "string" ? "" : im.label;
+                // A clip in a column defaults to the "living photo" treatment
+                // (autoplaying silently on a loop). "controls" opts one out:
+                // a real piece to watch - with narration, or long enough that
+                // the reader wants to start, pause and go fullscreen on their
+                // own terms - gets the native player instead, same as a
+                // standalone video block.
+                var wantsControls = typeof im !== "string" && im.controls;
+                var media = isVideo
+                  ? (wantsControls
+                      ? '<video src="' + esc(src) + '"' + PV(src) + ' controls playsinline loop muted></video>'
+                      : '<video src="' + esc(src) + '" autoplay muted loop playsinline></video>')
+                  : '<img src="' + esc(src) + '" alt="">';
+                return '<div class="guide-columns__item">' +
+                  (label ? '<div class="carousel__subtitle">' + esc(label) + '</div>' : '') +
+                  media +
+                '</div>';
+              }).join("") +
+            '</div>';
+        } else if (eg.row && (eg.row.videos || []).length) {
+          // Same side-by-side row as row.images, but each cell is a short
+          // looping clip - e.g. three animated banners that belong next to
+          // one another with a gap, rather than pre-joined into one wide file.
+          innerHtml =
+            '<div class="guide-row">' +
+              eg.row.videos.map(function (v) {
+                return '<div class="guide-row__item"><video src="' + esc(v) + '" autoplay muted loop playsinline></video></div>';
+              }).join("") +
+            '</div>' +
+            (eg.row.caption ? '<div class="guide-row-caption">' + mdBold(eg.row.caption) + '</div>' : "");
+        } else if (eg.row && (eg.row.images || []).length) {
+          // Several images sitting side by side under one shared heading
+          // (e.g. the 3 job-ad posters, the 3 banner cards) - each keeps its
+          // own natural aspect ratio, sized to a common height, wrapping to
+          // fewer per row as the viewport narrows. Each entry can either be a
+          // plain image path, or (for a set like icons that each need their
+          // own name underneath) an { image, label } object.
+          innerHtml =
+            subLabelsHtmlFor(eg.subLabels) +
+            '<div class="guide-row">' +
+              eg.row.images.map(function (im) {
+                var src = typeof im === "string" ? im : im.image;
+                var label = typeof im === "string" ? "" : im.label;
+                return '<div class="guide-row__item"><img src="' + esc(src) + '" alt="">' +
+                  (label ? '<div class="guide-row__item-label">' + esc(label) + '</div>' : '') +
+                '</div>';
+              }).join("") +
+            '</div>' +
+            (eg.row.caption ? '<div class="guide-row-caption">' + mdBold(eg.row.caption) + '</div>' : "");
+        } else if (eg.parts && eg.parts.length) {
+          innerHtml = eg.parts.map(function (part) {
+            return (
+              '<div class="guide-part">' +
+                subLabelsHtmlFor(part.subLabels) +
+                figureHtmlFor(part.image, nextStageId(), eg.fluid) +
+              '</div>'
+            );
+          }).join("");
+        } else if (eg.grid && (eg.grid.images || []).length) {
+          // A simple equal-size image grid (e.g. a set of Instagram story
+          // posts), optionally followed by one more "after" figure (e.g. a
+          // phone mockup of the profile) below the grid.
+          var gridHtml =
+            '<div class="guide-grid" style="--guide-grid-cols:' + (eg.grid.cols || 3) + '">' +
+              eg.grid.images.map(function (im) { return '<div class="guide-grid__item"><img src="' + esc(im) + '" alt=""></div>'; }).join("") +
+            '</div>';
+          // "side" puts one tall image (e.g. the profile screenshot) in a
+          // column beside the grid rather than below it, so the posts and the
+          // profile read as one screen - the way the real feed looks.
+          innerHtml = eg.grid.side
+            ? '<div class="guide-feed">' + gridHtml +
+                '<div class="guide-feed__side"><img src="' + esc(eg.grid.side) + '" alt=""></div>' +
+              '</div>'
+            : gridHtml +
+              (eg.grid.after ? '<div class="guide-part guide-part--after">' + figureHtmlFor(eg.grid.after, nextStageId(), true) + '</div>' : '');
+        } else if (eg.split && eg.split.left && eg.split.right) {
+          // Two independently-labeled sub-sections side by side under one
+          // shared heading (e.g. "Stickers" next to "Brochure") - each side
+          // gets its own small label/note and either a row of images or one
+          // plain image, rather than everything sharing a single caption.
+          var sideHtml = function (side) {
+            var lbl = side.label ? '<div class="lp__label lp__label--guide">' + esc(side.label) + '</div>' : '';
+            // A note that's a URL becomes a real clickable link (opens in a
+            // new tab); anything else stays plain text.
+            var note = side.note
+              ? (/^https?:\/\//.test(side.note)
+                  ? '<a class="guide-note guide-note--link" href="' + esc(side.note) + '" target="_blank" rel="noopener noreferrer">' + esc(side.noteLabel || side.note) + '</a>'
+                  : '<div class="guide-note">' + esc(side.note) + '</div>')
+              : "";
+            var content;
+            if (side.sizeSwitch && (side.sizeSwitch.designs || []).length && (side.sizeSwitch.sizes || []).length) {
+              // A whole size switcher as one side of a split - the paged set
+              // keeps its own size line, arrows and count, and whatever sits
+              // in the other column simply stands beside it.
+              var ssw = side.sizeSwitch;
+              var sswid = "egSize" + sizeSwitches.length;
+              sizeSwitches.push({ cfg: ssw, ids: {
+                stage: sswid, prev: sswid + "Prev", next: sswid + "Next",
+                sub: sswid + "Sub", count: sswid + "Count",
+                imgs: ssw.designs.map(function (_, di) { return sswid + "Img" + di; })
+              } });
+              var sswMulti = ssw.sizes.length > 1;
+              content =
+                '<div class="carousel__subtitle" id="' + sswid + 'Sub"></div>' +
+                '<div class="carousel__stage carousel__stage--side sizeswitch" id="' + sswid + '">' +
+                  (sswMulti
+                    ? '<button class="carousel__arrow carousel__arrow--prev" id="' + sswid + 'Prev" aria-label="Previous size">‹</button>'
+                    : '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>') +
+                  '<div class="sizeswitch__grid' + (ssw.cols ? ' sizeswitch__grid--cols' : '') + '"' +
+                    (ssw.cols ? ' style="--sw-cols:' + ssw.cols + '"' : '') + '>' +
+                    ssw.designs.map(function (dd, di) {
+                      return '<div class="sizeswitch__col">' + pagedMediaTag(sswid + "Img" + di, (dd.ext || ssw.ext) === "mp4") + '</div>';
+                    }).join("") +
+                  '</div>' +
+                  (sswMulti
+                    ? '<button class="carousel__arrow carousel__arrow--next" id="' + sswid + 'Next" aria-label="Next size">›</button>'
+                    : '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>') +
+                '</div>' +
+                (sswMulti ? '<div class="carousel__meta" style="justify-content:flex-end"><span class="carousel__count" id="' + sswid + 'Count"></span></div>' : '');
+            } else if (side.carousel && side.carousel.count) {
+              // A flip-through carousel as one side of a split (e.g. "SS" next
+              // to "EC") - same stage/arrows/count/wiring as a standalone
+              // inline carousel (eg.carousel below), just nested in its own
+              // column so the two paged sets sit side by side instead of
+              // stacked. lbl above already renders the side's own label, so
+              // subLabelsHtmlFor isn't needed here.
+              var scid = "egCar" + extraCarousels.length;
+              var scmulti = side.carousel.count > 1;
+              extraCarousels.push({ cfg: side.carousel, ids: {
+                stage: scid, prev: scid + "Prev", next: scid + "Next",
+                img: scid + "Img", count: scid + "Count", sub: scid + "Sub"
+              } });
+              content =
+                (side.carousel.sections ? '<div class="carousel__subtitle" id="' + scid + 'Sub"></div>' : '') +
+                '<div class="carousel__stage carousel__stage--side carousel__stage--eg" id="' + scid + '">' +
+                  (scmulti
+                    ? '<button class="carousel__arrow carousel__arrow--prev" id="' + scid + 'Prev" aria-label="Previous page">‹</button>'
+                    : '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>') +
+                  '<figure class="media--img carousel__figure">' + pagedMediaTag(scid + "Img", side.carousel.ext === "mp4") + '</figure>' +
+                  (scmulti
+                    ? '<button class="carousel__arrow carousel__arrow--next" id="' + scid + 'Next" aria-label="Next page">›</button>'
+                    : '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>') +
+                '</div>' +
+                (scmulti && !side.carousel.hideCount
+                  ? '<div class="carousel__meta" style="justify-content:flex-end"><span class="carousel__count" id="' + scid + 'Count"></span></div>'
+                  : '');
+            } else if (side.row && (side.row.images || []).length) {
+              content =
+                '<div class="guide-row guide-row--split">' +
+                  side.row.images.map(function (im) { return '<div class="guide-row__item"><img src="' + esc(im) + '" alt=""></div>'; }).join("") +
+                '</div>';
+            } else if (side.image) {
+              content = '<div class="guide-split__figure"><img src="' + esc(side.image) + '" alt=""></div>';
+            } else if (side.video) {
+              // One short clip as a side of a split (e.g. two versions of the
+              // same ad shown next to each other) - the living-photo treatment
+              // the rest of the site gives inline clips, sized by the column.
+              content = '<div class="guide-split__figure"><video src="' + esc(side.video) + '" autoplay muted loop playsinline></video></div>';
+            } else {
+              content = "";
+            }
+            return '<div class="guide-split__col">' + lbl + note + content + '</div>';
+          };
+          innerHtml = '<div class="guide-split">' + sideHtml(eg.split.left) + (eg.split.mid ? sideHtml(eg.split.mid) : "") + sideHtml(eg.split.right) + '</div>';
+        } else if (eg.stack && eg.stack.length) {
+          // Several images stacked with zero gap under one heading (e.g. the
+          // table set, the bill, then the installed table) - reuses the same
+          // .img-stack treatment p.stack uses, just per extraGuides entry.
+          innerHtml =
+            '<div class="img-stack">' +
+              eg.stack.map(function (im) { return '<img src="' + esc(im) + '" alt="">'; }).join("") +
+            '</div>';
+        } else if (eg.video) {
+          // A single self-contained video slot (e.g. a screen recording of
+          // animated gifs, or an Instagram highlight reel) - same framed
+          // treatment as a plain image guide.
+          innerHtml = subLabelsHtmlFor(eg.subLabels) + videoHtmlFor(eg.video, nextStageId(), eg.fluid, eg.sound, eg.autoplay);
+        } else if (eg.embed) {
+          // A live interactive prototype (e.g. a Figma proto link) embedded
+          // inline via iframe, same width as everything else in the guide
+          // column - plus a plain-text link so anyone whose browser blocks
+          // the frame (or who'd rather use Figma directly) can still open it.
+          //
+          // Optional "embedWidth"/"embedHeight": render the frame at a real
+          // desktop viewport (e.g. 1440×900) and scale the whole thing down
+          // to the column width, keeping its proportions. A responsive page
+          // embedded at column width would otherwise lay itself out as a
+          // ~1000px browser and never show its full-screen design; this way
+          // the page inside still believes it's on a desktop screen.
+          // fitScaledEmbeds() below keeps --embed-scale in step with the
+          // column as the window resizes.
+          var embW = eg.embedWidth, embH = eg.embedHeight || Math.round((embW || 0) * 10 / 16);
+          var embedBox = embW
+            ? '<div class="guide-embed guide-embed--scaled" data-embed-width="' + embW + '"' +
+                ' style="aspect-ratio:' + embW + ' / ' + embH + '">' +
+                '<iframe style="width:' + embW + 'px;height:' + embH + 'px" src="' + esc(eg.embed) + '" allow="fullscreen" loading="lazy"></iframe>' +
+              '</div>'
+            : '<div class="guide-embed"><iframe src="' + esc(eg.embed) + '" allow="fullscreen" loading="lazy"></iframe></div>';
+          innerHtml =
+            subLabelsHtmlFor(eg.subLabels) +
+            embedBox +
+            // "embedLinkLabel" overrides the wording for embeds that aren't
+            // Figma - e.g. a real coded page served from this site, where
+            // "in Figma" would be wrong. Figma protos keep the old default.
+            (eg.embedLink
+              ? '<a class="guide-note guide-note--link" href="' + esc(eg.embedLink) + '" target="_blank" rel="noopener noreferrer">' +
+                  esc(eg.embedLinkLabel || "Open the prototype in Figma") + ' ↗</a>'
+              : '');
+        } else if (!eg.image) {
+          // A heading on its own, opening a part of the case study that its
+          // following blocks fill in (e.g. "Design kit", then the palette,
+          // type and icon sets under it). Nothing to render but the label,
+          // which the wrapper below already emits.
+          innerHtml = "";
+        } else {
+          innerHtml = subLabelsHtmlFor(eg.subLabels) + figureHtmlFor(eg.image, nextStageId(eg.ownStage), eg.fluid);
+        }
+        return (
+          '<div class="' + blockClass + '">' +
+            (eg.label ? '<div class="lp__label lp__label--guide">' + esc(eg.label) + '</div>' : '') +
+            innerHtml +
+          '</div>'
+        );
+      }).join("");
+    }
+
+    var next = list[(i + 1) % list.length];
+
+    root.innerHTML =
+      '<a class="project__back" href="portfolio.html#projects" data-nav="1">← All works</a>' +
+      '<header class="project__head reveal">' +
+        // Category is optional: a project with none (e.g. a studies piece that
+        // doesn't sit in a client-work category) shows just its year, or
+        // nothing at all, rather than the word "undefined". Playground
+        // pieces get "Playground" prepended (e.g. "Playground · UX / UI"),
+        // in the same project__cat line/style as every other project - the
+        // home page's filter groups them under both Playground and their
+        // own craft category, so the label here says as much.
+        (function () {
+          var parts = [];
+          if (p.type === "playground") parts.push("Playground");
+          if (p.category) parts.push(p.category);
+          if (p.year) parts.push(p.year);
+          return parts.length ? '<div class="project__cat">' + parts.map(esc).join(' · ') + '</div>' : '';
+        })() +
+        '<h1 class="project__title">' + esc(p.title) + '</h1>' +
+        (p.subtitle ? '<div class="project__subtitle">' + esc(p.subtitle) + '</div>' : '') +
+        (p.tagline ? '<p class="project__tagline">' + esc(p.tagline) + '</p>' : '') +
+      '</header>' +
+      // An about always reads as continuous prose: single line breaks in the
+      // source are just how the copy is typed, so they flow together with a
+      // plain space rather than becoming <br>s. Sentence-per-line copy would
+      // otherwise render as a stack of short lines - a 3-word "Horror game
+      // design." on its own, a 9-word line under a 14-word one - which reads
+      // as captions rather than a paragraph. A blank line is the one way to
+      // start a genuinely new paragraph, with its own gap above it.
+      //
+      // "{br}" is the one opt-in escape hatch: a plain line break with none
+      // of that paragraph gap, for the rare case a specific word should
+      // start the next line on purpose (e.g. Hayao Miyazaki's "I did this
+      // project..."). Everything else about an about stays hands-off.
+      //
+      // It carries a class because the break is a wide-screen refinement: it
+      // moves a word off the end of a line that's already nearly full. On a
+      // narrow screen the same text wraps earlier, so the forced break would
+      // cut a line short instead - CSS drops it there (see .about-br) and
+      // the sentence simply continues after the comma.
+      (p.about
+        ? '<div class="project__about reveal">' +
+            String(p.about).split(/\n\s*\n/).map(function (para) {
+              var text = para.split("\n").map(function (l) { return l.trim(); })
+                             .filter(Boolean).join(" ");
+              return '<p>' + esc(text).replace(/\{br\}/g, ' <br class="about-br">') + '</p>';
+            }).join("") +
+          '</div>'
+        : '') +
+      bodyHtml +
+      stackHtml +
+      extraGuidesHtml +
+      '<a class="project__next reveal" href="project.html?id=' + next.id + '" data-nav="1">' +
+        '<span>Next project</span><strong>' + esc(next.title) + ' →</strong></a>';
+
+    // carousel behaviour (big one-at-a-time viewer, ← → to switch)
+    if (p.layout === "slides" && (p.slides || []).length) {
+      (function (inds) {
+        function pad(n) { return (n < 10 ? "0" : "") + n; }
+        function framesFor(s) {
+          var a = []; for (var k = 0; k < s.count; k++) a.push("images/sl_" + s.key + "_" + pad(k) + ".jpg"); return a;
+        }
+        var iInd = 0, iSlide = 0;
+        var img = document.getElementById("carImg");
+        var tabsEl = document.getElementById("carTabs");
+        var btns = tabsEl.querySelectorAll(".ctab");
+        var label = document.getElementById("carLabel");
+        var count = document.getElementById("carCount");
+        var lpWeb = document.getElementById("lpWeb");
+        var lpMobile = document.getElementById("lpMobile");
+        var lpNavMobile = document.getElementById("lpNavMobile");
+        var lpWebScreen = document.getElementById("lpWebScreen");
+        var lpMobileScreen = document.getElementById("lpMobileScreen");
+        var hint = document.getElementById("lpHint");
+        var curInd = -1;
+        function showHint() { if (!hint) return; hint.classList.remove("show"); void hint.offsetWidth; hint.classList.add("show"); }
+        function render(dir) {
+          var s = inds[iInd], frames = framesFor(s);
+          if (iSlide < 0) iSlide = frames.length - 1;
+          if (iSlide >= frames.length) iSlide = 0;
+          img.src = frames[iSlide]; img.alt = s.label + " - slide " + (iSlide + 1);
+          label.textContent = s.label;
+          count.textContent = (iSlide + 1) + " / " + frames.length;
+          if (iInd !== curInd) {
+            if (lpWeb && s.lpWeb) { lpWeb.src = s.lpWeb; lpWeb.alt = s.label + " landing page (web)"; }
+            if (lpMobile && s.lpMobile) { lpMobile.src = s.lpMobile; lpMobile.alt = s.label + " landing page (mobile)"; }
+            if (lpNavMobile && s.navMobile) { lpNavMobile.src = s.navMobile; lpNavMobile.alt = "Powtoon"; }
+            if (lpWebScreen) lpWebScreen.scrollTop = 0;
+            if (lpMobileScreen) lpMobileScreen.scrollTop = 0;
+            curInd = iInd;
+          }
+          btns.forEach(function (b, bi) { b.classList.toggle("is-active", bi === iInd); });
+          if (img.animate) img.animate(
+            [{ opacity: 0, transform: "translateX(" + ((dir < 0 ? -1 : 1) * 26) + "px)" }, { opacity: 1, transform: "none" }],
+            { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" }
+          );
+        }
+        tabsEl.addEventListener("click", function (e) {
+          var b = e.target.closest(".ctab"); if (b) { iInd = +b.dataset.i; iSlide = 0; render(1); showHint(); }
+        });
+        // drag-to-scroll inside the mockups
+        function dragScroll(el) {
+          if (!el) return; var down = false, sy = 0, st = 0;
+          el.addEventListener("mousedown", function (e) { down = true; sy = e.clientY; st = el.scrollTop; el.classList.add("is-grabbing"); e.preventDefault(); });
+          window.addEventListener("mousemove", function (e) { if (!down) return; el.scrollTop = st - (e.clientY - sy); });
+          window.addEventListener("mouseup", function () { down = false; el.classList.remove("is-grabbing"); });
+        }
+        dragScroll(lpWebScreen); dragScroll(lpMobileScreen);
+        // Same laptop + phone height-matching pass as the lp layout and a
+        // guide slot's lpMock (see matchDevicePair above), so this project's
+        // pair reads at exactly the size and spacing of every other one.
+        var syncDeviceHeights = function () {};
+        if (p.matchDeviceHeights && lpWebScreen && lpMobileScreen) {
+          syncDeviceHeights = matchDevicePair(
+            lpWebScreen.closest(".mock--laptop"),
+            lpMobileScreen.closest(".mock--phone")
+          );
+        }
+        document.getElementById("carPrev").addEventListener("click", function () { iSlide--; render(-1); });
+        document.getElementById("carNext").addEventListener("click", function () { iSlide++; render(1); });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowLeft") { iSlide--; render(-1); }
+          if (e.key === "ArrowRight") { iSlide++; render(1); }
+        });
+        var x0 = null, stage = document.getElementById("carousel");
+        stage.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+        stage.addEventListener("touchend", function (e) {
+          if (x0 === null) return;
+          var dx = e.changedTouches[0].clientX - x0;
+          if (Math.abs(dx) > 40) { if (dx < 0) { iSlide++; render(1); } else { iSlide--; render(-1); } }
+          x0 = null;
+        }, { passive: true });
+        render(1);
+        showHint();
+        syncDeviceHeights();
+        // One more pass next frame: catches any first-paint layout shift
+        // (webfont swap, the first landing-page image decoding) that a
+        // synchronous measurement could miss.
+        requestAnimationFrame(syncDeviceHeights);
+      })(p.slides);
+    }
+
+    // One-pager mini carousel inside an "lp" project: big page, click arrows to flip
+    if (p.layout === "lp" && p.onePager && (p.onePager.images || []).length) {
+      (function (pages) {
+        var iOp = 0;
+        var img = document.getElementById("opImg");
+        var count = document.getElementById("opCount");
+        function render(dir) {
+          if (iOp < 0) iOp = pages.length - 1;
+          if (iOp >= pages.length) iOp = 0;
+          img.src = pages[iOp]; img.alt = "Page " + (iOp + 1);
+          count.textContent = (iOp + 1) + " / " + pages.length;
+          if (img.animate) img.animate(
+            [{ opacity: 0, transform: "translateX(" + ((dir < 0 ? -1 : 1) * 26) + "px)" }, { opacity: 1, transform: "none" }],
+            { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" }
+          );
+        }
+        document.getElementById("opPrev").addEventListener("click", function () { iOp--; render(-1); });
+        document.getElementById("opNext").addEventListener("click", function () { iOp++; render(1); });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowLeft") { iOp--; render(-1); }
+          if (e.key === "ArrowRight") { iOp++; render(1); }
+        });
+        var x0 = null, stage = document.getElementById("opStage");
+        stage.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+        stage.addEventListener("touchend", function (e) {
+          if (x0 === null) return;
+          var dx = e.changedTouches[0].clientX - x0;
+          if (Math.abs(dx) > 40) { if (dx < 0) { iOp++; render(1); } else { iOp--; render(-1); } }
+          x0 = null;
+        }, { passive: true });
+        render(1);
+      })(p.onePager.images);
+    }
+
+    // GIFs mini carousel: format label updates as you switch. Supports still
+    // images and short looping videos (mp4/webm) side by side. The markup
+    // (gifsHtml) now renders regardless of the project's layout, so this
+    // wiring only needs to check that there's actually a "gifs" field.
+    if (p.gifs && (p.gifs.items || []).length) {
+      (function (items) {
+        var iGf = 0;
+        var media = document.getElementById("gfMedia");
+        var fmt = document.getElementById("gfFormat");
+        var count = document.getElementById("gfCount");
+        function render(dir) {
+          if (iGf < 0) iGf = items.length - 1;
+          if (iGf >= items.length) iGf = 0;
+          var it = items[iGf];
+          var isVideo = /\.(mp4|webm|mov)$/i.test(it.src);
+          var el;
+          if (isVideo) {
+            el = document.createElement("video");
+            el.setAttribute("muted", "");
+            el.setAttribute("autoplay", "");
+            el.setAttribute("loop", "");
+            el.setAttribute("playsinline", "");
+            el.setAttribute("preload", "auto");
+            el.muted = true; el.autoplay = true; el.loop = true; el.playsInline = true;
+            // Set the real aspect ratio up front from the format label, so the box is
+            // sized correctly immediately instead of waiting on async video metadata
+            // (which is what was letting the fixed-height box crop tall/portrait clips).
+            var ratioMatch = /(\d+)\s*[×x]\s*(\d+)/.exec(it.format || "");
+            if (ratioMatch) el.style.aspectRatio = ratioMatch[1] + " / " + ratioMatch[2];
+            el.style.width = "auto"; el.style.height = "auto";
+            el.style.maxWidth = "100%"; el.style.maxHeight = "100%";
+            el.style.objectFit = "contain";
+            el.src = it.src;
+          } else {
+            el = document.createElement("img");
+            el.src = it.src; el.alt = (p.gifs.label || "GIF") + " - " + (it.format || "");
+          }
+          media.innerHTML = "";
+          media.appendChild(el);
+          if (isVideo) { var playPromise = el.play(); if (playPromise && playPromise.catch) playPromise.catch(function () {}); }
+          fmt.textContent = it.format || "";
+          if (count) count.textContent = (iGf + 1) + " / " + items.length;
+          if (el.animate) el.animate(
+            [{ opacity: 0, transform: "translateX(" + ((dir < 0 ? -1 : 1) * 26) + "px)" }, { opacity: 1, transform: "none" }],
+            { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" }
+          );
+        }
+        var prevBtn = document.getElementById("gfPrev"), nextBtn = document.getElementById("gfNext");
+        if (prevBtn) prevBtn.addEventListener("click", function () { iGf--; render(-1); });
+        if (nextBtn) nextBtn.addEventListener("click", function () { iGf++; render(1); });
+        render(1);
+      })(p.gifs.items);
+    }
+
+    // Guide page viewer(s): big page, click arrows / swipe to flip. Only the
+    // first (p.guide) also gets ← → keyboard - additional bundled guides
+    // (guide2, guide3 - e.g. a project with several one-pagers) are click/swipe
+    // only, so they don't fight over the arrow keys on the same page.
+    function initGuideCarousel(g, ids, register) {
+      if (!g || !g.count) return;
+      function pad(n) { return (n < 10 ? "0" : "") + n; }
+      var ext = g.ext || "jpg";
+      var frames = []; for (var k = 0; k < g.count; k++) frames.push("images/sl_" + g.key + "_" + pad(k) + "." + ext);
+      var i = 0;
+      var img = document.getElementById(ids.img);
+      var count = document.getElementById(ids.count);
+      // Optional "sections" (e.g. a carousel bundling two versions, EC then SS)
+      // label which version the current frame belongs to instead of a plain
+      // page count.
+      function sectionAt(idx) {
+        if (!g.sections) return null;
+        var acc = 0;
+        for (var s = 0; s < g.sections.length; s++) {
+          var sec = g.sections[s];
+          if (idx < acc + sec.count) return { name: sec.name, local: idx - acc + 1, total: sec.count };
+          acc += sec.count;
+        }
+        return null;
+      }
+      var sub = ids.sub ? document.getElementById(ids.sub) : null;
+      function render(dir) {
+        if (i < 0) i = frames.length - 1;
+        if (i >= frames.length) i = 0;
+        img.src = frames[i]; img.alt = "Page " + (i + 1);
+        // A clip-based set needs a nudge after the swap: setting src alone
+        // leaves the previous clip's frame on screen until it's reloaded.
+        if (img.tagName === "VIDEO") { img.load(); var pr = img.play(); if (pr && pr.catch) pr.catch(function () {}); }
+        var sec = sectionAt(i);
+        if (sub) sub.textContent = sec ? sec.name : "";
+        if (count && g.progressBar) {
+          // Instead of a numeric "n / total" count, a thin bar that fills up
+          // as you page forward - showing how much of the catalog is left
+          // rather than which exact page you're on.
+          var fill = count.querySelector(".carousel__progress-fill");
+          if (fill) fill.style.width = (((i + 1) / frames.length) * 100) + "%";
+        } else if (count) {
+          // A "sections" carousel normally counts within the current section
+          // (page 2 of the 5 EC frames). "globalCount" opts out of that: the
+          // sections still drive the subtitle, but the count stays a plain
+          // position in the whole carousel - right when the sections are just
+          // chapters of one continuous set (e.g. 15 quote cards grouped by
+          // trend) rather than separate versions of the same thing.
+          count.textContent = (sec && !g.globalCount)
+            ? (sec.local + " / " + sec.total)
+            : ((i + 1) + " / " + frames.length);
+        }
+        if (img.animate) img.animate(
+          [{ opacity: 0, transform: "translateX(" + ((dir < 0 ? -1 : 1) * 26) + "px)" }, { opacity: 1, transform: "none" }],
+          { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" }
+        );
+      }
+      function prev() { i--; render(-1); }
+      function next() { i++; render(1); }
+      // Reading direction: normally the left-side button/key/swipe steps
+      // backward and the right-side steps forward. For an "rtl" guide (a book
+      // that opens right-to-left, e.g. Hebrew), that physical mapping flips -
+      // the left-positioned control moves forward and the right-positioned
+      // one moves back - while touch-swipe stays tied to the same physical
+      // side regardless, so behaviour still feels natural either way.
+      function actionLeft() { if (g.rtl) next(); else prev(); }
+      function actionRight() { if (g.rtl) prev(); else next(); }
+      var prevBtn = document.getElementById(ids.prev), nextBtn = document.getElementById(ids.next);
+      if (prevBtn) prevBtn.addEventListener("click", actionLeft);
+      if (nextBtn) nextBtn.addEventListener("click", actionRight);
+      var stage = document.getElementById(ids.stage);
+      if (register && frames.length > 1) register({ prev: actionLeft, next: actionRight, stage: stage });
+      var x0 = null;
+      stage.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+      stage.addEventListener("touchend", function (e) {
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) { if (dx < 0) actionRight(); else actionLeft(); }
+        x0 = null;
+      }, { passive: true });
+      render(1);
+    }
+    // extraGuides carousels work on any layout, so they're started outside the
+    // "guide" block below.
+    extraCarousels.forEach(function (c) { initGuideCarousel(c.cfg, c.ids); });
+
+    // Scaled embeds (an "embedWidth" block): the iframe is laid out at its
+    // real desktop width and then shrunk to whatever the column currently is,
+    // so the page inside keeps its full-screen layout at any window size.
+    // The scale is the only part CSS can't work out on its own.
+    (function fitScaledEmbeds() {
+      var boxes = document.querySelectorAll(".guide-embed--scaled");
+      if (!boxes.length) return;
+      boxes.forEach(function (box) {
+        var w = parseFloat(box.dataset.embedWidth) || 1440;
+        var fit = function () {
+          box.style.setProperty("--embed-scale", (box.clientWidth / w).toFixed(5));
+        };
+        fit();
+        window.addEventListener("resize", fit);
+        if (window.ResizeObserver) new ResizeObserver(fit).observe(box);
+      });
+    })();
+
+    // Synchronized size switcher: several designs (each its own images/sl_<key>_NN.<ext>
+    // set) advance together through one shared "sizes" list via a single pair
+    // of arrows - the format/network line above updates from the sizes array
+    // rather than from any one design.
+    function initSizeSwitch(cfg, ids) {
+      if (!cfg || !cfg.sizes || !cfg.sizes.length) return;
+      function pad(n) { return (n < 10 ? "0" : "") + n; }
+      var sizes = cfg.sizes, designs = cfg.designs;
+      // Optional "start": which size the switcher opens on, so a set can list
+      // its formats in their natural order while still landing first on the one
+      // that reads best (the square, usually). The arrows then cycle through
+      // the rest as normal.
+      var startIdx = 0;
+      if (typeof cfg.start === "number" && cfg.start >= 0 && cfg.start < sizes.length) startIdx = cfg.start;
+      var i = startIdx;
+      var imgs = ids.imgs.map(function (id) { return document.getElementById(id); });
+      var sub = ids.sub ? document.getElementById(ids.sub) : null;
+      var count = ids.count ? document.getElementById(ids.count) : null;
+      // Shared height for every size: exactly the width one cell of a
+      // 2-column grid would get in this same row (row width minus the gaps,
+      // split between the designs) - which is precisely what the square
+      // (1200×1200) design renders at. Setting it on the columns (which
+      // shrink-wrap their image) means the square fills its slot edge to edge
+      // like the grid below, a portrait or story keeps the same height with a
+      // narrower width, and the space between the two designs is only ever
+      // the CSS gap itself.
+      var cols = imgs.map(function (el) { return el ? el.parentElement : null; })
+                     .filter(function (el) { return !!el; });
+      var gridEl = cols.length ? cols[0].parentElement : null;
+      function ratioOf(sz) {
+        var m = /(\d+)\s*[×x]\s*(\d+)/.exec((sz && sz.format) || "");
+        return m ? (m[1] + " / " + m[2]) : null;
+      }
+      function applySharedHeight() {
+        if (!gridEl || !cols.length) return;
+        var all = gridEl.querySelectorAll(".sizeswitch__col");
+        if (!all.length) return;
+        var cs = window.getComputedStyle(gridEl);
+        var gap = parseFloat(cs.columnGap || cs.gap || "0") || 0;
+        // Measure the block (or split column) the row lives in, not the row
+        // itself: the stage and grid are shrink-to-fit, so measuring them
+        // reports roughly the width of the arrows and starves the columns.
+        var host = gridEl.closest(".guide-split__col") || gridEl.closest(".guide-block");
+        var stage = gridEl.parentElement;
+        var arrowRoom = 0;
+        if (stage && window.getComputedStyle(stage).display === "flex") {
+          var arrow = stage.querySelector(".carousel__arrow");
+          var sgap = parseFloat(window.getComputedStyle(stage).columnGap || "0") || 0;
+          arrowRoom = arrow ? (arrow.offsetWidth + sgap) * 2 : 0;
+        }
+        var w = Math.max(0, (host ? host.clientWidth : gridEl.clientWidth) - arrowRoom);
+        if (!w) w = gridEl.clientWidth;
+        if (!w) return;
+        // In grid mode each column is given a width and the current size's own
+        // aspect ratio, so its height follows from the design rather than the
+        // other way round - an auto-width track can't resolve a column whose
+        // only sizing is "as tall as the row", which left them collapsed.
+        if (!gridEl.classList.contains("sizeswitch__grid--cols")) {
+          var per0 = Math.min(cfg.cols || all.length, all.length);
+          var h = (w - gap * (per0 - 1)) / per0;
+          Array.prototype.forEach.call(all, function (c) { c.style.height = h + "px"; });
+          return;
+        }
+        var per = Math.min(cfg.cols || all.length, all.length);
+        var colW = cfg.colWidth ? Math.min(cfg.colWidth, w) : (w - gap * (per - 1)) / per;
+        var r = ratioOf(sizes[i]);
+        Array.prototype.forEach.call(all, function (c) {
+          c.style.width = colW + "px";
+          c.style.height = "";
+          if (!c.classList.contains("sizeswitch__col--still") && r) c.style.aspectRatio = r;
+        });
+      }
+      // The page count row is a separate block below the stage, and on a
+      // project where the stage itself is left-aligned/shrink-wrapped rather
+      // than centered full-width (Scenario AI, Anything to Video), the
+      // count's own default centered/max-width box doesn't share the
+      // design's actual left edge or width - so "justify-content:flex-end"
+      // ends up right-aligning to the wrong box. Measuring the stage's real
+      // rendered position/width and applying it to the count row directly
+      // makes the count sit flush under the design's own right edge
+      // everywhere, the same way it already does on Evergreen (where the
+      // stage happens to be full-width, so the default box already matched).
+      var stageEl = document.getElementById(ids.stage);
+      var metaEl = count ? count.parentElement : null;
+      function syncMetaBox() {
+        if (!stageEl || !metaEl || !metaEl.parentElement) return;
+        var stageRect = stageEl.getBoundingClientRect();
+        var parentRect = metaEl.parentElement.getBoundingClientRect();
+        metaEl.style.width = stageEl.offsetWidth + "px";
+        metaEl.style.marginLeft = (stageRect.left - parentRect.left) + "px";
+        metaEl.style.marginRight = "auto";
+      }
+      window.addEventListener("resize", syncMetaBox);
+      window.addEventListener("load", syncMetaBox);
+      // A still riding along keeps its own proportions, read off the file once
+      // it has loaded.
+      if (gridEl) {
+        var stillImg = gridEl.querySelector(".sizeswitch__col--still img");
+        if (stillImg) {
+          var sizeStill = function () {
+            if (stillImg.naturalWidth) {
+              stillImg.parentElement.style.aspectRatio = stillImg.naturalWidth + " / " + stillImg.naturalHeight;
+            }
+          };
+          if (stillImg.complete) sizeStill(); else stillImg.addEventListener("load", sizeStill);
+        }
+      }
+      window.addEventListener("resize", applySharedHeight);
+      // "matchSibling": this switcher shares a row with another design (the
+      // other column of a guide-split), and the pair has to read as one row:
+      // ONE height for every format and for the design beside it, so the two
+      // start and end on the same two lines whichever format is showing, each
+      // still at its own true proportion (the story stays narrow and tall, the
+      // link ad wide and short - only their widths differ).
+      //
+      // That one height is solved from the width the row actually has, not
+      // guessed: the tallest format is 9:16 and the widest is the link ad, so
+      // at height h the row needs (siblingRatio + widestRatio) × h of design
+      // width. Fitting that to the measured row (minus its gap, and minus any
+      // arrow slots still in the flow) is what makes the whole set land inside
+      // the column instead of the widest format overflowing and being capped
+      // back to a shorter height.
+      //
+      // The switcher's column box is then reserved at the widest format's
+      // width, so paging never moves the row sideways, and the size line above
+      // the switcher is matched by an equal space above the other column so
+      // the top edges line up too.
+      function mediaRatioOf(el) {
+        var m = el && el.querySelector ? el.querySelector("img, video") : null;
+        if (!m) return 0;
+        var w = m.naturalWidth || m.videoWidth, h = m.naturalHeight || m.videoHeight;
+        return (w && h) ? w / h : 0;
+      }
+      function stageArrowRoom(st) {
+        if (!st) return 0;
+        var a = st.querySelector(".carousel__arrow");
+        if (!a) return 0;
+        if (window.getComputedStyle(a).position === "absolute") return 0;
+        var g = parseFloat(window.getComputedStyle(st).columnGap) || 0;
+        return 2 * (a.offsetWidth + g);
+      }
+      function matchSibling() {
+        if (!cfg.matchSibling || !stageEl || !gridEl) return;
+        var col = stageEl.closest(".guide-split__col");
+        if (!col || !col.parentElement) return;
+        var row = col.parentElement;
+        var other = null;
+        Array.prototype.forEach.call(row.children, function (c) {
+          if (c !== col && c.classList.contains("guide-split__col")) other = c;
+        });
+        if (!other) return;
+        var ref = other.querySelector(".carousel__figure, .guide-split__figure, .sizeswitch__col");
+        if (!ref) return;
+        var widest = 0;
+        sizes.forEach(function (sz) {
+          var m = /(\d+)\s*[×x]\s*(\d+)/.exec((sz && sz.format) || "");
+          if (m) widest = Math.max(widest, parseFloat(m[1]) / parseFloat(m[2]));
+        });
+        if (!widest) return;
+        var otherRatio = mediaRatioOf(other) || 0.8;
+        var rowW = row.clientWidth;
+        if (!rowW) return;
+        // Wrapped to one column per row (narrow screens): each design is then
+        // solved against its own column instead of half the row.
+        var stacked = col.offsetWidth > rowW * 0.8;
+        var h;
+        if (stacked) {
+          // One per row: there is no pair to match any more, so the switcher
+          // is simply solved against its own column - and the design that was
+          // beside it goes back to the size every other carousel in the
+          // project has, rather than being held to a paired height that no
+          // longer means anything.
+          h = (col.clientWidth - stageArrowRoom(stageEl)) / widest;
+          ref.style.height = "";
+          ref.style.width = "";
+          other.style.paddingTop = "";
+        } else {
+          var gap = parseFloat(window.getComputedStyle(row).columnGap) || 0;
+          var room = rowW - gap - stageArrowRoom(stageEl) -
+                     stageArrowRoom(other.querySelector(".carousel__stage"));
+          h = room / (otherRatio + widest);
+        }
+        h = Math.min(h, cfg.matchMaxHeight || 620, window.innerHeight * 0.62);
+        if (!(h > 40)) return;
+        // The column hugs whatever the current format is (no reserved box):
+        // the row is left-aligned, so the design's left edge is fixed anyway
+        // and only its right edge moves as the formats are paged.
+        Array.prototype.forEach.call(gridEl.querySelectorAll(".sizeswitch__col"), function (c) {
+          c.style.aspectRatio = "auto";
+          c.style.height = h + "px";
+          c.style.width = "auto";
+        });
+        if (stacked) return;
+        ref.style.height = h + "px";
+        ref.style.width = "auto";
+        if (sub) {
+          var cs = window.getComputedStyle(sub);
+          other.style.paddingTop =
+            (sub.getBoundingClientRect().height + (parseFloat(cs.marginBottom) || 0)) + "px";
+        }
+      }
+      window.addEventListener("resize", matchSibling);
+      window.addEventListener("load", matchSibling);
+      function frameFor(d) {
+        var ext = d.ext || cfg.ext || "jpg";
+        var fr = sizes[i] && sizes[i].frame != null ? sizes[i].frame : i;   // a size can point at its own file index
+        return "images/sl_" + d.key + "_" + pad(fr) + "." + ext;
+      }
+      function render(dir) {
+        if (i < 0) i = sizes.length - 1;
+        if (i >= sizes.length) i = 0;
+        designs.forEach(function (d, di) {
+          var el = imgs[di]; if (!el) return;
+          el.src = frameFor(d);
+          el.alt = (d.label || "") + " - " + (sizes[i].format || "");
+          if (el.tagName === "VIDEO") { el.load(); var pr = el.play(); if (pr && pr.catch) pr.catch(function () {}); }
+        });
+        var sz = sizes[i];
+        if (sub) sub.textContent = [sz.format, sz.network].filter(Boolean).join(" - ");
+        // The format currently showing, as a plain "1080x1350" hook on the
+        // stage, so CSS can size a specific format when a switcher has to
+        // relate to something outside itself - e.g. Scenario AI's row, where
+        // the 4:5 is set to the height of the carousel beside it and every
+        // other format follows at that same scale rather than all of them
+        // being squeezed to one height.
+        if (stageEl) {
+          var fmtKey = ((sz.format || "").match(/(\d+)\s*[×x]\s*(\d+)/) || [])
+            .slice(1).join("x");
+          if (fmtKey) stageEl.setAttribute("data-fmt", fmtKey);
+        }
+        // Counted from the format the switcher OPENS on, not from the array's
+        // first entry: the one you see first is page 1, and the arrows take
+        // you to 2, 3 … back round to 1. (With "start" set, counting from the
+        // array instead had the default view announce itself as "2 / 3".)
+        if (count) count.textContent = (((i - startIdx + sizes.length) % sizes.length) + 1) + " / " + sizes.length;
+        applySharedHeight();
+        matchSibling();
+        syncMetaBox();
+        if (imgs[0] && imgs[0].animate) {
+          imgs.forEach(function (el) {
+            if (el && el.animate) el.animate(
+              [{ opacity: 0, transform: "translateX(" + ((dir < 0 ? -1 : 1) * 26) + "px)" }, { opacity: 1, transform: "none" }],
+              { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" }
+            );
+          });
+        }
+      }
+      function prev() { i--; render(-1); }
+      function next() { i++; render(1); }
+      var prevBtn = document.getElementById(ids.prev), nextBtn = document.getElementById(ids.next);
+      if (prevBtn) prevBtn.addEventListener("click", prev);
+      if (nextBtn) nextBtn.addEventListener("click", next);
+      var stage = document.getElementById(ids.stage);
+      var x0 = null;
+      if (stage) {
+        stage.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+        stage.addEventListener("touchend", function (e) {
+          if (x0 === null) return;
+          var dx = e.changedTouches[0].clientX - x0;
+          if (Math.abs(dx) > 40) { if (dx < 0) next(); else prev(); }
+          x0 = null;
+        }, { passive: true });
+      }
+      render(1);
+      // Fonts/images settling can change the row's measured width after the
+      // first pass, so re-solve the shared height once everything has loaded -
+      // and re-match the sibling after it, in that order, since the
+      // measured sizing has to have the last word over the generic pass.
+      window.addEventListener("load", function () { applySharedHeight(); matchSibling(); });
+    }
+    sizeSwitches.forEach(function (s) { initSizeSwitch(s.cfg, s.ids); });
+
+    // An imageGrid marked "fitFirstToRest": one tall piece beside a stack of
+    // shorter ones (a 9:16 story next to two landscape posts, say). Rather
+    // than split the row down the middle and leave the tall piece either
+    // overshooting the stack or floating in dead space, the two column widths
+    // are solved so that (a) the tall piece finishes on exactly the same line
+    // as the last of the stack, and (b) every gap in the block - beside and
+    // between - is the same single measure. Everything keeps its own real
+    // proportions; the widths are what change.
+    //
+    // Writing w for the stack's width and k for the tall piece's width/height
+    // ratio, the tall piece's height has to equal the stack's:
+    //     tallH = Σ(label_i + w / ratio_i) + gaps − label_first
+    // and the two columns plus one gap fill the row, so with tallW = k·tallH:
+    //     w = (C − gap − k·(ΣL + gaps − L_first)) / (1 + k·Σ(1/ratio_i))
+    // Ratios come from the images' natural sizes, label heights from the
+    // rendered boxes - so nothing here is a guessed number.
+    // An imageGrid marked "equalHeights" is a flex row whose items grow in
+    // proportion to their own aspect ratios. Distributing the free space that
+    // way makes every item's width/ratio - i.e. its height - come out the
+    // same, so the row starts and ends on one line top and bottom without any
+    // piece being stretched. Ratios are read from the images' natural sizes.
+    document.querySelectorAll(".guide-imagegrid[data-equal-heights]").forEach(function (grid) {
+      var items = Array.prototype.slice.call(grid.children);
+      if (!items.length) return;
+      function apply() {
+        var ratios = [];
+        for (var i = 0; i < items.length; i++) {
+          var m = items[i].querySelector("img, video");
+          var w = m ? (m.naturalWidth || m.videoWidth || 0) : 0;
+          var h = m ? (m.naturalHeight || m.videoHeight || 0) : 0;
+          if (!w || !h) return;         // wait until every piece knows its size
+          ratios.push(w / h);
+        }
+        items.forEach(function (el, i) {
+          el.style.flex = ratios[i] + " 1 0px";
+          el.style.minWidth = "0";
+        });
+      }
+      var raf = null;
+      function schedule() {
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(apply);
+      }
+      items.forEach(function (it) {
+        var m = it.querySelector("img, video");
+        if (!m || m.complete) return;
+        m.addEventListener("load", schedule);
+        m.addEventListener("loadedmetadata", schedule);
+      });
+      window.addEventListener("load", schedule);
+      schedule();
+    });
+
+    document.querySelectorAll(".guide-imagegrid[data-fit-first]").forEach(function (grid) {
+      var items = Array.prototype.slice.call(grid.children);
+      if (items.length < 3) return;
+      var first = items[0];
+      var rest = items.slice(1);
+      function mediaOf(el) { return el.querySelector("img, video"); }
+      function ratioOf(m) {
+        var w = m.naturalWidth || m.videoWidth || 0;
+        var h = m.naturalHeight || m.videoHeight || 0;
+        return (w && h) ? (w / h) : 0;
+      }
+      // Height of the label sitting above an item's media, measured from the
+      // rendered boxes rather than assumed from the type scale.
+      function labelH(el) {
+        var m = mediaOf(el);
+        if (!m) return 0;
+        return Math.max(0, m.getBoundingClientRect().top - el.getBoundingClientRect().top);
+      }
+      function apply() {
+        var firstMedia = mediaOf(first);
+        if (!firstMedia) return;
+        var k = ratioOf(firstMedia);
+        if (!k) return;
+        var C = grid.clientWidth;
+        var gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
+        if (!(C > 0)) return;
+        var sumInv = 0, sumL = 0;
+        for (var i = 0; i < rest.length; i++) {
+          var m = mediaOf(rest[i]);
+          var r = m ? ratioOf(m) : 0;
+          if (!r) return;               // wait until every image knows its size
+          sumInv += 1 / r;
+          sumL += labelH(rest[i]);
+        }
+        var innerGaps = gap * (rest.length - 1);
+        var w = (C - gap - k * (sumL + innerGaps - labelH(first))) / (1 + k * sumInv);
+        if (!(w > 40) || w > C) return;
+        var tallW = C - gap - w;
+        if (!(tallW > 40)) return;
+        first.style.width = tallW + "px";
+        rest.forEach(function (el, idx) {
+          el.style.width = w + "px";
+          el.style.marginLeft = (tallW + gap) + "px";
+          el.style.marginTop = idx === 0 ? "0px" : gap + "px";
+        });
+        // The tall media fills its solved column, so its own proportions carry
+        // the height - no explicit height, nothing stretched.
+        firstMedia.style.width = "100%";
+        firstMedia.style.height = "auto";
+      }
+      var raf = null;
+      function schedule() {
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(apply);
+      }
+      items.forEach(function (it) {
+        var m = mediaOf(it);
+        if (!m || m.complete) return;
+        m.addEventListener("load", schedule);
+        m.addEventListener("loadedmetadata", schedule);
+      });
+      window.addEventListener("resize", schedule);
+      window.addEventListener("load", schedule);
+      schedule();
+    });
+    if (p.layout === "guide") {
+      // Hover-routed keyboard nav: ← → controls whichever stacked carousel the
+      // mouse is over (falls back to the first one if none is hovered yet),
+      // so several carousels on one page don't fight over the arrow keys.
+      var guideCarousels = [], hoveredGuide = null;
+      function registerGuide(c) {
+        guideCarousels.push(c);
+        c.stage.addEventListener("mouseenter", function () { hoveredGuide = c; });
+        c.stage.addEventListener("mouseleave", function () { if (hoveredGuide === c) hoveredGuide = null; });
+      }
+      initGuideCarousel(p.guide, { stage: "gdStage", prev: "gdPrev", next: "gdNext", img: "gdImg", count: "gdCount", sub: "gdStageSub" }, registerGuide);
+      initGuideCarousel(p.guide2, { stage: "gd2Stage", prev: "gd2Prev", next: "gd2Next", img: "gd2Img", count: "gd2Count", sub: "gd2StageSub" }, registerGuide);
+      initGuideCarousel(p.guide3, { stage: "gd3Stage", prev: "gd3Prev", next: "gd3Next", img: "gd3Img", count: "gd3Count", sub: "gd3StageSub" }, registerGuide);
+      initGuideCarousel(p.guide4, { stage: "gd4Stage", prev: "gd4Prev", next: "gd4Next", img: "gd4Img", count: "gd4Count", sub: "gd4StageSub" }, registerGuide);
+      initGuideCarousel(p.guide5, { stage: "gd5Stage", prev: "gd5Prev", next: "gd5Next", img: "gd5Img", count: "gd5Count", sub: "gd5StageSub" }, registerGuide);
+      if (guideCarousels.length) {
+        document.addEventListener("keydown", function (e) {
+          var target = hoveredGuide || guideCarousels[0];
+          if (e.key === "ArrowLeft") target.prev();
+          if (e.key === "ArrowRight") target.next();
+        });
+      }
+      // Hypoxia - the video below the catalog carousel should render at the
+      // same width as the catalog's first page (the cover), whatever that
+      // computes to at the current viewport, while keeping the video's own
+      // aspect ratio. The cover's rendered width isn't a fixed number - it's
+      // bound by whichever is tighter of the carousel's own width cap
+      // (min(980px, 88vw)) or its height cap (72vh scaled by the cover's own
+      // 1241:1754 ratio) - so it's computed here to match exactly, rather
+      // than guessed at in CSS, and re-run on resize.
+      if (document.body.dataset.project === "hypoxia") {
+        (function () {
+          var figure = document.querySelector("#gd2Stage .carousel__figure");
+          if (!figure) return;
+          var COVER_W = 1241, COVER_H = 1754;
+          function apply() {
+            var maxW = Math.min(980, window.innerWidth * 0.88);
+            var maxH = window.innerHeight * 0.72;
+            var w = Math.min(maxW, maxH * (COVER_W / COVER_H));
+            figure.style.width = w + "px";
+          }
+          apply();
+          window.addEventListener("resize", apply);
+        })();
+      }
+      // A guide slot's optional "lpMock": laptop + phone device mockup, with
+      // clickable tabs above the laptop when there's more than one web design.
+      function initLpMock(g, stageId) {
+        if (!g || !g.lpMock) return;
+        var tabs = g.lpMock.tabs || [];
+        var webImg = document.getElementById(stageId + "Web");
+        var mobileImg = document.getElementById(stageId + "Mobile");
+        var webScreen = document.getElementById(stageId + "WebScreen");
+        var mobileScreen = document.getElementById(stageId + "MobileScreen");
+        var tabsEl = document.getElementById(stageId + "Tabs");
+        var hint = document.getElementById(stageId + "Hint");
+        var i = 0;
+        function showHint() { if (!hint) return; hint.classList.remove("show"); void hint.offsetWidth; hint.classList.add("show"); }
+        // The phone can belong to a specific tab rather than the whole mockup:
+        // a tab's own "mobile" wins, and a tab with no mobile design of its own
+        // (e.g. a replay page that only ever existed on web) hides the phone
+        // entirely instead of showing another tab's screen next to it.
+        var phoneEl = mobileScreen ? mobileScreen.closest(".mock--phone") : null;
+        var grid = webScreen ? webScreen.closest(".lp__grid") : null;
+        var mobLabelEl = grid ? grid.querySelector(".carousel__subtitle--mobile") : null;
+        var laptopEl = webScreen ? webScreen.closest(".mock--laptop") : null;
+        // See matchDevicePair above - one shared height-matching pass for every
+        // laptop + phone pair on the site.
+        var pairSync = g.lpMock.matchDeviceHeights ? matchDevicePair(laptopEl, phoneEl) : function () {};
+        function syncDeviceHeights() { pairSync(); }
+        function render() {
+          var t = tabs[i] || tabs[0];
+          if (webImg && t) { webImg.src = t.web; webImg.alt = (t.label || "") + " - web"; }
+          var perTab = tabs.some(function (x) { return x.mobile; });
+          var mobileSrc = perTab ? (t && t.mobile) : g.lpMock.mobile;
+          if (mobileImg && mobileSrc) { mobileImg.src = mobileSrc; mobileImg.alt = "Mobile"; }
+          // Hidden with visibility, not display: the phone's grid column is
+          // content-sized, so display:none collapses it and hands that space
+          // to the laptop - which then renders its screen wider (a different
+          // proportion) on a tab with no mobile design than on the tab
+          // before it. Keeping the column's width means the laptop mockup
+          // stays exactly the same size and shape whichever tab is showing,
+          // and only the phone itself goes away.
+          if (phoneEl) {
+            phoneEl.style.visibility = mobileSrc ? "" : "hidden";
+            phoneEl.setAttribute("aria-hidden", mobileSrc ? "false" : "true");
+          }
+          if (mobLabelEl) mobLabelEl.style.visibility = mobileSrc ? "" : "hidden";
+          if (webScreen) webScreen.scrollTop = 0;
+          if (mobileScreen) mobileScreen.scrollTop = 0;
+          if (tabsEl) tabsEl.querySelectorAll(".ctab").forEach(function (b, bi) { b.classList.toggle("is-active", bi === i); });
+          syncDeviceHeights();
+        }
+        if (tabsEl) tabsEl.addEventListener("click", function (e) {
+          var b = e.target.closest(".ctab"); if (b) { i = +b.dataset.i; render(); showHint(); }
+        });
+        function dragScroll(el) {
+          if (!el) return; var down = false, sy = 0, st = 0;
+          el.addEventListener("mousedown", function (e) { down = true; sy = e.clientY; st = el.scrollTop; el.classList.add("is-grabbing"); e.preventDefault(); });
+          window.addEventListener("mousemove", function (e) { if (!down) return; el.scrollTop = st - (e.clientY - sy); });
+          window.addEventListener("mouseup", function () { down = false; el.classList.remove("is-grabbing"); });
+        }
+        dragScroll(webScreen); dragScroll(mobileScreen);
+        render();
+        showHint();
+        // One more pass next frame: catches any first-paint layout shift
+        // (webfont swap, etc.) that a synchronous measurement could miss.
+        if (g.lpMock.matchDeviceHeights) requestAnimationFrame(syncDeviceHeights);
+      }
+      initLpMock(p.guide, "gdStage");
+      initLpMock(p.guide2, "gd2Stage");
+      initLpMock(p.guide3, "gd3Stage");
+      initLpMock(p.guide4, "gd4Stage");
+      initLpMock(p.guide5, "gd5Stage");
+    }
+
+    // LP layout: drag-to-scroll the two mockups + hint
+    if (p.layout === "lp") {
+      (function () {
+        var hint = document.getElementById("lpHint");
+        function showHint() { if (!hint) return; hint.classList.remove("show"); void hint.offsetWidth; hint.classList.add("show"); }
+        function dragScroll(el) {
+          if (!el) return; var down = false, sy = 0, st = 0;
+          el.addEventListener("mousedown", function (e) { down = true; sy = e.clientY; st = el.scrollTop; el.classList.add("is-grabbing"); e.preventDefault(); });
+          window.addEventListener("mousemove", function (e) { if (!down) return; el.scrollTop = st - (e.clientY - sy); });
+          window.addEventListener("mouseup", function () { down = false; el.classList.remove("is-grabbing"); });
+        }
+        var lpWebScreen = document.getElementById("lpWebScreen");
+        var lpMobileScreen = document.getElementById("lpMobileScreen");
+        dragScroll(lpWebScreen);
+        dragScroll(lpMobileScreen);
+        showHint();
+        // Optional "matchDeviceHeights": same shared pass as every other
+        // laptop + phone pair on the site (see matchDevicePair above). The
+        // laptop's scroll-window height is left exactly as set - that's the
+        // real, chosen proportion of the page it shows - and the phone is
+        // scaled by width, its screen height following from its own real
+        // device aspect-ratio in CSS, so it ends at the same total height
+        // without any content inside either mockup being stretched.
+        if (p.matchDeviceHeights && lpWebScreen && lpMobileScreen) {
+          var syncDeviceHeights = matchDevicePair(
+            lpWebScreen.closest(".mock--laptop"),
+            lpMobileScreen.closest(".mock--phone")
+          );
+          syncDeviceHeights();
+          requestAnimationFrame(syncDeviceHeights);
+        }
+      })();
+    }
+
+    window.PF.stagger(".cs__visuals");
+    window.PF.initReveal();
+  })();
+  </script>
+<script>
+  /* PHONES ONLY (the elements exist everywhere, CSS shows them ≤720px):
+     laptop + phone mockups become one frameless design at a time, switched
+     by a Web | Mobile segmented control; on Rules of Engagement the industry
+     tabs fold into a dropdown on the same row. */
+  (function () {
+    document.querySelectorAll(".lp__grid").forEach(function (grid, gi) {
+      var lap = grid.querySelector(".mock--laptop"), ph = grid.querySelector(".mock--phone");
+      if (!lap || !ph || getComputedStyle(ph).display === "none") return;
+      grid.setAttribute("data-view", "web");
+      var row = document.createElement("div"); row.className = "mobctl";
+      var seg = document.createElement("div"); seg.className = "seg"; seg.setAttribute("role", "tablist");
+      seg.innerHTML = '<i aria-hidden="true"></i><button type="button" role="tab" class="on" aria-selected="true" data-v="web">Web</button><button type="button" role="tab" aria-selected="false" data-v="mobile">Mobile</button>';
+      seg.addEventListener("click", function (e) {
+        var b = e.target.closest("button"); if (!b) return;
+        var v = b.dataset.v; grid.setAttribute("data-view", v); seg.classList.toggle("is-mobile", v === "mobile");
+        seg.querySelectorAll("button").forEach(function (x) { var on = x === b; x.classList.toggle("on", on); x.setAttribute("aria-selected", on ? "true" : "false"); });
+        window.dispatchEvent(new Event("resize"));
+      });
+      // industry tabs right above the grid (Rules of Engagement) → a dropdown in the
+      // same row, that unfolds out of its own pill and folds back into it
+      var tabs = grid.previousElementSibling;
+      if (tabs && tabs.classList.contains("carousel__tabs")) {
+        var dd = document.createElement("div"); dd.className = "mobdd";
+        var cur = tabs.querySelector(".ctab.is-active") || tabs.querySelector(".ctab");
+        var opts = Array.prototype.map.call(tabs.querySelectorAll(".ctab"), function (t, i) {
+          return '<li><button type="button" data-i="' + i + '">' + t.textContent + '</button></li>';
+        }).join("");
+        dd.innerHTML = '<button type="button" class="mobdd__btn" aria-haspopup="listbox" aria-expanded="false"><span class="mobdd__cur">' + (cur ? cur.textContent : "") + '</span><i aria-hidden="true"></i></button>' +
+          '<div class="mobdd__panel"><div class="mobdd__head"><span class="mobdd__cur">' + (cur ? cur.textContent : "") + '</span><i aria-hidden="true"></i></div><ul role="listbox">' + opts + '</ul></div>';
+        var btn = dd.querySelector(".mobdd__btn");
+        function ddSet(open) { dd.style.setProperty("--bw", btn.offsetWidth + "px"); dd.classList.toggle("is-open", open); btn.setAttribute("aria-expanded", open ? "true" : "false"); }
+        btn.addEventListener("click", function (e) { e.stopPropagation(); ddSet(!dd.classList.contains("is-open")); });
+        dd.querySelector(".mobdd__head").addEventListener("click", function (e) { e.stopPropagation(); ddSet(false); });
+        dd.querySelector("ul").addEventListener("click", function (e) {
+          var o = e.target.closest("button[data-i]"); if (!o) return; e.stopPropagation();
+          var t = tabs.querySelectorAll(".ctab")[+o.dataset.i]; if (t) t.click();
+          ddSet(false);
+        });
+        document.addEventListener("click", function () { ddSet(false); });
+        function syncDd() {
+          var a = tabs.querySelector(".ctab.is-active"); if (!a) return;
+          dd.querySelectorAll(".mobdd__cur").forEach(function (c) { c.textContent = a.textContent; });
+          dd.querySelectorAll("li button").forEach(function (o) { o.classList.toggle("on", o.textContent === a.textContent); });
+        }
+        new MutationObserver(syncDd).observe(tabs, { subtree: true, attributes: true, attributeFilter: ["class"] });
+        syncDd();
+        row.appendChild(dd); tabs.classList.add("has-mobsel");
+      }
+      row.appendChild(seg);
+      grid.parentNode.insertBefore(row, grid);
+      // the toggle sits on the section heading's own line (right-aligned)
+      var lab = row.previousElementSibling, hops = 0;
+      while (lab && hops++ < 3 && !lab.classList.contains("lp__label")) lab = lab.previousElementSibling;
+      if (lab && lab.classList.contains("lp__label")) {
+        var head = document.createElement("div"); head.className = "mobhead";
+        lab.parentNode.insertBefore(head, lab); head.appendChild(lab); head.appendChild(seg);
+        if (!row.children.length) row.remove();
+      }
+      // soft white fade at the bottom of each design window while there's more
+      // to scroll; it lifts once you reach the end (or if the design fits)
+      [lap.querySelector(".mock__screen"), ph.querySelector(".mock__screen")].forEach(function (sc) {
+        if (!sc) return;
+        var host = sc.parentElement; host.classList.add("fade-host");
+        function upd() { host.classList.toggle("at-end", sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 4); }
+        sc.addEventListener("scroll", upd, { passive: true });
+        window.addEventListener("resize", upd);
+        sc.querySelectorAll("img").forEach(function (im) { im.addEventListener("load", upd); });
+        seg.addEventListener("click", function () { setTimeout(upd, 60); });
+        setTimeout(upd, 300); upd();
+      });
+      // phones: the "Scroll inside…" line fades in and out for a few seconds
+      // each time the window comes into view (same as the desktop hint)
+      var hint = grid.nextElementSibling;
+      if (hint && hint.classList.contains("lp__hint") && "IntersectionObserver" in window && window.matchMedia("(max-width: 720px)").matches) {
+        // only when the design shown actually scrolls; it blinks a few times
+        var canScroll = function () {
+          var sc = grid.querySelector(grid.getAttribute("data-view") === "mobile" ? ".mock--phone .mock__screen" : ".mock--laptop .mock__screen");
+          return sc && sc.scrollHeight > sc.clientHeight + 4;
+        };
+        var blink = function () {
+          hint.classList.remove("show", "is-off");
+          if (!canScroll()) { hint.classList.add("is-off"); return; }
+          void hint.offsetWidth; hint.classList.add("show");
+        };
+        new IntersectionObserver(function (es) {
+          es.forEach(function (e) { if (e.isIntersecting) blink(); });
+        }, { threshold: 0.6 }).observe(grid);
+        seg.addEventListener("click", function () { setTimeout(blink, 80); });
+      }
+    });
+  })();
+</script>
+<script>
+  /* Carousel paging, one pattern everywhere:
+     desktop - thin grey arrows either side of the page count (← 1 / 12 →),
+               the old round buttons hidden (the new ones just press them);
+     phones  - swipe the design, with a progress bar over the count. */
+  (function () {
+    var AR = function (d) {
+      return '<svg viewBox="0 0 16 9" aria-hidden="true"><path d="' + (d < 0 ? "M15.5 4.5H1M4.8 1L1 4.5 4.8 8" : "M.5 4.5H15M11.2 1 15 4.5 11.2 8") + '"/></svg>';
+    };
+    document.querySelectorAll(".carousel__count").forEach(function (count) {
+      var meta = count.closest(".carousel__meta") || count.parentElement;
+      var stage = null, el = meta;
+      for (var k = 0; k < 4 && el && !stage; k++) {
+        el = el.previousElementSibling;
+        if (el && el.classList.contains("carousel__stage")) stage = el;
+        else if (el) stage = el.querySelector(".carousel__stage");
+      }
+      if (!stage) return;
+      var arrows = Array.prototype.filter.call(stage.querySelectorAll("button.carousel__arrow"), function (a) { return a.getAttribute("aria-hidden") !== "true"; });
+      if (arrows.length < 2) return;
+      var prev = arrows[0], next = arrows[arrows.length - 1];
+      stage.classList.add("has-pg"); stage._pg = { prev: prev, next: next, count: count };
+      // desktop cluster
+      var pg = document.createElement("span"); pg.className = "pg";
+      var bp = document.createElement("button"); bp.type = "button"; bp.className = "pg__btn"; bp.setAttribute("aria-label", "Previous"); bp.innerHTML = AR(-1);
+      var bn = document.createElement("button"); bn.type = "button"; bn.className = "pg__btn"; bn.setAttribute("aria-label", "Next"); bn.innerHTML = AR(1);
+      count.parentNode.insertBefore(pg, count); pg.appendChild(bp); pg.appendChild(count); pg.appendChild(bn);
+      bp.addEventListener("click", function () { prev.click(); });
+      bn.addEventListener("click", function () { next.click(); });
+      // desktop: the count row spans exactly the design above it (its right
+      // end under the design's right edge), wherever the design sits
+      var fitMeta = function () {
+        if (window.matchMedia("(max-width: 720px)").matches) { meta.style.width = meta.style.marginLeft = meta.style.marginRight = ""; return; }
+        var f = stage.querySelector(":scope > .carousel__figure") || stage, fr = f.getBoundingClientRect(), pr = meta.parentElement.getBoundingClientRect();
+        if (!fr.width) return;
+        meta.style.width = fr.width + "px"; meta.style.marginLeft = (fr.left - pr.left) + "px"; meta.style.marginRight = "0";
+      };
+      window.addEventListener("resize", fitMeta); window.addEventListener("load", fitMeta);
+      new MutationObserver(function () { requestAnimationFrame(fitMeta); }).observe(count, { childList: true, characterData: true, subtree: true });
+      setTimeout(fitMeta, 400);
+      // phone progress bar, driven by the count text ("3 / 12")
+      var bar = document.createElement("span"); bar.className = "pgbar"; meta.insertBefore(bar, meta.firstChild);
+      function draw() {
+        var m = /(\d+)\s*\/\s*(\d+)/.exec(count.textContent || ""); if (!m) return;
+        var i = +m[1], n = +m[2];
+        if (bar.children.length !== n) { bar.innerHTML = ""; for (var q = 0; q < n; q++) bar.appendChild(document.createElement("i")); }
+        Array.prototype.forEach.call(bar.children, function (c, ci) { c.classList.toggle("on", ci === i - 1); });
+        meta.classList.toggle("pg-single", n < 2);
+      }
+      new MutationObserver(draw).observe(count, { childList: true, characterData: true, subtree: true });
+      draw();
+      // swipe
+      // (some carousels already swipe on their own - those handlers run first,
+      //  so if the page has already changed, this one stands down)
+      var x0 = null, y0 = null, c0 = "";
+      stage.addEventListener("touchstart", function (e) { var t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; c0 = count.textContent; }, { passive: true });
+      stage.addEventListener("touchend", function (e) {
+        if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+        if (!(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3)) return;
+        setTimeout(function () { if (count.textContent === c0) (dx < 0 ? next : prev).click(); }, 80);
+      }, { passive: true });
+    });
+    // ENLARGED VIEW: a design opened from a carousel keeps its paging -
+    // arrows + page count (desktop), progress bar + swipe (phones)
+    var lbStage = null, lbIdx = 0, lbCtl = null;
+    function lbEl() { return document.querySelector(".lightbox"); }
+    function stageImgs(st) { return Array.prototype.filter.call(st.querySelectorAll("img"), function (i) { return i.offsetParent && !i.closest(".carousel__arrow"); }); }
+    function lbDraw() {
+      if (!lbStage || !lbCtl) return;
+      var c = lbStage._pg.count, txt = c ? c.textContent : "";
+      lbCtl.querySelector(".lb-pg__count").textContent = txt;
+      var bar = lbCtl.querySelector(".lb-pg__bar"), m = /(\d+)\s*\/\s*(\d+)/.exec(txt);
+      bar.innerHTML = "";
+      if (m) for (var q = 0; q < +m[2]; q++) { var i = document.createElement("i"); if (q === +m[1] - 1) i.className = "on"; bar.appendChild(i); }
+      lbCtl.classList.toggle("no-count", !m);
+    }
+    // controls sit just under the design, as wide as the design
+    function lbFit() {
+      var lb = lbEl(); if (!lb || !lbCtl) return;
+      var li = lb.querySelector("img"); if (li && li.clientWidth) lbCtl.style.width = li.clientWidth + "px";
+    }
+    window.addEventListener("resize", lbFit);
+    function lbGo(dir) {
+      if (!lbStage) return;
+      (dir < 0 ? lbStage._pg.prev : lbStage._pg.next).click();
+      // same swap as the carousel: the page slides out one way, the next slides in from the other
+      var lb = lbEl(), li = lb && lb.querySelector("img"), D = dir < 0 ? -1 : 1;
+      if (li && li.animate) li.animate([{ transform: "none", opacity: 1 }, { transform: "translateX(" + (-D * 60) + "px)", opacity: 0 }], { duration: 180, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" });
+      setTimeout(function () {
+        var imgs = stageImgs(lbStage), im = imgs[Math.min(lbIdx, imgs.length - 1)] || imgs[0];
+        if (im && li) {
+          li.style.animation = "none";
+          var src = im.currentSrc || im.src;
+          var go = function () {
+            li.getAnimations && li.getAnimations().forEach(function (a) { a.cancel(); });
+            if (li.animate) li.animate([{ transform: "translateX(" + (D * 60) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
+            lbFit();
+          };
+          if (li.src !== src) { li.onload = function () { li.onload = null; go(); }; li.src = src; } else go();
+        }
+        lbDraw();
+      }, 190);
+    }
+    document.addEventListener("click", function (e) {
+      var img = e.target.closest && e.target.closest(".media--img img");
+      var lb = lbEl(); if (!lb) return;
+      if (!img) { if (!lb.classList.contains("open")) lbStage = null; if (lbCtl) lbCtl.hidden = !lbStage || !lb.classList.contains("open"); return; }
+      var st = img.closest(".carousel__stage.has-pg");
+      lbStage = st && st._pg ? st : null;
+      if (!lbCtl) {
+        lbCtl = document.createElement("div"); lbCtl.className = "lb-pg";
+        lbCtl.innerHTML = '<span class="lb-pg__bar"></span><span class="lb-pg__row"><button type="button" class="pg__btn lb-pg__btn" aria-label="Previous">' + AR(-1) + '</button><span class="lb-pg__count"></span><button type="button" class="pg__btn lb-pg__btn" aria-label="Next">' + AR(1) + '</button></span>';
+        lb.appendChild(lbCtl);
+        var bs = lbCtl.querySelectorAll(".lb-pg__btn");
+        bs[0].addEventListener("click", function (ev) { ev.stopPropagation(); lbGo(-1); });
+        bs[1].addEventListener("click", function (ev) { ev.stopPropagation(); lbGo(1); });
+        lbCtl.addEventListener("click", function (ev) { ev.stopPropagation(); });
+        var sx = null, sy = null;
+        lb.addEventListener("touchstart", function (ev) { var t = ev.touches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
+        lb.addEventListener("touchend", function (ev) {
+          if (sx === null || !lbStage) return; var t = ev.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy; sx = null;
+          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) lbGo(dx < 0 ? 1 : -1);
+        }, { passive: true });
+        document.addEventListener("keydown", function (ev) {
+          if (!lbStage || !lb.classList.contains("open")) return;
+          if (ev.key === "ArrowLeft") { ev.stopImmediatePropagation(); lbGo(-1); }
+          if (ev.key === "ArrowRight") { ev.stopImmediatePropagation(); lbGo(1); }
+        }, true);
+      }
+      if (lbStage) { lbIdx = Math.max(0, stageImgs(lbStage).indexOf(img)); lbDraw(); }
+      lbCtl.hidden = !lbStage;
+      lb.classList.toggle("has-pg", !!lbStage);
+      var lim = lb.querySelector("img");
+      if (lim) { if (lim.complete) setTimeout(lbFit, 30); lim.addEventListener("load", lbFit, { once: true }); }
+    });
+
+    // carousels that have arrows but no page count: the same thin arrows on
+    // their own under the design (phones keep them too - there's no bar to show)
+    document.querySelectorAll(".carousel__stage:not(.has-pg)").forEach(function (stage) {
+      var arrows = Array.prototype.filter.call(stage.querySelectorAll("button.carousel__arrow"), function (a) { return a.getAttribute("aria-hidden") !== "true"; });
+      if (arrows.length < 2) return;
+      var prev = arrows[0], next = arrows[arrows.length - 1];
+      stage.classList.add("has-pg"); stage._pg = { prev: prev, next: next, count: null };
+      var meta = document.createElement("div"); meta.className = "carousel__meta pg-only";
+      meta.innerHTML = '<span class="pg"><button type="button" class="pg__btn" aria-label="Previous">' + AR(-1) + '</button><button type="button" class="pg__btn" aria-label="Next">' + AR(1) + '</button></span>';
+      stage.parentNode.insertBefore(meta, stage.nextSibling);
+      var bs = meta.querySelectorAll(".pg__btn");
+      bs[0].addEventListener("click", function () { prev.click(); });
+      bs[1].addEventListener("click", function () { next.click(); });
+      // phones: the same progress bar + page count as every other carousel,
+      // read from the project's data (the design count) and the file index
+      var im0 = stage.querySelector(".carousel__figure img, .carousel__figure video");
+      var km = im0 && /sl_(.+?)_(\d+)\./.exec(im0.getAttribute("src") || "");
+      var total = 0, rtlBook = false;
+      if (km) {
+        var pid = new URLSearchParams(location.search).get("id");
+        var pj = ((window.PORTFOLIO || {}).projects || []).filter(function (x) { return x.id === pid; })[0];
+        (function walk(o) { if (!o || typeof o !== "object" || total) return; if (o.key === km[1] && o.count) { total = o.count; rtlBook = !!o.rtl; return; } for (var k in o) walk(o[k]); })(pj);
+      }
+      if (total > 1) {
+        meta.classList.add("pg-mobbar");
+        var mbar = document.createElement("span"); mbar.className = "pgbar"; meta.insertBefore(mbar, meta.firstChild);
+        for (var q = 0; q < total; q++) mbar.appendChild(document.createElement("i"));
+        var mcnt = document.createElement("span"); mcnt.className = "carousel__count pg-mobcount"; meta.appendChild(mcnt);
+        // desktop: the count between the thin arrows, like every other carousel
+        var dcnt = document.createElement("span"); dcnt.className = "carousel__count pg-dcount";
+        bs[0].parentNode.insertBefore(dcnt, bs[1]);
+        new MutationObserver(function () { dcnt.textContent = mcnt.textContent; }).observe(mcnt, { childList: true, characterData: true, subtree: true });
+        var drawM = function () {
+          var cur = stage.querySelector(".carousel__figure img, .carousel__figure video");
+          var mm = cur && /_(\d+)\.[a-z0-9]+(\?|$)/i.exec(cur.getAttribute("src") || ""); if (!mm) return;
+          var idx = Math.min(total - 1, +mm[1]);
+          Array.prototype.forEach.call(mbar.children, function (c, ci) { c.classList.toggle("on", ci === idx); });
+          mcnt.textContent = (idx + 1) + " / " + total;
+        };
+        new MutationObserver(drawM).observe(stage, { subtree: true, attributes: true, attributeFilter: ["src"], childList: true });
+        drawM();
+        var sx0 = null, sy0 = null, sc0 = "";
+        stage.addEventListener("touchstart", function (e) { sx0 = e.touches[0].clientX; sy0 = e.touches[0].clientY; sc0 = mcnt.textContent; }, { passive: true });
+        stage.addEventListener("touchend", function (e) {
+          if (sx0 === null) return; var t = e.changedTouches[0], dx = t.clientX - sx0, dy = t.clientY - sy0; sx0 = null;
+          if (!(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3)) return;
+          // swipe left = the right-hand arrow, like the arrows themselves (a right-to-left book keeps its own order)
+          setTimeout(function () { if (mcnt.textContent === sc0) (dx < 0 ? next : prev).click(); }, 80);
+        }, { passive: true });
+      }
+    });
+  })();
+</script>
+<script>
+  /* PHONES: the GIF carousels whose slides come in different formats keep ONE
+     box height. The box fits the narrowest format (capped at a 4:5 post at full
+     width and 60% of the screen); every slide sits inside at its own
+     proportion, centred - never cropped, never stretched - so nothing below
+     moves while paging. The formats come from the project's own data. */
+  window.addEventListener("load", function () {
+    var st = document.getElementById("gfStage");
+    var P = window.PORTFOLIO || {}, id = new URLSearchParams(location.search).get("id");
+    var proj = (P.projects || []).filter(function (x) { return x.id === id; })[0];
+    if (!st || !proj || !proj.gifs || !proj.gifs.items) return;
+    var rs = proj.gifs.items.map(function (it) {
+      var m = /(\d+)\s*[×x]\s*(\d+)/.exec(it.format || ""); return m ? m[1] / m[2] : 0;
+    }).filter(function (r) { return r > 0; });
+    if (rs.length < 2) return;
+    var minR = Math.min.apply(null, rs), maxR = Math.max.apply(null, rs);
+    if (maxR / minR < 1.05) return;
+    var mq = window.matchMedia("(max-width: 720px)");
+    function apply() {
+      if (!mq.matches) { st.classList.remove("fixbox"); return; }
+      var colW = st.clientWidth;
+      var cap = Math.min(colW * 1.25, window.innerHeight * 0.6);
+      st.style.setProperty("--boxh", Math.min(colW / minR, cap).toFixed(1) + "px");
+      st.classList.add("fixbox");
+    }
+    apply(); window.addEventListener("resize", apply);
+  });
+  /* PHONES: the size switchers get the same treatment - one box height for
+     every format (the tallest one, capped at 60% of the screen); a format
+     taller than the box is scaled down whole (proportions kept, nothing
+     cropped), a shorter one sits centred in it. */
+  window.addEventListener("load", function () {
+    var mq = window.matchMedia("(max-width: 720px)");
+    document.querySelectorAll(".carousel__stage.sizeswitch").forEach(function (st) {
+      if (!st._pg || !st._pg.count) return;
+      var grid = st.querySelector(".sizeswitch__grid"); if (!grid) return;
+      var boxH = 0;
+      function natural() { grid.style.transform = ""; grid.style.marginTop = ""; return grid.getBoundingClientRect().height; }
+      function measure() {
+        st.style.height = ""; var m = /(\d+)\s*\/\s*(\d+)/.exec(st._pg.count.textContent), n = m ? +m[2] : 1, hs = [];
+        for (var i = 0; i < n; i++) { hs.push(natural()); st._pg.next.click(); }      // n clicks brings it back round
+        var mx = Math.max.apply(null, hs), mn = Math.min.apply(null, hs);
+        boxH = mx - mn < 4 ? 0 : Math.min(mx, window.innerHeight * 0.6);
+      }
+      function fit() {
+        if (!mq.matches || !boxH) { st.style.height = ""; grid.style.transform = ""; grid.style.marginTop = ""; return; }
+        var h = natural(), s = h > boxH ? boxH / h : 1;
+        st.style.height = boxH + "px";
+        grid.style.transformOrigin = "top center";
+        grid.style.transform = s < 1 ? "scale(" + s.toFixed(4) + ")" : "";
+        grid.style.marginTop = ((boxH - h * s) / 2).toFixed(1) + "px";
+      }
+      if (!mq.matches) return;
+      measure(); fit();
+      new MutationObserver(function () { requestAnimationFrame(fit); }).observe(st._pg.count, { childList: true, characterData: true, subtree: true });
+      window.addEventListener("resize", function () { measure(); fit(); });
+    });
+  });
+</script>
+<script>
+  /* PHONES - any size switcher that shows several designs at once (Scenario AI
+     GIFs, Evergreen posts): one design at a time instead of a grid, a format
+     toggle beside its format line, swipe (or the bar) to page through the
+     designs. Built from the project's data; the original switcher is only
+     hidden on phones. */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    var id = new URLSearchParams(location.search).get("id");
+    var proj = ((window.PORTFOLIO || {}).projects || []).filter(function (x) { return x.id === id; })[0];
+    if (!proj) return;
+    var cfgs = [];
+    (proj.extraGuides || []).forEach(function (e) {
+      [e.sizeSwitch, e.split && e.split.left && e.split.left.sizeSwitch, e.split && e.split.mid && e.split.mid.sizeSwitch, e.split && e.split.right && e.split.right.sizeSwitch]
+        .forEach(function (c) { if (c && (c.designs || []).length > 1 && (c.sizes || []).length > 1) cfgs.push(c); });
+    });
+    document.querySelectorAll(".carousel__stage.sizeswitch").forEach(function (st) {
+      var m0 = st.querySelector(".sizeswitch__col video, .sizeswitch__col img"); if (!m0) return;
+      var src0 = m0.getAttribute("src") || "";
+      var cfg = cfgs.filter(function (c) { return src0.indexOf("sl_" + c.designs[0].key + "_") > -1; })[0];
+      if (!cfg) return;
+      var sizes = cfg.sizes, designs = cfg.designs, nD = designs.length;
+      var srcs = sizes.map(function (z, si) {
+        var fr = z.frame != null ? z.frame : si;
+        return designs.map(function (dd) { return "images/sl_" + dd.key + "_" + (fr < 10 ? "0" : "") + fr + "." + (dd.ext || cfg.ext || "jpg"); });
+      });
+      var ratio = sizes.map(function (z) { var q = /(\d+)\s*[×x]\s*(\d+)/.exec(z.format); return q ? q[1] / q[2] : 1; });
+      var names = sizes.map(function (z, k) {
+        if (/story/i.test(z.network || "")) return "Story";
+        if (Math.abs(ratio[k] - 1) < .02) return sizes.length > 2 ? "Square" : "Post";
+        return sizes.length > 2 ? "Portrait" : "Post";
+      });
+      var isVid = /mp4$/i.test(srcs[0][0]);
+      // toggle order: the tallest format first (the one the box is fitted to)
+      var order = sizes.map(function (_, k) { return k; }).sort(function (a, b) { return ratio[a] - ratio[b]; });
+      var w = document.createElement("div"); w.className = "mgifs";
+      w.innerHTML = '<div class="mobhead"><span class="carousel__subtitle mgifs__fmt"></span><div class="seg seg--' + sizes.length + '" role="tablist"><i aria-hidden="true"></i>' +
+        order.map(function (k) { return '<button type="button" data-s="' + k + '">' + names[k] + '</button>'; }).join("") + '</div></div>' +
+        '<div class="mgifs__stage">' + (isVid ? '<video muted loop playsinline autoplay></video>' : '<img alt="">') + '</div>' +
+        '<div class="carousel__meta mgifs__meta"><span class="pgbar"></span><span class="carousel__count"></span></div>';
+      // hide the original switcher, its format line and its count row
+      var sub = st.previousElementSibling, meta = st.nextElementSibling;
+      [sub && sub.classList.contains("carousel__subtitle") ? sub : null, st, meta && meta.classList.contains("carousel__meta") ? meta : null]
+        .forEach(function (el) { if (el) el.classList.add("m-hidden"); });
+      st.parentNode.insertBefore(w, st);
+      var media = w.querySelector(".mgifs__stage > *"), seg = w.querySelector(".seg"), fmt = w.querySelector(".mgifs__fmt");
+      // the toggle sits on the section heading's line; the format line under it
+      var lab = w.previousElementSibling, hops = 0;
+      while (lab && hops++ < 4 && !lab.classList.contains("lp__label")) lab = lab.previousElementSibling;
+      var gb = w.closest(".guide-block");
+      if (!lab) { var pb = gb && gb.previousElementSibling; lab = pb && pb.querySelector(".lp__label"); }
+      // …but only if this switcher is the whole section - when more designs
+      // follow under the same heading, the toggle stays with its own design
+      var alone = true;
+      for (var nx = gb && gb.nextElementSibling; nx && !nx.classList.contains("guide-block--section"); nx = nx.nextElementSibling) {
+        if (nx.querySelector("img, video")) { alone = false; break; }
+      }
+      if (alone && lab && lab.classList.contains("lp__label")) {
+        var head = document.createElement("div"); head.className = "mobhead";
+        lab.parentNode.insertBefore(head, lab); head.appendChild(lab); head.appendChild(seg);
+        w.querySelector(".mobhead").classList.add("mgifs__fmtrow");
+      }
+      var bar = w.querySelector(".pgbar"), cnt = w.querySelector(".carousel__count"), box = w.querySelector(".mgifs__stage");
+      var s = order[0], d = 0;
+      for (var b = 0; b < nD; b++) bar.appendChild(document.createElement("i"));
+      function fit() {
+        var colW = box.clientWidth || w.clientWidth, minR = Math.min.apply(null, ratio);
+        box.style.height = Math.min(colW / minR, colW * 1.25, window.innerHeight * 0.6).toFixed(1) + "px";
+      }
+      function show(dir) {
+        fmt.innerHTML = '<span class="mgifs__size">' + sizes[s].format + '</span>' +
+          (sizes[s].network ? '<span class="mgifs__dash"> - </span><span class="mgifs__net">' + sizes[s].network + '</span>' : "");
+        seg.style.setProperty("--si", order.indexOf(s));
+        seg.querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", +x.dataset.s === s); });
+        Array.prototype.forEach.call(bar.children, function (c, k) { c.classList.toggle("on", k === d); });
+        cnt.textContent = (d + 1) + " / " + nD;
+        var src = srcs[s][d];
+        if (media.getAttribute("src") !== src) {
+          media.src = src;
+          if (isVid) { var pr = media.play(); if (pr && pr.catch) pr.catch(function () {}); }
+          if (dir && media.animate) media.animate([{ transform: "translateX(" + (dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
+        }
+      }
+      seg.addEventListener("click", function (e) { var x = e.target.closest("button"); if (!x) return; s = +x.dataset.s; show(0); });
+      var x0 = null, y0 = null;
+      box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+      box.addEventListener("touchend", function (e) {
+        if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) { d = (d + (dx < 0 ? 1 : -1) + nD) % nD; show(dx < 0 ? 1 : -1); }
+      }, { passive: true });
+      fit(); show(0); window.addEventListener("resize", fit);
+    });
+  });
+</script>
+<script>
+  /* PHONES - Anything to Video social row: the two 1080 × 1350 clips share one
+     spot, swiped through with the progress bar, instead of stacking twice. */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    var row = document.querySelector(".a2v-social-row .guide-split"); if (!row) return;
+    var cols = Array.prototype.filter.call(row.children, function (c) { return c.querySelector(":scope > .guide-split__figure video"); });
+    if (cols.length < 2) return;
+    var srcs = cols.map(function (c) { return c.querySelector("video").getAttribute("src"); });
+    var first = cols[0], fig = first.querySelector(".guide-split__figure"), vid = fig.querySelector("video");
+    cols.slice(1).forEach(function (c) { c.classList.add("m-merged"); });
+    var meta = document.createElement("div"); meta.className = "carousel__meta mgifs__meta";
+    meta.innerHTML = '<span class="pgbar">' + srcs.map(function (_, k) { return '<i' + (k ? '' : ' class="on"') + '></i>'; }).join("") + '</span><span class="carousel__count">1 / ' + srcs.length + '</span>';
+    fig.parentNode.insertBefore(meta, fig.nextSibling);
+    var d = 0;
+    function go(dir) {
+      d = (d + dir + srcs.length) % srcs.length;
+      vid.src = srcs[d]; var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {});
+      if (vid.animate) vid.animate([{ transform: "translateX(" + (dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
+      Array.prototype.forEach.call(meta.querySelectorAll(".pgbar i"), function (c, k) { c.classList.toggle("on", k === d); });
+      meta.querySelector(".carousel__count").textContent = (d + 1) + " / " + srcs.length;
+    }
+    var x0 = null, y0 = null;
+    fig.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    fig.addEventListener("touchend", function (e) {
+      if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) go(dx < 0 ? 1 : -1);
+    }, { passive: true });
+  });
+</script>
+<script>
+  /* PHONES - image grids become one large design at a time:
+     · same-format sets (no per-image labels): swipe with the progress bar;
+     · different designs with their own labels: a toggle on the format line
+       (the size), the name on the line under it; swiping also moves the toggle.
+     Box height fixed for the whole set, every image at its own proportion. */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    if (["webinars", "articulate-webinar"].indexOf(document.body.getAttribute("data-project")) < 0) return;
+    document.querySelectorAll(".guide-imagegrid").forEach(function (g) {
+      if (g.querySelector("video")) return;                  // mixed static/motion grids have their own toggle
+      var items = Array.prototype.slice.call(g.children).filter(function (c) { return c.querySelector("img"); });
+      if (items.length < 2) return;
+      var data = items.map(function (c) {
+        var l = c.querySelector(".carousel__subtitle"), t = l ? l.textContent.trim() : "";
+        var m = /^(.*?)\s*\(([^)]*)\)\s*$/.exec(t);
+        return { src: c.querySelector("img").getAttribute("src"), label: t, name: m ? m[1] : t, size: m ? m[2].replace(/\s*[×x]\s*/, " × ") : "" };
+      });
+      var labelled = data.every(function (d) { return d.label; });
+      var names = [];
+      if (labelled) {
+        var words = data.map(function (d) { return d.name.split(/\s+/); });
+        var common = words[0].filter(function (w) { return words.every(function (ws) { return ws.indexOf(w) > -1; }); });
+        names = words.map(function (ws) {
+          var r = ws.filter(function (w) { return common.indexOf(w) < 0; }).join(" ") || ws.join(" ");
+          if (r.length > 12) r = ws[ws.length - 1];
+          return r.charAt(0).toUpperCase() + r.slice(1);
+        });
+      }
+      var w = document.createElement("div"); w.className = "mgifs mgrid";
+      w.innerHTML = (labelled
+          ? '<div class="mobhead"><span class="carousel__subtitle mgifs__fmt"></span><div class="seg seg--' + data.length + '"><i aria-hidden="true"></i>' +
+            names.map(function (n, k) { return '<button type="button" data-s="' + k + '">' + n + '</button>'; }).join("") + '</div></div>'
+          : '') +
+        '<div class="mgifs__stage media--img"><img alt=""></div>' +
+        (labelled ? '' : '<div class="carousel__meta mgifs__meta"><span class="pgbar"></span><span class="carousel__count"></span></div>');
+      g.classList.add("m-hidden"); g.parentNode.insertBefore(w, g);
+      if (labelled && document.body.getAttribute("data-project") === "webinars") w.classList.add("m-sizeonly", "mcombo--row");
+      var img = w.querySelector(".mgifs__stage img"), box = w.querySelector(".mgifs__stage");
+      var seg = w.querySelector(".seg"), fmt = w.querySelector(".mgifs__fmt"), bar = w.querySelector(".pgbar"), cnt = w.querySelector(".carousel__count");
+      if (bar) data.forEach(function () { bar.appendChild(document.createElement("i")); });
+      var k = 0, ratios = [];
+      function fit() {
+        var r = ratios.filter(function (x) { return x > 0; }); if (!r.length) return;
+        var colW = box.clientWidth || w.clientWidth;
+        box.style.height = Math.min(colW / Math.min.apply(null, r), colW * 1.25, window.innerHeight * 0.6).toFixed(1) + "px";
+      }
+      data.forEach(function (d, i) { var t = new Image(); t.onload = function () { ratios[i] = t.naturalWidth / t.naturalHeight; fit(); }; t.src = d.src; });
+      function show(dir) {
+        img.src = data[k].src;
+        if (dir && img.animate) img.animate([{ transform: "translateX(" + (dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
+        if (seg) {
+          fmt.innerHTML = '<span class="mgifs__size">' + data[k].size + '</span><span class="mgifs__dash"> - </span><span class="mgifs__net">' + data[k].name + '</span>';
+          seg.style.setProperty("--si", k);
+          seg.querySelectorAll("button").forEach(function (b, bi) { b.classList.toggle("on", bi === k); });
+        }
+        if (bar) {
+          Array.prototype.forEach.call(bar.children, function (c, ci) { c.classList.toggle("on", ci === k); });
+          cnt.textContent = (k + 1) + " / " + data.length;
+        }
+      }
+      if (seg) seg.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; var n = +b.dataset.s; var dir = n > k ? 1 : -1; k = n; show(dir); });
+      var x0 = null, y0 = null;
+      box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+      box.addEventListener("touchend", function (e) {
+        if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) { k = (k + (dx < 0 ? 1 : -1) + data.length) % data.length; show(dx < 0 ? 1 : -1); }
+      }, { passive: true });
+      show(0); window.addEventListener("resize", fit);
+    });
+  });
+</script>
+<script>
+  /* PHONES - a carousel bundling one design per format ("sections": LinkedIn /
+     Facebook, invitation / replay, …) reads better as a toggle: the size on
+     the toggle's line, the name under it; swiping still works and moves the
+     toggle. Also: the landing-page page tabs (Registration / Replay) take the
+     toggle's size, and step aside in the Mobile view (there is one mobile page). */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    var id = new URLSearchParams(location.search).get("id");
+    var proj = ((window.PORTFOLIO || {}).projects || []).filter(function (x) { return x.id === id; })[0];
+    function findByKey(key) { var r = null; (function walk(o) { if (!o || typeof o !== "object" || r) return; if (o.key === key && o.sections) { r = o; return; } for (var k in o) walk(o[k]); })(proj); return r; }
+    document.querySelectorAll(".carousel__stage.has-pg").forEach(function (st) {
+      if (!st._pg || !st._pg.count || !st.id) return;
+      var sub = document.getElementById(st.id + "Sub"); if (!sub) return;
+      var im = st.querySelector(".carousel__figure img, .carousel__figure video");
+      var km = im && /sl_(.+?)_\d+\./.exec(im.getAttribute("src") || ""); if (!km) return;
+      var cfg = findByKey(km[1]);
+      if (!cfg || cfg.sections.length < 2 || !cfg.sections.every(function (x) { return (x.count || 1) === 1; })) return;
+      var data = cfg.sections.map(function (x) {
+        var m = /^(.*?)\s*\(([^)]*)\)\s*$/.exec(x.name);
+        return m ? { name: m[1], size: m[2].replace(/\s*[×x]\s*/, " × ") } : { name: "", size: x.name };
+      });
+      var words = data.map(function (d) { return (d.name || d.size).split(/\s+/); });
+      var common = words[0].filter(function (w) { return words.every(function (ws) { return ws.indexOf(w) > -1; }); });
+      var names = words.map(function (ws) {
+        var r = ws.filter(function (w) { return common.indexOf(w) < 0; }).join(" ") || ws.join(" ");
+        if (r.length > 12) r = ws[ws.length - 1];
+        return r.charAt(0).toUpperCase() + r.slice(1);
+      });
+      var w = document.createElement("div"); w.className = "mgifs msect";
+      w.innerHTML = '<div class="mobhead"><span class="carousel__subtitle mgifs__fmt"></span><div class="seg seg--' + data.length + '"><i aria-hidden="true"></i>' +
+        names.map(function (n, k) { return '<button type="button" data-s="' + k + '">' + n + '</button>'; }).join("") + '</div></div>';
+      sub.parentNode.insertBefore(w, sub); sub.classList.add("m-hidden");
+      var meta = st._pg.count.closest(".carousel__meta"); if (meta) meta.classList.add("m-hidden");
+      var seg = w.querySelector(".seg"), fmt = w.querySelector(".mgifs__fmt");
+      function cur() {                       // the page shown = the file's index (the count is per section here)
+        var c = st.querySelector(".carousel__figure img, .carousel__figure video");
+        var m = c && /_(\d+)\.[a-z0-9]+(\?|$)/i.exec(c.getAttribute("src") || ""); return m ? +m[1] : 0;
+      }
+      function sync() {
+        var k = Math.min(cur(), data.length - 1);
+        fmt.innerHTML = '<span class="mgifs__size">' + data[k].size + '</span>' + (data[k].name ? '<span class="mgifs__dash"> - </span><span class="mgifs__net">' + data[k].name + '</span>' : "");
+        seg.style.setProperty("--si", k);
+        seg.querySelectorAll("button").forEach(function (b, bi) { b.classList.toggle("on", bi === k); });
+      }
+      seg.addEventListener("click", function (e) {
+        var b = e.target.closest("button"); if (!b) return;
+        var t = +b.dataset.s, guard = 0;
+        while (cur() !== t && guard++ < 20) (t > cur() ? st._pg.next : st._pg.prev).click();
+      });
+      new MutationObserver(sync).observe(st, { subtree: true, attributes: true, attributeFilter: ["src"] });
+      sync();
+      // one box height for both designs (the taller one), so nothing jumps
+      var ext = (/\.([a-z0-9]+)(\?|$)/i.exec(im.getAttribute("src") || "") || [0, "jpg"])[1], rs = [];
+      cfg.sections.forEach(function (_, i) {
+        var t = new Image(); t.onload = function () {
+          rs[i] = t.naturalWidth / t.naturalHeight;
+          var ok = rs.filter(function (x) { return x > 0; }); if (ok.length < cfg.sections.length) return;
+          var colW = st.clientWidth, minR = Math.min.apply(null, ok);
+          st.style.setProperty("--boxh", Math.min(colW / minR, colW * 1.25, window.innerHeight * 0.6).toFixed(1) + "px");
+          st.classList.add("fixbox");
+        };
+        t.src = "images/sl_" + km[1] + "_" + (i < 10 ? "0" : "") + i + "." + ext;
+      });
+    });
+  });
+</script>
+<script>
+  /* PHONES - shared builder: one block for several related designs (format
+     toggle, "size - name" under it, swipe + progress bar within a format). */
+  window.mCombo = function (groups, before, opts) {
+        opts = opts || {};
+        // the first option is always the format the box height is fitted to:
+        // the tallest one (or the one given as boxRatio), the rest by shape
+        var rOf = function (gg) { var q = /(\d+)\s*[×x]\s*(\d+)/.exec(gg.size); return q ? q[1] / q[2] : 1; };
+        groups = groups.slice().sort(function (a, b) { return rOf(a) - rOf(b); });
+        if (opts.boxRatio) groups.sort(function (a, b) { return (Math.abs(rOf(a) - opts.boxRatio) < .01 ? -1 : 0) - (Math.abs(rOf(b) - opts.boxRatio) < .01 ? -1 : 0); });
+        var w = document.createElement("div"); w.className = "mgifs mgrid mcombo" + (groups.length <= 3 ? " mcombo--row" : "");
+        w.innerHTML = '<div class="mobhead"><div class="seg seg--' + groups.length + '"><i aria-hidden="true"></i>' +
+          groups.map(function (gg, k) { return '<button type="button" data-s="' + k + '">' + gg.name + '</button>'; }).join("") + '</div>' +
+          '<span class="carousel__subtitle mgifs__fmt"></span></div>' +
+          '<div class="mgifs__stage media--img"><img alt=""></div>' +
+          '<div class="carousel__meta mgifs__meta"><span class="pgbar"></span><span class="carousel__count"></span></div>';
+        if (opts.sizeOnly) w.classList.add("m-sizeonly");
+        if (opts.title) { var tl = document.createElement("div"); tl.className = "carousel__subtitle mcombo__title"; tl.textContent = opts.title; w.insertBefore(tl, w.firstChild); }
+        before.parentNode.insertBefore(w, before);
+        var img = w.querySelector("img"), box = w.querySelector(".mgifs__stage"), seg = w.querySelector(".seg"), fmt = w.querySelector(".mgifs__fmt");
+        var meta = w.querySelector(".mgifs__meta"), bar = w.querySelector(".pgbar"), cnt = w.querySelector(".carousel__count");
+        var s = 0, d = 0, ratios = [], all = [].concat.apply([], groups.map(function (gg) { return gg.srcs; }));
+        function fit() {
+          var r = ratios.filter(function (x) { return x > 0; }); if (!r.length) return;
+          var colW = box.clientWidth || w.clientWidth;
+          box.style.height = (opts.boxRatio ? colW / opts.boxRatio : Math.min(colW / Math.min.apply(null, r), colW * 1.25, window.innerHeight * 0.6)).toFixed(1) + "px";
+        }
+        all.forEach(function (src, i) { var t = new Image(); t.onload = function () { ratios[i] = t.naturalWidth / t.naturalHeight; fit(); }; t.src = src; });
+        function show(dir) {
+          var gg = groups[s], n = gg.srcs.length;
+          img.src = gg.srcs[d];
+          if (dir && img.animate) img.animate([{ transform: "translateX(" + (dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
+          fmt.innerHTML = '<span class="mgifs__size">' + gg.size + '</span><span class="mgifs__dash"> - </span><span class="mgifs__net">' + gg.label + '</span>';
+          seg.style.setProperty("--si", s);
+          seg.querySelectorAll("button").forEach(function (b, bi) { b.classList.toggle("on", bi === s); });
+          bar.innerHTML = ""; for (var q = 0; q < n; q++) { var i = document.createElement("i"); if (q === d) i.className = "on"; bar.appendChild(i); }
+          cnt.textContent = (d + 1) + " / " + n;
+          meta.style.visibility = n > 1 ? "" : "hidden";
+        }
+        seg.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; var n = +b.dataset.s; if (n === s) return; var dir = n > s ? 1 : -1; s = n; d = 0; show(dir); });
+        var x0 = null, y0 = null;
+        box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+        box.addEventListener("touchend", function (e) {
+          if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+          if (!(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3)) return;
+          var dir = dx < 0 ? 1 : -1, n = groups[s].srcs.length;
+          if (d + dir >= 0 && d + dir < n) d += dir;
+          else { s = (s + dir + groups.length) % groups.length; d = dir > 0 ? 0 : groups[s].srcs.length - 1; }
+          show(dir);
+        }, { passive: true });
+        show(0); window.addEventListener("resize", fit);
+        return w;
+  };
+</script>
+<script>
+  /* PHONES - Prompt & Play: related single designs grouped into ONE block each,
+     instead of the same label repeating: a format toggle, the size and name
+     under it, swipe + progress bar inside a format with several designs
+     (swiping past the last one moves on to the next format).
+       · Instagram & Facebook: Post | Story | Facebook | Replay
+       · LinkedIn:            Portrait | Landscape | Square | Cover
+     Runs after the grid pagers and hides the ones it replaces. */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    if (document.body.getAttribute("data-project") !== "webinars") return;
+    setTimeout(function () {
+      function gridsWith(re) { return Array.prototype.filter.call(document.querySelectorAll(".guide-imagegrid"), function (g) { return re.test(g.innerHTML); }); }
+      function retire(g) {
+        var pg = g.previousElementSibling; if (pg && pg.classList.contains("mgrid")) pg.classList.add("m-hidden");
+        var lab = pg && pg.previousElementSibling; if (lab && lab.classList.contains("carousel__collabels")) lab.classList.add("m-hidden");
+      }
+      // Instagram & Facebook
+      var ig = gridsWith(/pp_ig_post_1/)[0], soc = gridsWith(/pp_ig_story/)[0];
+      if (ig && soc) {
+        var beforeIg = ig.previousElementSibling && ig.previousElementSibling.previousElementSibling && ig.previousElementSibling.previousElementSibling.classList.contains("carousel__collabels")
+          ? ig.previousElementSibling.previousElementSibling : ig.previousElementSibling;
+        window.mCombo([
+          { name: "Post", size: "1080 × 1080", label: "Instagram post", srcs: ["images/pp_ig_post_1.jpg", "images/pp_ig_post_2.jpg"] },
+          { name: "Story", size: "1080 × 1920", label: "Instagram story", srcs: ["images/pp_ig_story.jpg"] },
+          { name: "Facebook", size: "1200 × 630", label: "Facebook post", srcs: ["images/pp_fb_post.jpg"] }
+        ], beforeIg, { title: "Instagram & Facebook", sizeOnly: true });
+        retire(ig); retire(soc);
+        // the replay thumbnail isn't a social format - it stands on its own, under its own label
+        var rp = document.createElement("div"); rp.className = "mrp";
+        rp.innerHTML = '<div class="carousel__subtitle">Thumbnail replay (1920×1080)</div><div class="media--img"><img src="images/pp_thumb_replay.jpg" alt=""></div>';
+        beforeIg.parentNode.insertBefore(rp, beforeIg);
+      }
+      // LinkedIn
+      var li = gridsWith(/pp_li_post_wide/)[0], st = gridsWith(/pp_li_stat_1/)[0], sq = gridsWith(/pp_li_sq_1/)[0];
+      if (li && st && sq) {
+        window.mCombo([
+          { name: "Portrait", size: "1080 × 1350", label: "LinkedIn post", srcs: ["images/pp_li_stat_1.jpg", "images/pp_li_stat_2.jpg", "images/pp_li_stat_3.jpg"] },
+          { name: "Landscape", size: "1350 × 1080", label: "LinkedIn post", srcs: ["images/pp_li_post_wide.jpg"] },
+          { name: "Square", size: "1200 × 1200", label: "LinkedIn post", srcs: ["images/pp_li_sq_1.jpg", "images/pp_li_sq_2.jpg", "images/pp_li_sq_3.jpg"] },
+          { name: "Cover", size: "1920 × 1080", label: "LinkedIn event cover", srcs: ["images/pp_li_event_cover.jpg"] }
+        ], li.previousElementSibling || li, { title: "LinkedIn posts", sizeOnly: true });
+        retire(li); retire(st); retire(sq);
+      }
+    }, 50);
+  });
+</script>
+<script>
+  /* Unboxing Webinar landing page:
+     · desktop - the Replay page has no mobile design, so while Replay is shown
+       the phone steps aside (only the laptop), instead of showing an unrelated page;
+     · phones - ONE toggle instead of two stacked ones: Web | Mobile | Replay
+       (Web / Mobile = the registration page, Replay = the replay page).
+     Plus, on phones, the Instagram post carousel and the story in one block
+     (Post | Story), boxed at the post's height so nothing shifts. */
+  window.addEventListener("load", function () {
+    if (document.body.getAttribute("data-project") !== "unboxing-webinar-2025") return;
+    var grid = document.querySelector(".lp__grid"); if (!grid) return;
+    var tabs = grid.querySelector(".carousel__tabs");
+    var id = new URLSearchParams(location.search).get("id");
+    var proj = ((window.PORTFOLIO || {}).projects || []).filter(function (x) { return x.id === id; })[0];
+    var tdata = proj && proj.guide2 && proj.guide2.lpMock && proj.guide2.lpMock.tabs || [];
+    function syncPhone() {
+      var btns = tabs ? tabs.querySelectorAll(".ctab") : [], k = 0;
+      Array.prototype.forEach.call(btns, function (b, i) { if (b.classList.contains("is-active")) k = i; });
+      grid.classList.toggle("no-mobile", !!(tdata[k] && !tdata[k].mobile));
+    }
+    if (tabs) { tabs.addEventListener("click", function () { setTimeout(syncPhone, 0); }); syncPhone(); }
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    // one toggle on phones
+    var seg0 = document.querySelector(".mobhead .seg"); if (!seg0 || !tabs) return;
+    var btns = tabs.querySelectorAll(".ctab");
+    var opts = [{ n: "Web", tab: 0, v: "web" }, { n: "Mobile", tab: 0, v: "mobile" }];
+    for (var i = 1; i < btns.length; i++) opts.push({ n: btns[i].textContent.trim(), tab: i, v: "web" });
+    var seg = document.createElement("div"); seg.className = "seg seg--" + opts.length;
+    seg.innerHTML = '<i aria-hidden="true"></i>' + opts.map(function (o, k) { return '<button type="button" data-k="' + k + '"' + (k ? '' : ' class="on"') + '>' + o.n + '</button>'; }).join("");
+    seg0.parentNode.replaceChild(seg, seg0);
+    tabs.classList.add("m-hidden");
+    var webBtn = seg0.querySelector('[data-v="web"]'), mobBtn = seg0.querySelector('[data-v="mobile"]');
+    seg.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return; var o = opts[+b.dataset.k];
+      btns[o.tab].click();
+      (o.v === "mobile" ? mobBtn : webBtn).click();            // the original toggle still does the switching
+      seg.style.setProperty("--si", +b.dataset.k);
+      seg.querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", x === b); });
+    });
+    // Instagram post + story in one block
+    var row = document.querySelector(".uw-social-row");
+    if (row && window.mCombo) {
+      window.mCombo([
+        { name: "Post", size: "1080 × 1080", label: "Instagram post", srcs: ["images/sl_unboxwebinar3_00.jpg", "images/sl_unboxwebinar3_01.jpg", "images/sl_unboxwebinar3_02.jpg"] },
+        { name: "Story", size: "1080 × 1920", label: "Instagram story", srcs: ["images/sl_unboxwebinar4_00.jpg"] }
+      ], row, { boxRatio: 1 });
+      row.classList.add("m-hidden");
+    }
+  });
+</script>
+<script>
+  /* PHONES - Articulate Webinar social: the Static / Motion grid becomes one
+     large design at a time - a Static | Motion toggle on the format line, the
+     post name under it, swipe + progress bar through the six designs. */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    if (document.body.getAttribute("data-project") !== "articulate-webinar") return;
+    var block = document.querySelector(".articulate-social-grid"); if (!block) return;
+    var g = block.querySelector(".guide-imagegrid"); if (!g) return;
+    var cells = Array.prototype.slice.call(g.children);
+    var pairs = [];
+    for (var i = 0; i + 1 < cells.length; i += 2) {
+      var a = cells[i].querySelector("img, video"), b = cells[i + 1].querySelector("img, video");
+      if (a && b) pairs.push({ still: a.getAttribute("src"), motion: b.getAttribute("src") });
+    }
+    if (!pairs.length) return;
+    var cap = block.querySelector(".guide-imagegrid__caption"), capT = cap ? cap.textContent.trim() : "";
+    var cm = /^(.*?)\s*\(([^)]*)\)\s*$/.exec(capT), size = cm ? cm[2].replace(/\s*[×x]\s*/, " × ") : "", name = cm ? cm[1] : capT;
+    var w = document.createElement("div"); w.className = "mgifs mgrid mcombo mcombo--row";
+    w.innerHTML = '<div class="mobhead"><div class="seg seg--2"><i aria-hidden="true"></i><button type="button" data-m="0" class="on">Static</button><button type="button" data-m="1">Motion</button></div>' +
+      '<span class="carousel__subtitle mgifs__fmt"><span class="mgifs__size">' + size + '</span><span class="mgifs__dash"> - </span><span class="mgifs__net">' + name + '</span></span></div>' +
+      '<div class="mgifs__stage media--img"><img alt=""><video muted loop playsinline autoplay></video></div>' +
+      '<div class="carousel__meta mgifs__meta"><span class="pgbar"></span><span class="carousel__count"></span></div>';
+    [cap, block.querySelector(".carousel__collabels"), g].forEach(function (el) { if (el) el.classList.add("m-hidden"); });
+    g.parentNode.insertBefore(w, g);
+    var img = w.querySelector("img"), vid = w.querySelector("video"), box = w.querySelector(".mgifs__stage"), seg = w.querySelector(".seg");
+    var bar = w.querySelector(".pgbar"), cnt = w.querySelector(".carousel__count"), mode = 0, d = 0;
+    pairs.forEach(function () { bar.appendChild(document.createElement("i")); });
+    var t = new Image(); t.onload = function () {
+      var colW = box.clientWidth || w.clientWidth;
+      box.style.height = Math.min(colW / (t.naturalWidth / t.naturalHeight), colW * 1.25, window.innerHeight * 0.6).toFixed(1) + "px";
+    }; t.src = pairs[0].still;
+    function show(dir) {
+      var el = mode ? vid : img;
+      img.style.display = mode ? "none" : ""; vid.style.display = mode ? "" : "none";
+      var src = mode ? pairs[d].motion : pairs[d].still;
+      if (el.getAttribute("src") !== src) { el.src = src; if (mode) { var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {}); } }
+      if (dir && el.animate) el.animate([{ transform: "translateX(" + (dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
+      seg.style.setProperty("--si", mode);
+      seg.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", +b.dataset.m === mode); });
+      Array.prototype.forEach.call(bar.children, function (c, k) { c.classList.toggle("on", k === d); });
+      cnt.textContent = (d + 1) + " / " + pairs.length;
+    }
+    seg.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; mode = +b.dataset.m; show(0); });
+    var x0 = null, y0 = null;
+    box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    box.addEventListener("touchend", function (e) {
+      if (x0 === null) return; var tt = e.changedTouches[0], dx = tt.clientX - x0, dy = tt.clientY - y0; x0 = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) { d = (d + (dx < 0 ? 1 : -1) + pairs.length) % pairs.length; show(dx < 0 ? 1 : -1); }
+    }, { passive: true });
+    show(0);
+  });
+</script>
+<script>
+  /* PHONES - Tact It: all the user flows in one place (swipe + progress bar +
+     page count, the flow's name above it changing with it), and the two poster
+     walls the same way. */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    var pid = document.body.getAttribute("data-project");
+    if (pid !== "changemaker" && pid !== "final-project") return;
+    function pager(items, before, opts) {
+      var w = document.createElement("div"); w.className = "mgifs mpager";
+      w.innerHTML = (opts.label ? '<div class="carousel__subtitle mpager__label"></div>' : '') +
+        '<div class="mgifs__stage media--img"></div>' +
+        '<div class="carousel__meta mgifs__meta"><span class="pgbar"></span><span class="carousel__count"></span></div>';
+      before.parentNode.insertBefore(w, before);
+      var box = w.querySelector(".mgifs__stage"), lab = w.querySelector(".mpager__label"), bar = w.querySelector(".pgbar"), cnt = w.querySelector(".carousel__count");
+      items.forEach(function () { bar.appendChild(document.createElement("i")); });
+      var isVid = /\.mp4/i.test(items[0].src), el = document.createElement(isVid ? "video" : "img");
+      if (isVid) { el.muted = true; el.loop = true; el.autoplay = true; el.setAttribute("playsinline", ""); }
+      box.appendChild(el);
+      function fitTo(r) { var colW = box.clientWidth || w.clientWidth; box.style.height = Math.min(colW / r, colW * 1.25, window.innerHeight * 0.6).toFixed(1) + "px"; }
+      if (isVid) { var v = document.createElement("video"); v.preload = "metadata"; v.muted = true; v.onloadedmetadata = function () { if (v.videoWidth) fitTo(v.videoWidth / v.videoHeight); }; v.src = items[0].src; }
+      else { var t = new Image(); t.onload = function () { fitTo(t.naturalWidth / t.naturalHeight); }; t.src = items[0].src; }
+      var k = 0;
+      function show(dir) {
+        el.src = items[k].src; if (isVid) { var pr = el.play(); if (pr && pr.catch) pr.catch(function () {}); }
+        else { var h1 = document.querySelector("h1"); el.alt = (h1 ? h1.textContent.trim() + " - " : "") + "image " + (k + 1) + " of " + items.length; }
+        if (dir && el.animate) el.animate([{ transform: "translateX(" + (dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
+        if (lab) lab.textContent = items[k].label || "";
+        Array.prototype.forEach.call(bar.children, function (c, ci) { c.classList.toggle("on", ci === k); });
+        cnt.textContent = (k + 1) + " / " + items.length;
+      }
+      var x0 = null, y0 = null;
+      box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+      box.addEventListener("touchend", function (e) {
+        if (x0 === null) return; var tt = e.changedTouches[0], dx = tt.clientX - x0, dy = tt.clientY - y0; x0 = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) { k = (k + (dx < 0 ? 1 : -1) + items.length) % items.length; show(dx < 0 ? 1 : -1); }
+      }, { passive: true });
+      show(0);
+      return w;
+    }
+    if (pid === "final-project") {
+      // Flow 1 / Flow 2 in one carousel
+      var fg = Array.prototype.filter.call(document.querySelectorAll(".guide-imagegrid"), function (g) { return /nbc-flow-1/.test(g.innerHTML); })[0];
+      if (fg) {
+        var fitems = Array.prototype.map.call(fg.children, function (c) { var v = c.querySelector("video"), l = c.querySelector(".carousel__subtitle"); return v ? { src: v.getAttribute("src"), label: l ? l.textContent.trim() : "" } : null; }).filter(Boolean);
+        var fb = fg.closest(".guide-block") || fg; pager(fitems, fb, { label: true }).classList.add("m-gap-top"); fb.classList.add("m-hidden");
+      }
+      // the 18 posters, one at a time
+      var pi = Array.prototype.filter.call(document.querySelectorAll("img"), function (i) { return /nbc-posters(-lite)?\.(png|webp)/.test(i.getAttribute("src") || ""); })[0];
+      if (pi) {
+        var ph = pi.closest(".media--img") || pi, list = [];
+        for (var q = 1; q <= 18; q++) list.push({ src: "images/nbc-cell-" + (q < 10 ? "0" : "") + q + ".jpg" });
+        pager(list, ph, {}); ph.classList.add("m-hidden");
+      }
+      return;
+    }
+    // flows
+    var grids = Array.prototype.filter.call(document.querySelectorAll(".guide-imagegrid"), function (g) { return /tactit-flow-/.test(g.innerHTML); });
+    if (grids.length) {
+      var items = [];
+      grids.forEach(function (g) {
+        Array.prototype.forEach.call(g.children, function (c) {
+          var v = c.querySelector("video"), l = c.querySelector(".carousel__subtitle");
+          if (v) items.push({ src: v.getAttribute("src"), label: l ? l.textContent.trim() : "" });
+        });
+      });
+      var first = grids[0].closest(".guide-block") || grids[0];
+      pager(items, first, { label: true });
+      grids.forEach(function (g) { (g.closest(".guide-block") || g).classList.add("m-hidden"); });
+    }
+    // graphic language: the pieces trimmed to their own artwork (no empty canvas
+    // around them), centred and a size larger, with even spacing
+    document.querySelectorAll('.guide-imagegrid img[src*="tactit-gl-"]').forEach(function (im) {
+      im.src = im.getAttribute("src").replace(/\.png(\?.*)?$/, "-m.png");
+      var gb = im.closest(".guide-block"); if (gb) gb.classList.add("m-gl");
+    });
+    // posters: the two walls
+    var pimg = Array.prototype.filter.call(document.querySelectorAll("img"), function (i) { return /tactit-posters(-lite)?\.(png|webp)/.test(i.getAttribute("src") || ""); })[0];
+    if (pimg) {
+      var holder = pimg.closest(".media--img") || pimg;
+      pager([{ src: "images/tactit-posters-a.jpg" }, { src: "images/tactit-posters-b.jpg" }], holder, {});
+      holder.classList.add("m-hidden");
+    }
+  });
+</script>
+<script>
+  /* PHONES - The Waiters Protest: the six Instagram posts in a swipe carousel
+     (progress bar + count), with the Instagram story/profile fixed on its right
+     at the post's height, in proportion. */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    if (document.body.getAttribute("data-project") !== "waiters-protest") return;
+    var feed = document.querySelector(".guide-feed"); if (!feed) return;
+    var posts = Array.prototype.map.call(feed.querySelectorAll(".guide-grid img"), function (i) { return i.getAttribute("src"); });
+    var side = feed.querySelector(".guide-feed__side img"); if (!posts.length || !side) return;
+    var w = document.createElement("div"); w.className = "mwp";
+    w.innerHTML = '<div class="mwp__row"><div class="mwp__post media--img"><img alt=""></div><div class="mwp__side media--img"><img alt="" src="' + side.getAttribute("src") + '"></div></div>' +
+      '<div class="carousel__meta mgifs__meta"><span class="pgbar"></span><span class="carousel__count"></span></div>';
+    feed.parentNode.insertBefore(w, feed); feed.classList.add("m-hidden");
+    var img = w.querySelector(".mwp__post img"), box = w.querySelector(".mwp__post"), bar = w.querySelector(".pgbar"), cnt = w.querySelector(".carousel__count"), k = 0;
+    posts.forEach(function () { bar.appendChild(document.createElement("i")); });
+    function show(dir) {
+      img.src = posts[k];
+      if (dir && img.animate) img.animate([{ transform: "translateX(" + (dir * 30) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 240, easing: "cubic-bezier(0,0,.2,1)" });
+      Array.prototype.forEach.call(bar.children, function (c, ci) { c.classList.toggle("on", ci === k); });
+      cnt.textContent = (k + 1) + " / " + posts.length;
+    }
+    var x0 = null, y0 = null;
+    box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    box.addEventListener("touchend", function (e) {
+      if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) { k = (k + (dx < 0 ? 1 : -1) + posts.length) % posts.length; show(dx < 0 ? 1 : -1); }
+    }, { passive: true });
+    show(0);
+  });
+</script>
+<script>
+  /* PHONES - a row of same-kind pieces (First Rain posters) becomes a swipe
+     carousel: one large piece, progress bar + count, fixed box height. */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    var map = { "first-rain-festival": /yorafest-poster-/, "sugar-makes-you-smile": /sugar-poster-/ };
+    var re = map[document.body.getAttribute("data-project")]; if (!re) return;
+    Array.prototype.forEach.call(document.querySelectorAll(".guide-row"), function (row) {
+      var srcs = Array.prototype.map.call(row.querySelectorAll("img"), function (i) { return i.getAttribute("src"); }).filter(function (x) { return re.test(x); });
+      // First Rain: the sharpest posters (4, 5) open the carousel, then 1–3 (lightly sharpened)
+      if (/yorafest-poster-/.test(srcs[0] || "")) {
+        srcs = srcs.map(function (x) { return x.replace(/\.png$/, "-hd.png"); });
+        var ord = [1, 5, 4, 2, 3];
+        srcs.sort(function (a, b) { return ord.indexOf(+a.match(/poster-(\d)/)[1]) - ord.indexOf(+b.match(/poster-(\d)/)[1]); });
+      }
+      if (srcs.length < 2) return;
+      var w = document.createElement("div"); w.className = "mgifs mpager";
+      w.innerHTML = '<div class="mgifs__stage media--img"><img alt=""></div><div class="carousel__meta mgifs__meta"><span class="pgbar"></span><span class="carousel__count"></span></div>';
+      row.parentNode.insertBefore(w, row); row.classList.add("m-hidden");
+      var img = w.querySelector("img"), box = w.querySelector(".mgifs__stage"), bar = w.querySelector(".pgbar"), cnt = w.querySelector(".carousel__count"), k = 0, rs = [];
+      srcs.forEach(function (src, i) { bar.appendChild(document.createElement("i")); var t = new Image(); t.onload = function () {
+        rs[i] = t.naturalWidth / t.naturalHeight; var ok = rs.filter(function (x) { return x > 0; });
+        var colW = box.clientWidth || w.clientWidth; box.style.height = Math.min(colW / Math.min.apply(null, ok), colW * 1.25, window.innerHeight * 0.6).toFixed(1) + "px";
+      }; t.src = src; });
+      function show(dir) {
+        img.src = srcs[k];
+        if (dir && img.animate) img.animate([{ transform: "translateX(" + (dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
+        Array.prototype.forEach.call(bar.children, function (c, ci) { c.classList.toggle("on", ci === k); });
+        cnt.textContent = (k + 1) + " / " + srcs.length;
+      }
+      var x0 = null, y0 = null;
+      box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+      box.addEventListener("touchend", function (e) {
+        if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) { k = (k + (dx < 0 ? 1 : -1) + srcs.length) % srcs.length; show(dx < 0 ? 1 : -1); }
+      }, { passive: true });
+      show(0);
+    });
+  });
+</script>
+<script>
+  /* PHONES - book / catalog carousels whose pages change shape (a cover, then
+     wide spreads): one box height for all pages (the tallest page), every page
+     centred in it at its own proportion - so nothing below moves while paging. */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    var id = new URLSearchParams(location.search).get("id");
+    var proj = ((window.PORTFOLIO || {}).projects || []).filter(function (x) { return x.id === id; })[0]; if (!proj) return;
+    document.querySelectorAll(".carousel__stage.has-pg").forEach(function (st) {
+      if (st.classList.contains("fixbox") || st.classList.contains("sizeswitch")) return;
+      var im = st.querySelector(".carousel__figure img"); if (!im) return;
+      var km = /sl_(.+?)_\d+\.([a-z0-9]+)/i.exec(im.getAttribute("src") || ""); if (!km) return;
+      var cfg = null; (function walk(o) { if (!o || typeof o !== "object" || cfg) return; if (o.key === km[1] && o.count) { cfg = o; return; } for (var k in o) walk(o[k]); })(proj);
+      if (!cfg || cfg.count < 2) return;
+      var rs = [], n = cfg.count;
+      for (var i = 0; i < n; i++) (function (i) {
+        var t = new Image(); t.onload = function () {
+          rs[i] = t.naturalWidth / t.naturalHeight;
+          var ok = rs.filter(function (x) { return x > 0; }); if (ok.length < n) return;
+          var mn = Math.min.apply(null, ok), mx = Math.max.apply(null, ok); if (mx / mn < 1.05) return;
+          var colW = st.clientWidth;
+          // books: the box follows the most common page shape (the wide spreads);
+          // taller pages (the cover) are scaled to that same height, centred
+          var counts = {}, best = mx; ok.forEach(function (r) { var q = r.toFixed(1); counts[q] = (counts[q] || 0) + 1; });
+          var top = 0; Object.keys(counts).forEach(function (q) { if (counts[q] > top) { top = counts[q]; best = +q; } });
+          var ref = ok.filter(function (r) { return Math.abs(r - best) < .06; }).reduce(function (a, b) { return Math.min(a, b); }, 99);
+          st.style.setProperty("--boxh", Math.min(colW / ref, colW * 1.25, window.innerHeight * 0.6).toFixed(1) + "px");
+          st.classList.add("fixbox", "fixbox--book");
+        };
+        t.src = "images/sl_" + km[1] + "_" + (i < 10 ? "0" : "") + i + "." + km[2];
+      })(i);
+    });
+  });
+</script>
+<script>
+  /* PHONES - Typographic Hafla graphic language: trimmed to the artwork so it
+     reads larger, centred */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    if (document.body.getAttribute("data-project") !== "typographic-hafla") return;
+    document.querySelectorAll('img[src*="typographic-hafla-colors.png"], img[src*="typographic-hafla-typography.png"]').forEach(function (im) {
+      im.src = im.getAttribute("src").replace(".png", "-m.png"); im.classList.add("m-hafla-gl");
+    });
+  });
+</script>
+<script>
+  /* PHONES - live prototypes built for desktop (SecureOT): the site is rendered
+     at its desktop width and scaled down whole into a phone-shaped window, so
+     nothing is cut off (scroll inside it); a button opens it full screen. */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    document.querySelectorAll(".guide-embed").forEach(function (box) {
+      var f = box.querySelector("iframe"); if (!f || !/prototypes\//.test(f.getAttribute("src") || "")) return;
+      var DW = 1280;
+      box.classList.add("m-proto");
+      function fit() {
+        var w = box.clientWidth, s = w / DW;
+        f.style.width = DW + "px"; f.style.height = (box.clientHeight / s) + "px";
+        f.style.transform = "scale(" + s + ")"; f.style.transformOrigin = "0 0";
+      }
+      fit(); window.addEventListener("resize", fit);
+      var btn = document.createElement("a"); btn.className = "m-proto__full"; btn.href = f.getAttribute("src"); btn.target = "_blank"; btn.rel = "noopener";
+      btn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg>Open full screen';
+      box.parentNode.insertBefore(btn, box.nextSibling);
+    });
+  });
+</script>
+<script>
+  /* PHONES - It Takes 2 for Tango: the guide booklet (a Hebrew, right-to-left
+     booklet) becomes one page at a time like the other books: progress bar +
+     count, fixed box height, and it turns the Hebrew way (swipe right for the
+     next page, the new page comes in from the left). */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    if (document.body.getAttribute("data-project") !== "tango") return;
+    var st = document.querySelector(".img-stack"); if (!st) return;
+    var srcs = Array.prototype.map.call(st.querySelectorAll("img"), function (i) { return i.getAttribute("src"); });
+    if (srcs.length < 2) return;
+    var w = document.createElement("div"); w.className = "mgifs mpager";
+    w.innerHTML = '<div class="mgifs__stage media--img"><img alt=""></div><div class="carousel__meta mgifs__meta"><span class="pgbar"></span><span class="carousel__count"></span></div>';
+    st.parentNode.insertBefore(w, st); st.classList.add("m-hidden");
+    var img = w.querySelector("img"), box = w.querySelector(".mgifs__stage"), bar = w.querySelector(".pgbar"), cnt = w.querySelector(".carousel__count"), k = 0;
+    srcs.forEach(function () { bar.appendChild(document.createElement("i")); });
+    var t = new Image(); t.onload = function () { var colW = box.clientWidth || w.clientWidth; box.style.height = (colW * t.naturalHeight / t.naturalWidth).toFixed(1) + "px"; }; t.src = srcs[0];
+    function show(dir) {
+      img.src = srcs[k]; img.alt = "It Takes 2 for Tango - guide page " + (k + 1) + " of " + srcs.length;
+      // right-to-left: the next page arrives from the left
+      if (dir && img.animate) img.animate([{ transform: "translateX(" + (-dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
+      Array.prototype.forEach.call(bar.children, function (c, ci) { c.classList.toggle("on", ci === k); });
+      cnt.textContent = (k + 1) + " / " + srcs.length;
+    }
+    var x0 = null, y0 = null;
+    box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    box.addEventListener("touchend", function (e) {
+      if (x0 === null) return; var tt = e.changedTouches[0], dx = tt.clientX - x0, dy = tt.clientY - y0; x0 = null;
+      if (!(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3)) return;
+      var d = dx > 0 ? 1 : -1;                       // swipe right = next page (Hebrew)
+      k = (k + d + srcs.length) % srcs.length; show(d);
+    }, { passive: true });
+    show(0);
+  });
+</script>
+<script>
+  /* DESKTOP - the page count sits under its design and ends on the design's
+     own right edge (not the column's), whatever the design's width. */
+  (function () {
+    var mq = window.matchMedia("(min-width: 721px)");
+    function drawn(el) {
+      var r = el.getBoundingClientRect();
+      if (el.tagName === "IMG" && el.naturalWidth && /contain|scale-down/.test(getComputedStyle(el).objectFit)) {
+        var s = Math.min(r.width / el.naturalWidth, r.height / el.naturalHeight), w = el.naturalWidth * s;
+        var px = parseFloat((getComputedStyle(el).objectPosition || "50%").split(" ")[0]) / 100; if (isNaN(px)) px = .5;
+        return { left: r.left + (r.width - w) * px, right: r.left + (r.width - w) * px + w };
+      }
+      return r;
+    }
+    function stageOf(meta) {
+      var st = meta.previousElementSibling;
+      while (st && !(st.classList && st.classList.contains("carousel__stage"))) st = st.previousElementSibling;
+      return st;
+    }
+    function align() {
+      Array.prototype.forEach.call(document.querySelectorAll(".carousel__meta .pg"), function (pg) {
+        pg.style.transform = "";
+        if (!mq.matches) return;
+        var meta = pg.closest(".carousel__meta"), st = meta && stageOf(meta); if (!st || !meta.offsetParent) return;
+        var sr = st.getBoundingClientRect(), R = -1e9;
+        Array.prototype.forEach.call(st.querySelectorAll("img, video, iframe, canvas, .mock"), function (el) {
+          var r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+          if (r.width < 20 || r.height < 20 || cs.visibility === "hidden" || +cs.opacity < .5) return;
+          var cx = (r.left + r.right) / 2; if (cx < sr.left || cx > sr.right) return;
+          var hid = false; for (var p = el.parentElement; p && p !== st; p = p.parentElement) { var pc = getComputedStyle(p); if (pc.display === "none" || pc.visibility === "hidden" || +pc.opacity < .5) { hid = true; break; } }
+          if (hid) return;
+          R = Math.max(R, drawn(el).right);
+        });
+        if (R < 0) return;
+        var d = Math.round(R - pg.getBoundingClientRect().right);
+        if (Math.abs(d) > 1) pg.style.transform = "translateX(" + d + "px)";
+      });
+    }
+    var t1, t2;
+    function soon() { clearTimeout(t1); clearTimeout(t2); t1 = setTimeout(align, 60); t2 = setTimeout(align, 500); }
+    window.addEventListener("load", soon);
+    window.addEventListener("resize", soon);
+    document.addEventListener("click", soon, true);
+    document.addEventListener("keyup", soon, true);
+    document.addEventListener("load", function (e) { if (e.target.tagName === "IMG") soon(); }, true);
+  })();
+</script>
+<script>
+  /* phone menu */
+  (function () {
+    var menu = document.getElementById("navMenu"), burger = document.getElementById("navBurger"),
+        scrim = document.getElementById("navScrim"), close = document.getElementById("navClose");
+    if (!menu || !burger) return;
+    function setMenu(open) {
+      menu.classList.toggle("is-open", open); if (scrim) scrim.classList.toggle("is-open", open);
+      menu.setAttribute("aria-hidden", open ? "false" : "true"); burger.setAttribute("aria-expanded", open ? "true" : "false");
+      burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      document.body.classList.toggle("menu-open", open);
+    }
+    burger.addEventListener("click", function () { setMenu(!menu.classList.contains("is-open")); });
+    if (close) close.addEventListener("click", function () { setMenu(false); });
+    if (scrim) scrim.addEventListener("click", function () { setMenu(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
+    menu.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", function () { setMenu(false); }); });
+  })();
+</script>
+</body>
+</html>

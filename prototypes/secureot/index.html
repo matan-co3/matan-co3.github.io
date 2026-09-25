@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><meta name="viewport" content="width=device-width,initial-scale=1"><title>SecureOT — Transparent Security. Concrete Resilience.</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><script src="./state.js"></script><script src="./image-slot.js"></script><style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#04101c;color:#f2fbff;font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#6fe3f7;text-decoration:none}a:hover{color:#a8f0ff}
+@keyframes soScan{0%{transform:translateY(-64px)}100%{transform:translateY(470px)}}
+@keyframes soFloat{0%,100%{transform:translateY(-6px)}50%{transform:translateY(6px)}}
+@keyframes soPulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes otDive{0%{transform:scale(.09);opacity:0}18%{opacity:1}100%{transform:scale(1.02);opacity:0}}
+@keyframes otMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes otSweep{0%{transform:translateY(-100%)}100%{transform:translateY(560%)}}
+@keyframes otBelt{0%{transform:translate(0,0);opacity:0}12%{opacity:1}88%{opacity:1}100%{transform:translate(108px,61.2px);opacity:0}}
+@keyframes otFlow{to{stroke-dashoffset:-160}}
+@keyframes otNode{0%,100%{r:8;opacity:.35}50%{r:12;opacity:.06}}
+@keyframes otRise{0%{transform:translateY(0);opacity:0}14%{opacity:1}86%{opacity:1}100%{transform:translateY(-186px);opacity:0}}
+@keyframes otRing{0%{transform:scale(.55);opacity:.85}100%{transform:scale(1.5);opacity:0}}
+[data-z]{opacity:1}
+[data-z].ot-out{opacity:0;transform:perspective(1400px) translateZ(-180px) translateY(14px)}
+[data-z].ot-anim{transition:opacity .85s cubic-bezier(.16,.84,.3,1),transform .85s cubic-bezier(.16,.84,.3,1)}
+.ot-reason-card:hover .ot-reason-icon{transform:scale(1.08);filter:drop-shadow(0 0 10px rgba(0,196,228,.55))}
+</style><template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#04101c"></rect><g fill="none" stroke="#00c4e4" stroke-width="1.6"><rect x="24" y="24" width="52" height="52"></rect><rect x="38" y="38" width="24" height="24"></rect><path d="M24 24 38 38M76 24 62 38M76 76 62 62M24 76 38 62"></path></g></svg></template></helmet>
+
+<div style="position:relative;min-height:100vh;overflow-x:hidden;background:#04101c">
+
+<div style="position:fixed;inset:0;z-index:1;pointer-events:none">
+<div style="position:absolute;top:0;bottom:0;left:12%;width:1px;background:rgba(160,205,225,.09)"></div>
+<div style="position:absolute;top:0;bottom:0;left:38%;width:1px;background:rgba(160,205,225,.09)"></div>
+<div style="position:absolute;top:0;bottom:0;left:62%;width:1px;background:rgba(160,205,225,.09)"></div>
+<div style="position:absolute;top:0;bottom:0;left:88%;width:1px;background:rgba(160,205,225,.09)"></div>
+</div>
+
+<div style="position:relative;z-index:2">
+
+<header style="position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:16px clamp(20px,4vw,64px);background:rgba(4,16,28,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(120,200,230,.12)">
+<a href="#top" style="display:flex;align-items:center"><img src="assets/logo-light-text.png" alt="SecureoT" style="height:30px;width:auto;display:block"></a>
+<nav style="display:flex;align-items:center;gap:clamp(16px,2.4vw,34px)">
+<a href="#product" style="font:500 14.5px 'IBM Plex Sans',sans-serif;color:#c3d7e6;transition:color .2s" style-hover="color:#6fe3f7">Products</a>
+<a href="#inside" style="font:500 14.5px 'IBM Plex Sans',sans-serif;color:#c3d7e6;transition:color .2s" style-hover="color:#6fe3f7">Visibility</a>
+<a href="#about" style="font:500 14.5px 'IBM Plex Sans',sans-serif;color:#c3d7e6;transition:color .2s" style-hover="color:#6fe3f7">Why SecureoT</a>
+<a href="#people" style="font:500 14.5px 'IBM Plex Sans',sans-serif;color:#c3d7e6;transition:color .2s" style-hover="color:#6fe3f7">On Shift</a>
+<a href="#contact" style="font:600 14px 'IBM Plex Sans',sans-serif;color:#02131d;background:linear-gradient(135deg,#00c4e4,#39e0f5);padding:12px 24px;border-radius:6px;box-shadow:0 6px 20px rgba(0,196,228,.28);transition:transform .18s,box-shadow .18s" style-hover="box-shadow:0 10px 28px rgba(0,196,228,.5);color:#02131d">Talk to Sales</a>
+</nav>
+</header>
+
+<section id="top" onMouseMove="{{ heroMove }}" onMouseLeave="{{ heroLeave }}" onClick="{{ heroClick }}" style="position:relative;padding:clamp(56px,7vw,96px) clamp(20px,4vw,64px) clamp(56px,6vw,88px);overflow:hidden;background:radial-gradient(1100px 620px at 78% 18%,rgba(0,196,228,.20),transparent 62%),radial-gradient(900px 520px at 8% 84%,rgba(77,124,255,.16),transparent 60%),linear-gradient(180deg,#04101c,#061b2c)">
+<div style="position:absolute;top:0;right:0;bottom:0;width:58%;overflow:hidden;pointer-events:none;mask-image:linear-gradient(90deg,transparent 0,transparent 12%,#000 46%);-webkit-mask-image:linear-gradient(90deg,transparent 0,transparent 12%,#000 46%)">
+<img src="assets/hero-factory-dark.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.2">
+<div style="{{ xrayStyle }}">
+<img src="assets/hero-factory-xray.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9"><div style="position:absolute;inset:0;background:radial-gradient(320px at 50% 50%,rgba(0,196,228,.10),transparent 70%)"></div>
+<div style="position:absolute;left:24%;top:58%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:rgba(168,240,255,.75);box-shadow:0 0 8px rgba(111,227,247,.5)"></div>
+<div style="position:absolute;left:46%;top:66%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:rgba(168,240,255,.75);box-shadow:0 0 8px rgba(111,227,247,.5)"></div>
+<div style="position:absolute;left:78%;top:70%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:rgba(168,240,255,.75);box-shadow:0 0 8px rgba(111,227,247,.5)"></div>
+<div style="position:absolute;left:64%;top:84%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:rgba(168,240,255,.75);box-shadow:0 0 8px rgba(111,227,247,.5)"></div>
+</div>
+<div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,16,28,.85) 0,rgba(4,16,28,.45) 38%,transparent 72%)"></div>
+</div>
+<canvas ref="{{ heroGridRef }}" style="position:absolute;inset:0;display:block;pointer-events:none"></canvas>
+<div style="position:absolute;top:0;right:0;bottom:0;width:58%;overflow:hidden;pointer-events:none;z-index:1;mask-image:linear-gradient(90deg,transparent 0,transparent 12%,#000 46%);-webkit-mask-image:linear-gradient(90deg,transparent 0,transparent 12%,#000 46%)">
+<div style="{{ xrayStyle }}">
+<sc-for list="{{ anomalies }}" as="an" hint-placeholder-count="3">
+<div style="{{ an.wrap }}">
+<svg viewBox="0 0 160 160" style="position:absolute;left:-80px;top:-80px;width:160px;height:160px;overflow:visible;pointer-events:none">
+<g fill="none" stroke="{{ an.flowColor }}" stroke-width="1.6" opacity="{{ an.flowOpacity }}" style="transition:stroke .35s,opacity .35s"><path d="M80 80 128 56M80 80 40 112M80 80 84 24"></path></g>
+<g fill="none" stroke="{{ an.flowColor }}" stroke-width="1.4" stroke-dasharray="6 10" opacity="{{ an.flowOpacity }}" style="animation:otFlow 3.4s linear infinite;transition:stroke .35s,opacity .35s"><path d="M80 80 128 56M80 80 40 112M80 80 84 24"></path></g>
+</svg>
+<div style="{{ an.ring }}"></div>
+<div onClick="{{ an.click }}" style="{{ an.dot }}"></div>
+<div style="{{ an.tip }}">{{ an.text }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="position: relative; z-index: 1; max-width: 1440px; margin: 0 auto; display: grid; grid-template-columns: minmax(320px,1fr) minmax(320px,560px); gap: clamp(32px,4vw,64px); align-items: center; width: 1312px; height: 544px">
+
+<div data-z="">
+<div style="display:inline-flex;align-items:center;gap:10px;padding:7px 14px 7px 10px;border:1px solid rgba(0,196,228,.35);border-radius:100px;background:rgba(0,196,228,.08);margin-bottom:28px">
+<div style="width:16px;height:18px;background:#00c4e4;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)"></div>
+<div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#7fe4f6">DEEP PACKET INSPECTION FOR SCADA &amp; ICS</div>
+</div>
+<h1 style="margin:0 0 22px;font:600 clamp(38px,4.6vw,66px)/1.04 'Space Grotesk',sans-serif;letter-spacing:-2.2px;color:#f2fbff;text-wrap:pretty">Transparent security.<br><span style="background:linear-gradient(120deg,#00c4e4 15%,#69a8ff 85%);-webkit-background-clip:text;background-clip:text;color:transparent">Concrete resilience.</span></h1>
+<p style="margin:0 0 36px;font:400 19px/1.65 'IBM Plex Sans',sans-serif;color:#b2cbdc;max-width:560px;text-wrap:pretty">We map and defend complex industrial networks while they keep running — every asset, every command, every anomaly, in real time. Security you can see through, not trip over.</p>
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+<a href="#product" style="font:600 16px 'IBM Plex Sans',sans-serif;color:#02131d;background:linear-gradient(135deg,#00c4e4,#4de3f7);padding:17px 32px;border-radius:8px;box-shadow:0 14px 38px rgba(0,196,228,.3);transition:transform .18s,box-shadow .18s" style-hover="box-shadow:0 18px 46px rgba(0,196,228,.5);color:#02131d">Explore SCADASCOPE</a>
+<a href="#contact" style="font:600 16px 'IBM Plex Sans',sans-serif;color:#dff4fb;padding:17px 30px;border-radius:8px;border:1px solid rgba(150,215,235,.3);background:rgba(255,255,255,.03);transition:background .2s,border-color .2s" style-hover="background:rgba(0,196,228,.14);color:#eaf7fc">Talk to Sales</a>
+</div><div style="display: flex; flex-wrap: wrap; gap: 32px; margin-top: 44px; padding-top: 28px; width: 539px; height: 143px">
+<div><div style="font:600 22px 'Space Grotesk',sans-serif;color:#f2fbff">40+</div><div style="font:400 12.5px 'IBM Plex Mono',monospace;color:#8fa9bb;letter-spacing:.06em">OT PROTOCOLS PARSED</div></div>
+<div><div style="font:600 22px 'Space Grotesk',sans-serif;color:#f2fbff">&lt;1ms</div><div style="font:400 12.5px 'IBM Plex Mono',monospace;color:#8fa9bb;letter-spacing:.06em">PASSIVE DPI LATENCY</div></div>
+<div><div style="font:600 22px 'Space Grotesk',sans-serif;color:#f2fbff">24/7</div><div style="font:400 12.5px 'IBM Plex Mono',monospace;color:#8fa9bb;letter-spacing:.06em">AI ANOMALY WATCH</div></div>
+</div>
+
+</div>
+</div>
+</section>
+
+
+
+<section style="position: relative; padding: 30px 0; overflow: hidden; background: linear-gradient(180deg, #081F34, #41DFF426, #051725)">
+
+<div style="position:relative;display:flex;width:200%;animation:otMarquee 34s linear infinite">
+<div style="flex:1;display:flex;justify-content:space-around">
+<sc-for list="{{ sectors }}" as="s" hint-placeholder-count="6">
+<div style="font: 500 12.5px 'IBM Plex Mono',monospace; letter-spacing: .2em; color: #C1CBD1; white-space: nowrap; padding: 0 34px">{{ s }}</div>
+</sc-for>
+</div>
+<div style="flex:1;display:flex;justify-content:space-around">
+<sc-for list="{{ sectors }}" as="s" hint-placeholder-count="6">
+<div style="font:500 12.5px 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#8fa9bb;white-space:nowrap;padding:0 34px">{{ s }}</div>
+</sc-for>
+</div>
+</div>
+</section><section style="position:relative;padding:clamp(54px,6vw,96px) clamp(20px,4vw,64px);background:linear-gradient(180deg,#051826,#041420);overflow:hidden" onMouseMove="{{ gridMove }}" onMouseLeave="{{ gridLeave }}">
+<div style="position:absolute;inset:0;background-image:linear-gradient(rgba(160,205,225,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(160,205,225,.08) 1px,transparent 1px);background-size:55px 55px;mask-image:radial-gradient(900px 460px at 60% 50%,#000,transparent 78%);pointer-events:none"></div>
+<div style="{{ gridGlowStyle }}"></div>
+<div data-z="" style="position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:minmax(120px,180px) minmax(280px,1fr);gap:clamp(22px,3vw,48px);align-items:start">
+<div style="font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#00c4e4;padding-top:14px">POSITIONING</div>
+<div style="min-width:0">
+<h2 style="margin:0 0 20px;font:600 clamp(28px,3.2vw,46px)/1.08 'Space Grotesk',sans-serif;letter-spacing:-1.6px;color:#f2fbff">See every layer. Protect every operation.</h2>
+<p style="margin:0;font:400 clamp(17px,1.5vw,20px)/1.66 'IBM Plex Sans',sans-serif;color:#a9c6d8;max-width:760px;text-wrap:pretty">SecureOT brings real-time visibility and agentless protection to complex operational networks, helping critical systems run continuously, securely, and with confidence.</p>
+</div>
+</div>
+</section>
+
+<section id="about" style="padding:clamp(60px,6.6vw,100px) clamp(20px,4vw,64px);background:linear-gradient(180deg,#041420,#031019);border-top:1px solid rgba(120,200,230,.1)">
+<div style="max-width:1440px;margin:0 auto">
+<div data-z="" style="max-width:640px;margin-bottom:clamp(34px,4vw,52px)">
+<div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:#00c4e4;margin-bottom:16px">WHY SECUREOT</div>
+<h2 style="margin:0;font:600 clamp(30px,3.3vw,46px)/1.1 'Space Grotesk',sans-serif;letter-spacing:-1.4px;color:#f2fbff">Why OT Teams Choose SecureoT Labs</h2>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px">
+<sc-for list="{{ reasons }}" as="r" hint-placeholder-count="3">
+<div data-z="" class="ot-reason-card" style="position:relative;border:1px solid rgba(150,200,225,.16);border-radius:14px;padding:34px 30px;background:linear-gradient(165deg,rgba(0,196,228,.07),rgba(255,255,255,.02));overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s" style-hover="transform:translateY(-6px);border-color:rgba(0,196,228,.5);box-shadow:0 24px 60px rgba(0,0,0,.45)">
+<div style="position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,228,.16),transparent 65%)"></div>
+<div class="ot-reason-icon" style="position:relative;width:46px;height:52px;margin-bottom:24px;background:{{ r.grad }};clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);display:flex;align-items:center;justify-content:center;transition:transform .3s ease,filter .3s ease"><svg viewBox="0 0 24 24" style="width:24px;height:24px;display:block" fill="none" stroke="#04101c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ r.icon }}"></path></svg></div>
+<h3 style="margin:0 0 12px;font:600 23px 'Space Grotesk',sans-serif;color:#f2fbff;letter-spacing:-.4px">{{ r.title }}</h3>
+<p style="margin:0;font:400 16px/1.65 'IBM Plex Sans',sans-serif;color:#9fbdd2">{{ r.body }}</p>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="product" style="padding:clamp(60px,6.6vw,100px) clamp(20px,4vw,64px);background:radial-gradient(900px 500px at 15% 10%,rgba(77,124,255,.12),transparent 60%),#030f19;border-top:1px solid rgba(120,200,230,.1)">
+<div style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:clamp(32px,4vw,64px);align-items:center">
+<div data-z="">
+<div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:#00c4e4;margin-bottom:16px">SCADASCOPE</div>
+<h2 style="margin:0 0 20px;font:600 clamp(30px,3.2vw,44px)/1.1 'Space Grotesk',sans-serif;letter-spacing:-1.4px;color:#f2fbff;text-wrap:pretty">Total Visibility into Your Industrial Network</h2>
+<p style="margin:0 0 30px;font:400 17px/1.65 'IBM Plex Sans',sans-serif;color:#9fbdd2">See how SecureOT maps, monitors, and prioritizes risk across industrial networks.</p>
+<div style="display:flex;flex-direction:column;gap:14px" onMouseLeave="{{ resetHover }}">
+<sc-for list="{{ features }}" as="f" hint-placeholder-count="3">
+<button type="button" onMouseEnter="{{ f.select }}" style="{{ f.style }}">
+<div style="width:20px;height:23px;background:{{ f.color }};clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);flex:none"></div>
+<div style="text-align:left">
+<div style="font:600 16px 'IBM Plex Sans',sans-serif">{{ f.title }}</div>
+<div style="margin-top:3px;font:400 13.5px 'IBM Plex Sans',sans-serif;color:#a2bccd">{{ f.sub }}</div>
+</div>
+</button>
+</sc-for>
+</div>
+</div>
+<div data-z="" style="border-radius:16px;border:1px solid rgba(150,200,225,.2);background:#061726;box-shadow:0 40px 90px rgba(0,0,0,.55);overflow:hidden;min-width:0">
+<div style="padding:16px 20px;border-bottom:1px solid rgba(150,200,225,.14);display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+<div style="display:flex;align-items:center;gap:9px"><div style="width:7px;height:7px;border-radius:50%;background:{{ panelAccent }};transition:background .4s"></div><div style="font:600 15px 'Space Grotesk',sans-serif;color:#f2fbff">{{ panelTitle }}</div></div>
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;letter-spacing:.08em;color:#7a9db0;flex:none">Illustrative product data</div>
+</div>
+<div style="padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px">
+<div><div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#8aa6b9;letter-spacing:.1em">{{ kpi1Label }}</div><div style="font:600 28px 'Space Grotesk',sans-serif;color:#f2fbff;margin-top:6px">{{ kpi1Value }}</div></div>
+<div><div style="font:500 10.5px 'IBM Plex Mono',monospace;color:{{ kpi2Color }};letter-spacing:.1em;transition:color .4s">{{ kpi2Label }}</div><div style="font:600 28px 'Space Grotesk',sans-serif;color:#f2fbff;margin-top:6px">{{ kpi2Value }}</div></div>
+<div><div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#8aa6b9;letter-spacing:.1em">{{ kpi3Label }}</div><div style="font:600 28px 'Space Grotesk',sans-serif;color:#f2fbff;margin-top:6px">{{ kpi3Value }}</div></div>
+</div>
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#8aa6b9;letter-spacing:.1em">{{ chartLabel }}</div>
+<div style="height:190px;border-radius:10px;background:linear-gradient(180deg,rgba(0,196,228,.10),transparent);position:relative;overflow:hidden;border:1px solid {{ chartBorder }};transition:border-color .4s">
+<div style="position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(180deg,{{ chartFill }},transparent);clip-path:{{ chartClip }};transition:clip-path .6s cubic-bezier(.16,.84,.3,1),background .4s"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="inside" onMouseMove="{{ insideMove }}" onMouseLeave="{{ secLeave }}" style="position:relative;z-index:3;padding:clamp(76px,8vw,132px) clamp(20px,4vw,60px) clamp(86px,9vw,148px);border-top:1px solid rgba(120,200,230,.1);background:#07090b;overflow:hidden">
+<div style="position:absolute;inset:0;overflow:hidden;pointer-events:none">
+<div style="{{ insideBgStyle }}">
+<image-slot id="ot-inside-bg" shape="rect" fit="cover" src="{{ insideBgSrc }}" placeholder="Abstract industrial backdrop"></image-slot>
+</div>
+<div style="position:absolute;inset:0;background:radial-gradient(720px 420px at 50% 46%,rgba(7,9,11,.55),rgba(7,9,11,.9) 78%)"></div>
+</div>
+<div style="position:absolute;inset:0;pointer-events:none">
+<svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block;opacity:.5">
+<g fill="none" stroke="#5f8ba0" stroke-width="1" opacity=".55">
+<path d="M0 700h1200M0 620h1200M0 556h1200M0 505h1200M0 464h1200M0 431h1200M0 405h1200M0 384h1200M0 367h1200M0 353h1200M0 342h1200M0 333h1200M0 326h1200"></path>
+</g>
+<circle cx="600" cy="320" r="130" fill="url(#otGlow5)"></circle>
+<defs><radialGradient id="otGlow5"><stop offset="0" stop-color="#00c4e4" stop-opacity=".4"></stop><stop offset="1" stop-color="#00c4e4" stop-opacity="0"></stop></radialGradient></defs>
+</svg>
+</div>
+<div style="{{ insideGlowStyle }}">
+<svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block">
+<g fill="none" stroke="#6fe3f7" stroke-width="1" opacity=".7">
+<path d="M0 700h1200M0 620h1200M0 556h1200M0 505h1200M0 464h1200M0 431h1200M0 405h1200M0 384h1200M0 367h1200M0 353h1200M0 342h1200M0 333h1200M0 326h1200"></path>
+</g>
+</svg>
+</div>
+<div style="position:absolute;inset:0;pointer-events:none">
+<svg viewBox="{{ connViewBox }}" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+<sc-for list="{{ connectors }}" as="c" hint-placeholder-count="0">
+<line x1="{{ c.x1 }}" y1="{{ c.y1 }}" x2="{{ c.x2 }}" y2="{{ c.y2 }}" stroke="rgba(160,205,225,.26)" stroke-width="1"></line>
+</sc-for>
+</svg>
+</div>
+
+<div data-z="" style="position:relative;max-width:1160px;margin:0 auto;text-align:center">
+<div style="font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#7a9db0;margin-bottom:16px">LOOKING INSIDE</div>
+<h2 style="margin:0 0 14px;font:600 clamp(27px,3.2vw,46px)/1.08 'Space Grotesk',sans-serif;letter-spacing:-1.6px;color:#f2fbff">Every layer, visible</h2>
+<p style="margin:0 auto 42px;max-width:620px;font:400 16.5px/1.7 'IBM Plex Sans',sans-serif;color:#a9c6d8">The grid behind this text is the network we read. Each layer is parsed, baselined and watched — from the physical link to the function code that moves a valve.</p>
+<div id="ot-layers-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;text-align:left">
+<sc-for list="{{ layers }}" as="l" hint-placeholder-count="4">
+<div style="position:relative;border:1px solid rgba(160,205,225,.2);background:rgba(6,10,13,.6);backdrop-filter:blur(3px);padding:30px 26px 34px;min-height:210px;overflow:hidden;transition:border-color .3s,background .3s" style-hover="border-color:rgba(196,226,240,.5);background:rgba(15,26,34,.82)">
+<div style="position:absolute;left:0;right:0;top:0;height:34px;background:linear-gradient(180deg,rgba(0,196,228,.26),transparent);animation:otSweep 6s linear infinite"></div>
+<div style="position:relative;font:500 10.5px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:#00c4e4;margin-bottom:14px">{{ l.tag }}</div>
+<div style="position:relative;font:600 17px 'Space Grotesk',sans-serif;color:#f2fbff;margin-bottom:8px">{{ l.title }}</div>
+<div style="position:relative;font:400 13.5px/1.6 'IBM Plex Sans',sans-serif;color:#a2bccd">{{ l.body }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="values" onMouseMove="{{ valuesMove }}" onMouseLeave="{{ secLeave }}" style="position:relative;z-index:2;padding:clamp(76px,7.6vw,116px) clamp(20px,4vw,60px) clamp(56px,6.5vw,100px);background:#07090b;border-top:1px solid rgba(160,205,225,.12)">
+<div style="position:relative;max-width:1400px;margin:0 auto">
+<div style="position:absolute;left:0;right:0;top:calc(-1 * clamp(76px,7.6vw,116px));bottom:calc(-1 * clamp(56px,6.5vw,100px));pointer-events:none">
+<sc-for list="{{ valueGridLines }}" as="ln" hint-placeholder-count="0">
+<div style="{{ ln.style }}"></div>
+</sc-for>
+<div style="{{ valuesGlowStyle }}">
+<sc-for list="{{ valueGridLinesBright }}" as="ln" hint-placeholder-count="0">
+<div style="{{ ln.style }}"></div>
+</sc-for>
+</div>
+</div>
+
+<div data-z="" style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between;margin-bottom:clamp(32px,3.6vw,52px)">
+<div style="max-width:600px">
+<div style="font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#7a9db0;margin-bottom:16px">CONCRETE RESILIENCE</div>
+<h2 style="margin:0;font:600 clamp(27px,3.1vw,44px)/1.1 'Space Grotesk',sans-serif;letter-spacing:-1.4px;color:#f2fbff">Five principles we engineer against</h2>
+</div><div style="font:400 14.5px/1.7 'IBM Plex Sans',sans-serif;color:#a2bccd;max-width:320px">Operating constraints for every deployment we run — not positioning statements.</div>
+
+</div>
+<div id="ot-values-grid" style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:rgba(160,205,225,.16);border:1px solid rgba(160,205,225,.16)">
+<sc-for list="{{ values }}" as="v" hint-placeholder-count="5">
+<div data-z="" style="background:#07090b;padding:clamp(24px,2.4vw,32px);min-height:250px;display:flex;flex-direction:column;transition:background .3s" style-hover="background:#0b1218">
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:#00c4e4">{{ v.num }}</div>
+<h3 style="margin:86px 0 12px;font:600 21px 'Space Grotesk',sans-serif;color:#f2fbff;letter-spacing:-.4px">{{ v.title }}</h3>
+<p style="margin:0;font:400 14px/1.62 'IBM Plex Sans',sans-serif;color:#a4bdcd">{{ v.body }}</p>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="people" style="position:relative;padding:clamp(56px,6.5vw,100px) clamp(20px,4vw,60px);border-top:1px solid rgba(160,205,225,.12);background:#050809;overflow:hidden">
+<div style="position:absolute;left:50%;top:22%;transform:translateX(-50%);width:min(1000px,92vw);aspect-ratio:2/1;background:radial-gradient(circle,rgba(0,196,228,.14),transparent 66%);pointer-events:none"></div>
+<div style="position:relative;max-width:1400px;margin:0 auto">
+<div data-z="" style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between;margin-bottom:clamp(28px,3.2vw,44px)">
+<div style="max-width:640px">
+<div style="font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#7a9db0;margin-bottom:16px">THE HUMAN SIDE</div>
+<h2 style="margin:0;font:600 clamp(27px,3.1vw,44px)/1.1 'Space Grotesk',sans-serif;letter-spacing:-1.4px;color:#f2fbff">Behind every protocol there is someone on shift</h2>
+</div>
+<div style="font:400 14.5px/1.7 'IBM Plex Sans',sans-serif;color:#a2bccd;max-width:330px">Uptime is not a metric on a dashboard. It is a crew that finishes the shift as planned.</div>
+</div>
+<div data-z="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px">
+<sc-for list="{{ people }}" as="p" hint-placeholder-count="4">
+<div style="position:relative;aspect-ratio:3/4;border:1px solid rgba(0,196,228,.26);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 0 1px rgba(0,196,228,.06);overflow:hidden">
+<image-slot id="{{ p.id }}" shape="rect" fit="cover" src="{{ p.src }}" style="filter:grayscale(.18) contrast(1.04) brightness(1.12) saturate(1.05)" placeholder="{{ p.alt }}"></image-slot>
+<div style="position:absolute;inset:0;background:linear-gradient(200deg,rgba(0,196,228,.16),rgba(105,168,255,.1));mix-blend-mode:screen;pointer-events:none"></div>
+<div style="position:absolute;inset:auto 0 0 0;padding:16px;background:linear-gradient(0deg,rgba(3,8,12,.88),transparent);pointer-events:none">
+<div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#7fe4f6;margin-bottom:6px">{{ p.tag }}</div>
+<div style="font:400 13.5px/1.5 'IBM Plex Sans',sans-serif;color:#eaf7fc">{{ p.caption }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="who" style="padding:clamp(56px,6.5vw,100px) clamp(20px,4vw,60px);border-top:1px solid rgba(160,205,225,.12);background:#040607">
+<div style="max-width:1400px;margin:0 auto">
+<div data-z="" style="max-width:680px;margin-bottom:clamp(30px,3.4vw,48px)">
+<div style="font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#7a9db0;margin-bottom:16px">WHO WE SERVE</div>
+<h2 style="margin:0;font:600 clamp(27px,3.1vw,44px)/1.1 'Space Grotesk',sans-serif;letter-spacing:-1.4px;color:#f2fbff">Built for the people accountable when the line stops</h2>
+</div>
+<div data-z="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,3vw,44px);align-items:stretch">
+<div style="display:grid;gap:1px" onMouseLeave="{{ resetRole }}">
+<sc-for list="{{ roles }}" as="r" hint-placeholder-count="3">
+<div style="{{ r.style }}" onMouseEnter="{{ r.select }}">
+<h3 style="margin:0 0 10px;font:600 18px 'Space Grotesk',sans-serif;color:#f2fbff">{{ r.title }}</h3>
+<p style="margin:0;font:400 14.5px/1.64 'IBM Plex Sans',sans-serif;color:{{ r.bodyColor }};transition:color .3s">{{ r.body }}</p>
+</div>
+</sc-for>
+</div>
+<div style="position:relative;min-height:340px;border:1px solid rgba(0,196,228,.22);overflow:hidden">
+<image-slot id="ot-engineers" shape="rect" fit="cover" src="https://loremflickr.com/900/1100/engineer,technician,plant" style="filter:grayscale(.2) contrast(1.04) brightness(1.08)" placeholder="Photo: engineers on the plant floor reviewing a panel"></image-slot>
+<div style="position:absolute;inset:0;background:linear-gradient(200deg,rgba(0,196,228,.14),rgba(5,7,8,.32));mix-blend-mode:screen;pointer-events:none"></div>
+<div style="{{ roleOverlayCiso }}"></div>
+<div style="{{ roleOverlaySpotlight }}"></div>
+<div style="position:absolute;top:12px;left:12px;font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#a8f0ff;pointer-events:none">FIG 04 — THE PEOPLE ON SHIFT</div>
+<div style="position:absolute;bottom:12px;right:12px;font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#a8f0ff;pointer-events:none;opacity:{{ roleLabelOpacity }};transition:opacity .4s">{{ roleLabelText }}</div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding:clamp(56px,6.5vw,100px) clamp(20px,4vw,60px);border-top:1px solid rgba(160,205,225,.12);background:#030405">
+<div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(28px,3.6vw,60px);align-items:center">
+<div data-z="" style="position:relative;aspect-ratio:4/3;border:1px solid rgba(0,196,228,.2);overflow:hidden">
+<image-slot id="ot-resilience-industrial" shape="rect" fit="cover" style="filter:grayscale(.18) contrast(1.04) brightness(1.1)" placeholder="Drop the industrial resilience photo here — dark charcoal pipework/steel, one section under maintenance while the system keeps running through another route"></image-slot>
+<div style="position:absolute;inset:0;background:linear-gradient(200deg,rgba(0,196,228,.14),rgba(5,7,8,.3));mix-blend-mode:screen;pointer-events:none"></div>
+<div style="position:absolute;top:12px;left:12px;font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#7fe4f6;pointer-events:none">FIG 05 — RESILIENCE</div>
+</div>
+<div data-z="">
+<div style="font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#7a9db0;margin-bottom:16px">THE METAPHOR</div>
+<h2 style="margin: 0 0 18px; font: 600 clamp(26px,3vw,42px)/1.12 'Space Grotesk',sans-serif; letter-spacing: -1.4px; color: #f2fbff; width: 458px; height: 94px">Life continues through the concrete</h2>
+<p style="margin:0 0 16px;font:400 16.5px/1.72 'IBM Plex Sans',sans-serif;color:#9fbdd2;text-wrap:pretty">Critical infrastructure is steel, concrete and machinery — but what it protects is human: water in the tap, light in the hospital, gas to the plant. Resilience is continuity for the people downstream.</p>
+<p style="margin:0;font:400 16.5px/1.72 'IBM Plex Sans',sans-serif;color:#9fbdd2;text-wrap:pretty">So we build security that grows inside rigid industrial environments instead of fighting them: passive, protocol-native, and never a risk to uptime.</p>
+</div>
+</div>
+</section>
+
+<section id="partners" style="padding:clamp(52px,6vw,88px) 0 0;border-top:1px solid rgba(160,205,225,.12);background:#020304;overflow:hidden">
+<div data-z="" style="max-width:900px;margin:0 auto clamp(28px,3.2vw,44px);padding:0 clamp(20px,4vw,60px);text-align:center">
+<div style="font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#7a9db0;margin-bottom:16px">WORKING WITH US</div>
+<h2 style="margin: 0 0 14px; font: 600 clamp(25px,2.8vw,38px)/1.14 'Space Grotesk',sans-serif; letter-spacing: -1.2px; color: #f2fbff; width: 614px; text-align: center; padding-left: 0px; padding-right: 0px; margin-left: 138px">Integrated with the vendors already inside your plant</h2>
+<p style="margin:0 auto;max-width:560px;font:400 15.5px/1.7 'IBM Plex Sans',sans-serif;color:#a2bccd">Our sensors and telemetry pipelines interoperate with the networking, automation and infrastructure stacks running the industrial estate.</p>
+</div>
+<div style="position:relative">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;border-top:1px solid rgba(160,205,225,.12);border-bottom:1px solid rgba(160,205,225,.12)">
+<sc-for list="{{ partners }}" as="p" hint-placeholder-count="4">
+<div data-z="" style="background:#020304;outline:1px solid rgba(160,205,225,.09);height:104px;display:flex;align-items:center;justify-content:center;font:500 18px 'Space Grotesk',sans-serif;letter-spacing:.06em;color:#8fa9bb;transition:color .3s,background .3s" style-hover="color:#a8f0ff;background:#0b1218">{{ p }}</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="contact" onMouseMove="{{ ctaMove }}" onMouseLeave="{{ ctaLeave }}" style="position:relative;padding:clamp(60px,6.6vw,104px) clamp(20px,4vw,60px);border-top:1px solid rgba(160,205,225,.12);background:linear-gradient(180deg,#020304,#04101c);overflow:hidden">
+<canvas ref="{{ ctaGridRef }}" style="position:absolute;inset:0;display:block;pointer-events:none"></canvas>
+<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(900px,90vw);aspect-ratio:2/1;background:radial-gradient(circle,rgba(0,196,228,.18),transparent 65%);pointer-events:none;opacity:{{ ctaGlowOpacity }};transition:opacity .3s"></div>
+<div data-z="" style="position:relative;max-width:880px;margin:0 auto;text-align:center;padding:clamp(34px,4.2vw,60px)">
+<h2 style="margin: 0 0 16px; font: 600 clamp(26px,3.2vw,44px)/1.1 'Space Grotesk',sans-serif; letter-spacing: -1.6px; color: #f2fbff; width: 611px; margin-left: 125px">See what is moving through your OT network</h2>
+<p style="margin:0 auto 30px;max-width:540px;font:400 16.5px/1.7 'IBM Plex Sans',sans-serif;color:#9fbdd2">A two-week passive assessment returns a full asset inventory, protocol baseline and prioritised risk register. No agents. No process interruption.</p>
+<div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
+<a href="#top" style="font:600 15.5px 'IBM Plex Sans',sans-serif;color:#02131d;background:linear-gradient(135deg,#00c4e4,#4de3f7);padding:17px 32px;border-radius:8px;box-shadow:0 14px 38px rgba(0,196,228,.3);transition:transform .18s,box-shadow .18s" style-hover="box-shadow:0 18px 46px rgba(0,196,228,.5);color:#02131d">Book an assessment</a>
+<a href="#inside" style="font:600 15.5px 'IBM Plex Sans',sans-serif;color:#dff4fb;padding:17px 30px;border-radius:8px;border:1px solid rgba(150,215,235,.3);transition:border-color .25s,background .25s" style-hover="background:rgba(0,196,228,.14)">Download the technical brief</a>
+</div>
+</div>
+</section>
+
+<footer style="padding:30px clamp(20px,4vw,60px);border-top:1px solid rgba(160,205,225,.12);background:#010203;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+<img src="assets/logo-light-text.png" alt="SecureoT" style="height:23px;width:auto;display:block;opacity:.85">
+<div style="font:400 12px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#7a9db0">TRANSPARENT SECURITY. CONCRETE RESILIENCE.</div>
+</footer>
+
+<div style="position: absolute; inset: 0; pointer-events: none; left: 21px; top: 2549px">
+
+</div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;insideBgOpacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.16,&quot;min&quot;:0,&quot;max&quot;:0.6,&quot;step&quot;:0.02,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Every layer, visible&quot;},&quot;insideBgImage&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://loremflickr.com/1400/900/steel,mesh,industrial&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Every layer, visible&quot;},&quot;showLayerConnectors&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Every layer, visible&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    window.addEventListener('resize', this.measureValueLines);
+    this._vt = setInterval(this.measureValueLines, 500);
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const show = (el) => el.classList.remove('ot-out');
+    const io = new IntersectionObserver((es) => {
+      es.forEach(e => { if (e.isIntersecting) { show(e.target); io.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    this._io = io;
+    this._scan = () => document.querySelectorAll('[data-z]:not([data-zo])').forEach(el => {
+      el.setAttribute('data-zo', '1');
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.92) { el.classList.add('ot-anim'); return; }
+      el.classList.add('ot-out', 'ot-anim');
+      io.observe(el);
+    });
+    this._scan();
+    this._mo = new MutationObserver(() => this._scan());
+    this._mo.observe(document.body, { childList: true, subtree: true });
+    this._t = setInterval(() => document.querySelectorAll('[data-z].ot-out').forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.92) show(el);
+    }), 400);
+  }
+  componentDidUpdate() { if (this._scan) this._scan(); this.measureValueLines(); }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.measureValueLines);
+    if (this._io) this._io.disconnect();
+    if (this._mo) this._mo.disconnect();
+    if (this._t) clearInterval(this._t);
+    if (this._vt) clearInterval(this._vt);
+    if (this._kinetic) this._kinetic.forEach(fn => fn());
+  }
+  state = { tab: 'dpi', valueLines: [], valueLinesH: 0, conn: null, hov: null, activeRole: null, gridMouse: { x: -999, y: -999 }, gridHover: false, partnersHov: false, ctaGlow: 0.15 };
+  setHov = (k) => () => { if (this.state.hov !== k) this.setState({ hov: k }); };
+  setRole = (k) => () => this.setState({ activeRole: k });
+  resetRole = () => this.setState({ activeRole: null });
+  secLeave = () => this.setState({ secPt: { id: null, x: -999, y: -999 } });
+  // Kinetic line grid: rectangular grid whose LINES bend toward the cursor.
+  // No dots, no nodes, no ripple rings — line displacement + brightness only.
+  setupKineticGrid(canvas, opts) {
+    if (!canvas || canvas._otInit) return;
+    canvas._otInit = true;
+    const o = opts || {};
+    const REST = o.rest ?? 0.057, GLOW = o.glow ?? 0.5;
+    const ctx = canvas.getContext('2d');
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const touch = window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    const CELL = 55, INFLUENCE = o.influence ?? 190, MAX_WARP = o.warp ?? 11, LERP = 0.12, WAVE = 55;
+    const mouse = { x: -9999, y: -9999 }, target = { x: -9999, y: -9999 };
+    let ripples = [], W = 0, H = 0, cols = 0, rows = 0, cellW = 0, cellH = 0, raf = null;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const resize = () => {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      W = Math.max(1, rect.width); H = Math.max(1, rect.height);
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // Exact CELL spacing (not normalized) so the hero grid shares the same
+      // 55px axis as the static grids further down the page.
+      cols = Math.max(2, Math.ceil(W / CELL)) + 2;
+      rows = Math.max(2, Math.ceil(H / CELL)) + 2;
+      cellW = CELL; cellH = CELL;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+    const host = canvas.parentElement;
+    if (!touch && !reduced) {
+      host.addEventListener('mousemove', (e) => {
+        const r = canvas.getBoundingClientRect();
+        target.x = e.clientX - r.left; target.y = e.clientY - r.top;
+      });
+      host.addEventListener('mouseleave', () => { target.x = -9999; target.y = -9999; });
+      host.addEventListener('click', (e) => {
+        const r = canvas.getBoundingClientRect();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        const warn = o.probe ? !!o.probe(x / (W || 1), y / (H || 1)) : false;
+        ripples.push({ x, y, born: performance.now(), radius: 0, opacity: 1, warn });
+      });
+    }
+    // Base hairline, brightening into the hero headline's cyan → light-blue ramp.
+    const seg = (x) => {
+      const t = Math.min(1, Math.max(0, x / (W || 1)));
+      return { r: Math.round(0 + (105 - 0) * t), g: Math.round(196 + (168 - 196) * t), b: Math.round(228 + (255 - 228) * t) };
+    };
+    const warp = (gx, gy, col, row) => {
+      const m = 1.5;
+      const cp = Math.min(col / m, (cols - 1 - col) / m, 1);
+      const rp = Math.min(row / m, (rows - 1 - row) / m, 1);
+      const pin = cp * cp * rp * rp;
+      const dx = gx - mouse.x, dy = gy - mouse.y, dist = Math.hypot(dx, dy);
+      const proximity = Math.max(0, 1 - dist / INFLUENCE) * pin;
+      let ox = 0, oy = 0, glow = proximity, warn = 0;
+      for (let i = 0; i < ripples.length; i++) {
+        const rr = ripples[i];
+        const rdist = Math.hypot(gx - rr.x, gy - rr.y), diff = rdist - rr.radius;
+        if (Math.abs(diff) < WAVE) {
+          const strength = (1 - Math.abs(diff) / WAVE) * rr.opacity * 14 * pin;
+          const ang = Math.atan2(gy - rr.y, gx - rr.x), sign = diff < 0 ? -1 : 1;
+          ox += Math.cos(ang) * strength * sign * -1;
+          oy += Math.sin(ang) * strength * sign * -1;
+          const w = (1 - Math.abs(diff) / WAVE) * rr.opacity * pin;
+          glow = Math.max(glow, w);
+          if (rr.warn) warn = Math.max(warn, w);
+        }
+      }
+      if (dist < INFLUENCE && dist > 0 && pin > 0) {
+        const t = dist / INFLUENCE;
+        const eased = t < 0.01 ? 0 : (1 - t) * (1 - t) * Math.min(1, dist / 60);
+        const amt = eased * MAX_WARP * pin;
+        const ang = Math.atan2(dy, dx);
+        ox -= Math.cos(ang) * amt; oy -= Math.sin(ang) * amt;
+      }
+      return { x: gx + ox, y: gy + oy, glow: Math.min(1, glow), warn: Math.min(1, warn) };
+    };
+    const stroke = (p, q) => {
+      const g = (p.glow + q.glow) / 2;
+      const t = g * g * (3 - 2 * g);
+      const c0 = seg((p.x + q.x) / 2);
+      const wn = Math.min(1, ((p.warn || 0) + (q.warn || 0)) / 2 * 1.6);
+      const c = wn > 0
+        ? { r: Math.round(c0.r + (255 - c0.r) * wn), g: Math.round(c0.g + (86 - c0.g) * wn), b: Math.round(c0.b + (46 - c0.b) * wn) }
+        : c0;
+      ctx.strokeStyle = 'rgba(' + Math.round(160 + (c.r - 160) * t) + ',' + Math.round(205 + (c.g - 205) * t)
+        + ',' + Math.round(225 + (c.b - 225) * t) + ',' + (REST + t * GLOW * (1 + wn * 0.5)).toFixed(3) + ')';
+      ctx.lineWidth = 0.8 + t * 0.55;
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+    };
+    const draw = (now) => {
+      mouse.x += (target.x - mouse.x) * LERP;
+      mouse.y += (target.y - mouse.y) * LERP;
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const age = (now - ripples[i].born) / 1000;
+        ripples[i].radius = Math.max(0, age * 400);
+        ripples[i].opacity = Math.max(0, 1 - age * 1.2);
+        if (ripples[i].opacity <= 0) ripples.splice(i, 1);
+      }
+      ctx.clearRect(0, 0, W, H);
+      const pts = [];
+      for (let row = 0; row < rows; row++) {
+        pts[row] = [];
+        for (let col = 0; col < cols; col++) pts[row][col] = warp(col * cellW, row * cellH, col, row);
+      }
+      for (let row = 0; row < rows; row++)
+        for (let col = 0; col < cols - 1; col++) stroke(pts[row][col], pts[row][col + 1]);
+      for (let col = 0; col < cols; col++)
+        for (let row = 0; row < rows - 1; row++) stroke(pts[row][col], pts[row + 1][col]);
+      if (!reduced && !touch) raf = requestAnimationFrame(draw);
+    };
+    draw(performance.now());
+    const cleanup = () => { window.removeEventListener('resize', resize); if (raf) cancelAnimationFrame(raf); };
+    this._kinetic = (this._kinetic || []).concat(cleanup);
+  }
+  measureValueLines = () => {
+    const g = document.getElementById('ot-values-grid');
+    if (!g) return;
+    const cs = getComputedStyle(g);
+    const cols = cs.gridTemplateColumns.split(' ').map(parseFloat).filter(n => !isNaN(n));
+    const gap = parseFloat(cs.columnGap) || 0;
+    const xs = [];
+    if (cols.length > 1) {
+      let x = g.offsetLeft + g.clientLeft;
+      for (let i = 0; i < cols.length - 1; i++) { x += cols[i] + gap; xs.push(Math.round(x - gap / 2)); }
+    }
+    // Verticals for the outer edges too, so the two outer perspective rays continue.
+    const allX = [Math.round(g.offsetLeft)].concat(xs).concat([Math.round(g.offsetLeft + g.offsetWidth - 1)]);
+    // Stop the verticals exactly where the grid's own 1px gaps take over, so each
+    // divider reads as one continuous hairline of identical weight.
+    const secTop = document.getElementById('values');
+    const padTop = secTop ? parseFloat(getComputedStyle(secTop).paddingTop) || 0 : 0;
+    const h = Math.round(g.offsetTop + padTop);
+    const same = allX.length === this.state.valueLines.length && h === this.state.valueLinesH
+      && allX.every((v, i) => v === this.state.valueLines[i]);
+    if (!same) this.setState({ valueLines: allX, valueLinesH: h });
+
+    // Straight connectors: continue the perspective lines from the bottom of the
+    // layer cards down to the exact x of each Five-principles column divider.
+    const lg = document.getElementById('ot-layers-grid');
+    const sec = document.getElementById('inside');
+    if (!lg || !sec || !xs.length) return;
+    const sr = sec.getBoundingClientRect();
+    const lr = lg.getBoundingClientRect();
+    const vr = g.getBoundingClientRect();
+    // The perspective backdrop is a 1200x700 viewBox drawn with preserveAspectRatio
+    // "xMidYMid slice" and its vanishing point at (600,320). Recover that point in
+    // section pixels so each connector is a true continuation of a perspective ray.
+    const scale = Math.max(sr.width / 1200, sr.height / 700);
+    const vpx = sr.width / 2;
+    const vpy = sr.height / 2 + (320 - 350) * scale;
+    const yBottom = sr.height;
+    const yStart = vpy;
+    const targets = [vr.left - sr.left]
+      .concat(xs.map(vx => vr.left - sr.left + (vx - g.offsetLeft)))
+      .concat([vr.right - sr.left]);
+    const lines = targets.map((x2) => {
+      const t = (yStart - vpy) / (yBottom - vpy);
+      return {
+        x1: Math.round(vpx + (x2 - vpx) * t),
+        y1: Math.round(yStart),
+        x2: Math.round(x2),
+        y2: Math.round(yBottom)
+      };
+    });
+    const vb = '0 0 ' + Math.round(sr.width) + ' ' + Math.round(sr.height);
+    const prev = this.state.conn;
+    const changed = !prev || prev.vb !== vb || JSON.stringify(prev.lines) !== JSON.stringify(lines);
+    if (changed) this.setState({ conn: { vb, lines } });
+  };
+  heroProbe = (fx, fy) => {
+    const px = (fx - 0.42) / 0.58 * 100, py = fy * 100;
+    const hit = this.anomalyList().findIndex(a => Math.abs(px - a.l) < 5 && Math.abs(py - a.t) < 5);
+    const next = hit > -1 ? (this.state.openAnomaly === hit ? null : hit) : null;
+    this.setState({ openAnomaly: next });
+    clearTimeout(this._an);
+    if (next !== null) this._an = setTimeout(() => this.setState({ openAnomaly: null }), 4000);
+    return hit > -1;
+  };
+  anomalyList() {
+    return [
+      { l: 24, t: 58, text: 'Unexpected write attempt — Controller 03 · Critical' },
+      { l: 46, t: 66, text: 'Unapproved remote session — Cell gateway · High' },
+      { l: 78, t: 70, text: 'Firmware drift — Robot cell 02 · Medium' }
+    ];
+  }
+  renderVals() {
+    const tab = this.state.tab;
+    const pick = (k) => this.setState({ tab: k });
+    const featStyle = (k) => 'display:flex;align-items:center;gap:14px;width:100%;padding:16px 20px;border-radius:10px;cursor:pointer;font-family:inherit;transition:border-color .25s,background .25s,transform .2s;'
+      + (tab === k
+        ? 'border:1px solid rgba(0,196,228,.6);background:rgba(0,196,228,.12);color:#eaf7fc;box-shadow:0 10px 30px rgba(0,196,228,.16)'
+        : 'border:1px solid rgba(150,200,225,.18);background:rgba(255,255,255,.03);color:#dff4fb');
+    const panels = {
+      dpi: {
+        panelTitle: 'DPI STREAM',
+        kpi: [['PACKETS/SEC', '184K'], ['PROTOCOLS', '41'], ['DPI LATENCY', '<1ms']],
+        chartLabel: 'FUNCTION-CODE ANOMALY SCORE · 24H',
+        chartClip: 'polygon(0 78%,9% 62%,18% 70%,27% 44%,36% 55%,45% 33%,54% 46%,63% 26%,72% 38%,81% 20%,90% 32%,100% 14%,100% 100%,0 100%)',
+        accent: '#00c4e4'
+      },
+      assets: {
+        panelTitle: 'ASSET INVENTORY',
+        kpi: [['ASSETS MAPPED', '1,288'], ['NEW THIS WEEK', '17'], ['UNMANAGED', '43']],
+        chartLabel: 'DISCOVERY OVER TIME · PASSIVE ONLY',
+        chartClip: 'polygon(0 92%,10% 84%,20% 76%,30% 70%,40% 60%,50% 54%,60% 46%,70% 40%,80% 32%,90% 26%,100% 20%,100% 100%,0 100%)',
+        accent: '#4de3f7'
+      },
+      risk: {
+        panelTitle: 'RISK REGISTER',
+        kpi: [['OPEN FINDINGS', '7'], ['CRITICAL', '1'], ['RESPONSE TIME', '4m'] ],
+        chartLabel: 'RISK EXPOSURE TREND · 30D',
+        chartClip: 'polygon(0 34%,10% 40%,20% 30%,30% 46%,40% 52%,50% 44%,60% 58%,70% 64%,80% 60%,90% 72%,100% 80%,100% 100%,0 100%)',
+        accent: '#69a8ff'
+      }
+    };
+    const p = panels[tab];
+    const hov = this.state.hov;
+    const active = this.state.activeRole;
+    const roleCfg = {
+      ciso: { label: 'NETWORK-WIDE RISK VIEW' },
+      ops: { label: 'PRODUCTION FOCUS', spot: '28% 82%' },
+      cse: { label: 'CONTROL COMPONENTS', spot: '74% 22%' }
+    };
+    const roleStyle = (k) => 'background:' + (active === k ? '#0c1720' : '#080b0d') + ';outline:1px solid '
+      + (active === k ? 'rgba(0,196,228,.5)' : 'rgba(160,205,225,.14)')
+      + ';padding:clamp(22px,2.2vw,30px);cursor:pointer;transition:background .3s,outline-color .3s';
+    const partnerList = ['CISCO', 'SIEMENS', 'SAMSUNG', 'HUAWEI'];
+    const partnersHov = this.state.partnersHov;
+    const sp = this.state.secPt || {};
+    const sMove = (id) => (e) => {
+      const r = e.currentTarget.getBoundingClientRect();
+      this.setState({ secPt: Object.assign({}, this.state.secPt, { id, x: e.clientX - r.left, y: e.clientY - r.top }) });
+    };
+    const secMask = (id) => {
+      const on = sp.id === id;
+      const x = on ? sp.x : -999, y = on ? sp.y : -999;
+      return 'position:absolute;inset:0;pointer-events:none;mask-image:radial-gradient(230px at ' + x + 'px ' + y
+        + 'px,#000,transparent 72%);-webkit-mask-image:radial-gradient(230px at ' + x + 'px ' + y
+        + 'px,#000,transparent 72%);opacity:' + (on ? 1 : 0) + ';transition:opacity .45s';
+    };
+    const gm = this.state.gridMouse;
+    const gridHover = this.state.gridHover;
+    const ctaGlow = this.state.ctaGlow;
+    return {
+      xrayStyle: (() => {
+        const p = this.state.heroPt || {};
+        const on = !!p.on;
+        // pointer is tracked on the hero section; the x-ray pane covers its right 58%
+        const px = on ? ((p.fx - 0.42) / 0.58 * 100).toFixed(2) : -400;
+        const py = on ? (p.fy * 100).toFixed(2) : -400;
+        const m = 'radial-gradient(300px 300px at ' + px + '% ' + py + '%,#000 0,rgba(0,0,0,.55) 52%,transparent 76%)';
+        return 'position:absolute;inset:0;pointer-events:none;opacity:' + (on ? 1 : 0)
+          + ';transition:opacity .5s;mask-image:' + m + ';-webkit-mask-image:' + m;
+      })(),
+      anomalies: this.anomalyList().map((an, i) => {
+        const open = this.state.openAnomaly === i;
+        const p = this.state.heroPt || {};
+        // cursor position expressed in pane coordinates (the pane is the hero's right 58%)
+        const cx = p.on ? (p.fx - 0.42) / 0.58 * 100 : -999;
+        const cy = p.on ? p.fy * 100 : -999;
+        const near = Math.abs(cx - an.l) < 26 && Math.abs(cy - an.t) < 22;
+        return {
+          text: an.text,
+          wrap: 'position:absolute;left:' + an.l + '%;top:' + an.t + '%;width:0;height:0;pointer-events:auto',
+          ring: 'position:absolute;left:-17px;top:-17px;width:34px;height:34px;border-radius:50%;border:1px solid '
+            + (open ? 'rgba(255,138,92,.95)' : 'rgba(168,240,255,.9)')
+            + ';animation:otRing 2.6s ease-out ' + (i * 0.8) + 's infinite',
+          dot: 'position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;cursor:pointer;pointer-events:' + (near ? 'auto' : 'none') + ';'
+            + (open
+              ? 'background:radial-gradient(circle at 35% 30%,#fff4ee,#ff5a33 62%);box-shadow:0 0 0 3px rgba(255,90,51,.24),0 0 18px rgba(255,122,74,.95)'
+              : 'background:radial-gradient(circle at 35% 30%,#ffffff,#39c9e8 62%);box-shadow:0 0 0 3px rgba(0,196,228,.22),0 0 16px rgba(111,227,247,.95)')
+            + (open ? ';outline:1.5px solid rgba(255,138,92,.95);outline-offset:6px' : ''),
+          // narrow wrapping chip, always opening rightward so it stays inside the pane
+          tip: 'position:absolute;top:-14px;left:20px;width:150px;white-space:normal;background:rgba(4,16,28,.95);'
+            + 'border:1px solid rgba(0,196,228,.5);border-radius:5px;padding:7px 9px;'
+            + "font:500 10.5px/1.45 'IBM Plex Mono',monospace;letter-spacing:.04em;color:#dff4fb;pointer-events:none;"
+            + 'opacity:' + (open ? 1 : 0) + ';transform:translateY(' + (open ? '0' : '4px') + ');transition:opacity .25s,transform .25s',
+          click: (e) => { e.stopPropagation(); this.setState({ openAnomaly: open ? null : i }); }
+        };
+      }),
+      pulseOp: this.state.heroPulse ? 0.95 : 0.55,
+      flowOp: this.state.heroPulse ? 1 : 0.7,
+      heroMove: (e) => {
+        if (window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+        const r = e.currentTarget.getBoundingClientRect();
+        this.setState({ heroPt: { fx: (e.clientX - r.left) / r.width, fy: (e.clientY - r.top) / r.height, on: true } });
+      },
+      heroLeave: () => this.setState({ heroPt: { x: -999, y: -999, on: false } }),
+      heroClick: () => {
+        this.setState({ heroPulse: true });
+        clearTimeout(this._hp);
+        this._hp = setTimeout(() => this.setState({ heroPulse: false }), 750);
+      },
+      stackStyle: 'position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px 0 0 -150px;transform-style:preserve-3d;'
+        + 'transform:rotateX(' + (this.state.stageRx ?? 56) + 'deg) rotateZ(' + (this.state.stageRz ?? -30) + 'deg);transition:transform .35s cubic-bezier(.2,.8,.3,1)',
+      stageMove: (e) => {
+        if (window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+        const r = e.currentTarget.getBoundingClientRect();
+        const nx = (e.clientX - r.left) / r.width - 0.5, ny = (e.clientY - r.top) / r.height - 0.5;
+        this.setState({ stageRx: 56 - ny * 14, stageRz: -30 + nx * 22 });
+      },
+      stageLeave: () => this.setState({ stageRx: 56, stageRz: -30 }),
+      baseOp: hov ? 0.4 : 1,
+      plcOn: hov === 'plc' ? 1 : 0,
+      lineOn: hov === 'line' ? 1 : 0,
+      scadaOn: hov === 'scada' ? 1 : 0,
+      hoverPlc: this.setHov('plc'),
+      hoverLine: this.setHov('line'),
+      hoverScada: this.setHov('scada'),
+      hoverNone: this.setHov(null),
+      resetHover: () => {},
+      features: [
+        { color: '#00c4e4', title: 'Deep Packet Inspection (DPI)', sub: 'Reads every protocol conversation in real time.', select: () => pick('dpi'), style: featStyle('dpi') },
+        { color: '#4de3f7', title: 'Asset Discovery', sub: 'Finds and maps every device on the network.', select: () => pick('assets'), style: featStyle('assets') },
+        { color: '#69a8ff', title: 'Real-time Risk Management', sub: 'Flags deviations before they become incidents.', select: () => pick('risk'), style: featStyle('risk') }
+      ],
+      panelTitle: p.panelTitle,
+      kpi1Label: p.kpi[0][0], kpi1Value: p.kpi[0][1],
+      kpi2Label: p.kpi[1][0], kpi2Value: p.kpi[1][1],
+      kpi3Label: p.kpi[2][0], kpi3Value: p.kpi[2][1],
+      chartLabel: p.chartLabel,
+      chartClip: p.chartClip,
+      chartFill: p.accent + '4d',
+      chartBorder: p.accent + '33',
+      panelAccent: p.accent,
+      kpi2Color: p.accent,
+      insideBgSrc: this.props.insideBgImage ?? 'https://loremflickr.com/1400/900/steel,mesh,industrial',
+      insideBgStyle: 'position:absolute;inset:0;opacity:' + (this.props.insideBgOpacity ?? 0.16)
+        + ';filter:grayscale(.7) contrast(1.1) brightness(.9)',
+      connViewBox: this.state.conn ? this.state.conn.vb : '0 0 100 100',
+      connectors: (this.props.showLayerConnectors ?? true) && this.state.conn ? this.state.conn.lines : [],
+      valueGridLines: this.state.valueLines.map(x => ({
+        style: 'position:absolute;top:0;height:' + (this.state.valueLinesH || 0) + 'px;left:' + x
+          + 'px;width:1px;background:rgba(160,205,225,.16)'
+      })),
+      sectors: ['ENERGY', 'ELECTRICITY', 'WATER', 'GAS', 'MANUFACTURING', 'NATIONAL INFRASTRUCTURE'],
+      reasons: [
+        { grad: 'linear-gradient(150deg,#00c4e4,#2f8fe0)', icon: 'M7 7h10v10h-10zM10 7V1M14 7V1M10 17v6M14 17v6M7 10H1M7 14H1M17 10h6M17 14h6', title: 'Purpose-Built for OT', body: 'Securing the specific protocols that keep the world running — deep packet inspection for ICS/SCADA.' },
+        { grad: 'linear-gradient(150deg,#4de3f7,#4d7cff)', icon: 'M6.5 3.5h11v18h-11zM9.5 2h5a1 1 0 0 1 1 1v1.5h-7V3a1 1 0 0 1 1-1zM8.7 12.4l2.3 2.3 4.3-4.6', title: 'Strategic Compliance', body: 'Automated OT governance for audit-ready transparency across every site and asset class.' },
+        { grad: 'linear-gradient(150deg,#69a8ff,#00c4e4)', icon: 'M18 9.6A6.6 6.6 0 0 0 6.2 9.2M6 14.4a6.6 6.6 0 0 0 11.8.4M18.6 5.4l-.5 4.3-4.1-.7M5.4 18.6l.5-4.3 4.1.7', title: 'Operational Resilience', body: 'Enhancing productivity without slowing down production — passive by design, zero downtime.' }
+      ],
+      layers: [
+        { tag: 'L2 — LINK', title: 'Who is on the wire', body: 'MAC-level discovery of every device and span port, including dormant and undocumented assets.' },
+        { tag: 'L3/L4 — FLOW', title: 'How they talk', body: 'Conversation baselines per pair: ports, direction, cadence, and the segments they should never cross.' },
+        { tag: 'L7 — PROTOCOL', title: 'What they say', body: 'Modbus, DNP3, S7comm, OPC-UA and vendor dialects parsed to the function code.' },
+        { tag: 'PROCESS', title: 'What it does', body: 'Setpoints, logic downloads and command sequences correlated with the physical process itself.' }
+      ],
+      values: [
+        { num: '01', title: 'Resilient', body: 'Proactive protection that supports operational continuity and stops threats before they reach production.' },
+        { num: '02', title: 'Innovative', body: 'Forward-thinking SCADA and ICS security, tailored to the operational DNA of each industrial environment.' },
+        { num: '03', title: 'Technological', body: 'Real-time monitoring of complex industrial protocols — visibility into the core of machines, systems and networks.' },
+        { num: '04', title: 'Stable', body: 'Reliable protection for strategic assets: uninterrupted operations, long-term continuity, peace of mind.' },
+        { num: '05', title: 'Meticulous', body: 'Rigorous governance, compliance and risk management built for the most demanding industrial standards.' }
+      ],
+      people: [
+        { id: 'ot-person-1', src: 'https://loremflickr.com/700/930/worker,portrait,helmet', alt: 'Portrait: worker in a helmet, face visible', tag: 'SHIFT LEAD', caption: 'The person who answers for the line at 3am.' },
+        { id: 'ot-person-2', src: 'https://loremflickr.com/700/930/hands,tools,machine', alt: 'Close-up: hands on machinery', tag: 'CLOSE-UP', caption: 'Maintenance we must never mistake for an attack.' },
+        { id: 'ot-person-3', src: 'https://loremflickr.com/700/930/factory,production,line', alt: 'Wide shot: production line at work', tag: 'PRODUCTION', caption: 'Output that cannot pause for a security policy.' },
+        { id: 'ot-person-4', src: 'https://loremflickr.com/700/930/welder,sparks,industrial', alt: 'Worker welding on site', tag: 'ON SITE', caption: 'Physical work protected by invisible visibility.' }
+      ],
+      roles: [
+        { key: 'ciso', title: 'CISOs', body: 'One defensible view across IT and OT, with board-ready risk reporting and regulatory evidence you can stand behind.', style: roleStyle('ciso'), bodyColor: active === 'ciso' ? '#dcecf6' : '#8fadc2', select: this.setRole('ciso') },
+        { key: 'ops', title: 'OT Managers', body: 'Continuity first: passive deployment, no agents on legacy assets, and alerts framed in process terms — not packet noise.', style: roleStyle('ops'), bodyColor: active === 'ops' ? '#dcecf6' : '#8fadc2', select: this.setRole('ops') },
+        { key: 'cse', title: 'Control Systems Engineers', body: 'Function-code detail on every protocol exchange, so a maintenance action is never confused with an intrusion.', style: roleStyle('cse'), bodyColor: active === 'cse' ? '#dcecf6' : '#8fadc2', select: this.setRole('cse') }
+      ],
+      resetRole: this.resetRole,
+      roleOverlayCiso: 'position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(255,255,255,.55) 1px,transparent 1.6px);background-size:26px 26px;opacity:' + (active === 'ciso' ? 0.32 : 0) + ';transition:opacity .5s',
+      roleOverlaySpotlight: 'position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at ' + ((active && roleCfg[active] && roleCfg[active].spot) || '50% 50%') + ',rgba(255,255,255,.06),rgba(2,4,5,.6) 60%);opacity:' + (active === 'ops' || active === 'cse' ? 1 : 0) + ';transition:opacity .5s,background .5s',
+      roleLabelOpacity: active ? 1 : 0,
+      roleLabelText: active ? roleCfg[active].label : '',
+      heroGridRef: (el) => this.setupKineticGrid(el, { rest: 0.046, glow: 0.42, warp: 8, influence: 155, probe: this.heroProbe }),
+      ctaGridRef: (el) => this.setupKineticGrid(el, { rest: 0.05, glow: 0.34, warp: 7, influence: 165 }),
+      insideMove: sMove('inside'), valuesMove: sMove('values'), secLeave: this.secLeave,
+      insideGlowStyle: secMask('inside'),
+      valuesGlowStyle: secMask('values'),
+      valueGridLinesBright: this.state.valueLines.map(x => ({
+        style: 'position:absolute;top:0;height:' + (this.state.valueLinesH || 0) + 'px;left:' + x
+          + 'px;width:1px;background:rgba(111,227,247,.55)'
+      })),
+      gridGlowStyle: 'position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(111,227,247,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(111,227,247,.5) 1px,transparent 1px);background-size:55px 55px;mask-image:radial-gradient(220px at ' + gm.x + 'px ' + gm.y + 'px,#000,transparent 70%);-webkit-mask-image:radial-gradient(220px at ' + gm.x + 'px ' + gm.y + 'px,#000,transparent 70%);opacity:' + (gridHover ? 1 : 0) + ';transition:opacity .4s',
+      gridMove: (e) => { const r = e.currentTarget.getBoundingClientRect(); this.setState({ gridMouse: { x: e.clientX - r.left, y: e.clientY - r.top }, gridHover: true }); },
+      gridLeave: () => this.setState({ gridHover: false }),
+      ctaLineStyle: 'opacity:' + ctaGlow + ';transition:opacity .25s',
+      ctaGlowOpacity: 0.4 + ctaGlow,
+      ctaMove: (e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        const cx = r.width / 2, cy = r.height / 2;
+        const dx = (e.clientX - r.left) - cx, dy = (e.clientY - r.top) - cy;
+        const dist = Math.hypot(dx, dy), maxDist = Math.hypot(cx, cy) || 1;
+        const f = 1 - Math.min(1, dist / maxDist);
+        this.setState({ ctaGlow: 0.15 + f * 0.55 });
+      },
+      ctaLeave: () => this.setState({ ctaGlow: 0.15 }),
+      partners: partnerList
+    };
+  }
+}
+</script>
+</body>
+</html>
