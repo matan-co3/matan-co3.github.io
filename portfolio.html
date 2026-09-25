@@ -370,6 +370,8 @@
     // this page's contact: same as content.js, without Behance
     var homeContact = {}; for (var ck in (P.contact || {})) homeContact[ck] = P.contact[ck];
     homeContact.links = (homeContact.links || []).filter(function (l) { return !/behance/i.test(l.label); });
+    // the CV too, opened in a new tab (the browser shows it, with its own download button)
+    homeContact.links.push({ label: "Resume", url: "Matan-Cohen-CV-2026.pdf" });
     window.PF.renderContact(document.getElementById("contactBody"), homeContact);
 
     // HERO FIT - all measured, so it holds at every width:
