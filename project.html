@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Outfit:wght@200..500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20260929a" />
+  <link rel="stylesheet" href="styles.css?v=20261002f" />
   <link rel="icon" type="image/png" sizes="64x64" href="images/favicon-m-64.png?v=20260923d" />
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-m-32.png?v=20260923d" />
   <link rel="apple-touch-icon" href="images/favicon-m-180.png?v=20260923d" />
@@ -54,13 +54,22 @@
     <span class="footer__year"></span>
   </footer>
 
-  <script src="content.js?v=20260929b"></script>
+  <script src="content.js?v=20261002f"></script>
 <script>
   /* videos with a play button: show the first frame (a still of it) right away
      and download the video itself only once it is played */
+  /* run fn once el comes near the screen (used to measure a carousel's slides
+     only when you get close to it, instead of downloading all of them upfront) */
+  function whenNear(el, fn) {
+    if (!el || !("IntersectionObserver" in window)) return fn();
+    var io = new IntersectionObserver(function (es) {
+      if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); fn(); }
+    }, { rootMargin: "900px 0px" });
+    io.observe(el);
+  }
   function PV(src) { return /^images\/(?!sl_)[\w.-]+\.mp4$/.test(src || "") ? ' preload="metadata" poster="' + src.replace(/\.mp4$/, "-poster.jpg") + '"' : ""; }
 </script>
-  <script src="app.js"></script>
+  <script src="app.js?v=20261002f"></script>
   <script>
   /* ---- PROJECT PAGE RENDER ---- */
   (function () {
@@ -359,7 +368,7 @@
             headingHtml +
             '<div class="carousel__stage carousel__stage--side" id="' + stageId + '">' +
               '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>' +
-              '<figure class="media--img carousel__figure"><video src="' + esc(g.video) + '"' + (g.autoplay ? ' autoplay muted loop playsinline' : PV(g.video) + ' controls playsinline') + '></video></figure>' +
+              '<figure class="media--img carousel__figure' + (g.autoplay ? '' : ' carousel__figure--film') + '"><video src="' + esc(g.video) + '"' + (g.autoplay ? ' autoplay muted loop playsinline' : PV(g.video) + ' controls playsinline') + '></video></figure>' +
               '<span class="carousel__arrow" style="visibility:hidden" aria-hidden="true"></span>' +
             '</div>'
           );
@@ -976,7 +985,7 @@
             }
             return '<div class="guide-split__col">' + lbl + note + content + '</div>';
           };
-          innerHtml = '<div class="guide-split">' + sideHtml(eg.split.left) + (eg.split.mid ? sideHtml(eg.split.mid) : "") + sideHtml(eg.split.right) + '</div>';
+          innerHtml = '<div class="guide-split' + (eg.split.sectionLabels ? ' guide-split--sections' : '') + '">' + sideHtml(eg.split.left) + (eg.split.mid ? sideHtml(eg.split.mid) : "") + sideHtml(eg.split.right) + '</div>';
         } else if (eg.stack && eg.stack.length) {
           // Several images stacked with zero gap under one heading (e.g. the
           // table set, the bill, then the installed table) - reuses the same
@@ -1041,7 +1050,7 @@
 
     var next = list[(i + 1) % list.length];
 
-    root.innerHTML =
+    var projectHtml =
       '<a class="project__back" href="portfolio.html#projects" data-nav="1">← All works</a>' +
       '<header class="project__head reveal">' +
         // Category is optional: a project with none (e.g. a studies piece that
@@ -1094,6 +1103,11 @@
       extraGuidesHtml +
       '<a class="project__next reveal" href="project.html?id=' + next.id + '" data-nav="1">' +
         '<span>Next project</span><strong>' + esc(next.title) + ' →</strong></a>';
+    // phones: pictures further down the page load as you reach them instead
+    // of all at once, so the project opens faster (the first screen comes first)
+    if (window.matchMedia("(max-width: 720px)").matches)
+      projectHtml = projectHtml.replace(/<img (?![^>]*loading=)/g, '<img loading="lazy" decoding="async" ');
+    root.innerHTML = projectHtml;
 
     // carousel behaviour (big one-at-a-time viewer, ← → to switch)
     if (p.layout === "slides" && (p.slides || []).length) {
@@ -1282,6 +1296,7 @@
       var i = 0;
       var img = document.getElementById(ids.img);
       var count = document.getElementById(ids.count);
+      var stEl = document.getElementById(ids.stage); if (stEl) stEl._frames = frames;   // desktop pager: widest page
       // Optional "sections" (e.g. a carousel bundling two versions, EC then SS)
       // label which version the current frame belongs to instead of a plain
       // page count.
@@ -1296,6 +1311,19 @@
         return null;
       }
       var sub = ids.sub ? document.getElementById(ids.sub) : null;
+      // DESKTOP: when only some pages carry a section name, its line keeps
+      // its space on every page (the longest name), so the design never shifts
+      function reserveSub() {
+        if (!sub || !g.sections) return;
+        sub.style.minHeight = "";
+        if (!window.matchMedia("(min-width: 721px)").matches) return;
+        var names = g.sections.map(function (x) { return x.name || ""; }), longest = names.reduce(function (a, b) { return b.length > a.length ? b : a; }, "");
+        if (!longest || names.every(function (n) { return n; })) return;
+        var keep = sub.textContent; sub.textContent = longest;
+        var h = sub.getBoundingClientRect().height; sub.textContent = keep;
+        if (h) sub.style.minHeight = Math.ceil(h) + "px";
+      }
+      window.addEventListener("load", reserveSub); window.addEventListener("resize", reserveSub);
       function render(dir) {
         if (i < 0) i = frames.length - 1;
         if (i >= frames.length) i = 0;
@@ -1445,6 +1473,20 @@
           c.style.height = "";
           if (!c.classList.contains("sizeswitch__col--still") && r) c.style.aspectRatio = r;
         });
+        // DESKTOP: the row keeps the height of its tallest format, each format
+        // centred in it, so the page count below never moves while paging
+        // (a set whose clips get one fixed height from the stylesheet - the
+        // Scenario AI GIFs - is already even, and is left to it)
+        if (window.matchMedia("(min-width: 721px)").matches && !cfg.matchSibling && !cfg.toggle && getComputedStyle(all[0]).aspectRatio !== "auto") {
+          var hw = 0;
+          sizes.forEach(function (sz) { var m = /(\d+)\s*[×x]\s*(\d+)/.exec((sz && sz.format) || ""); if (m) hw = Math.max(hw, m[2] / m[1]); });
+          var still = gridEl.querySelector(".sizeswitch__col--still img");
+          if (still && still.naturalWidth) hw = Math.max(hw, still.naturalHeight / still.naturalWidth);
+          var nCol = gridEl.querySelectorAll(".sizeswitch__col:not(.sizeswitch__col--still)").length || all.length, rows = Math.ceil(nCol / per);
+          var rgap = parseFloat(cs.rowGap || cs.gap || "0") || 0;
+          gridEl.style.minHeight = hw ? (rows * colW * hw + rgap * (rows - 1)).toFixed(1) + "px" : "";
+          gridEl.style.alignItems = hw ? "center" : "";
+        } else { gridEl.style.minHeight = ""; gridEl.style.alignItems = ""; }
       }
       // The page count row is a separate block below the stage, and on a
       // project where the stage itself is left-aligned/shrink-wrapped rather
@@ -1569,7 +1611,9 @@
         if (stacked) return;
         ref.style.height = h + "px";
         ref.style.width = "auto";
-        if (sub) {
+        // (unless the other column carries its own label line, which lines up by itself)
+        var ownLab = other.firstElementChild && /lp__label|carousel__subtitle/.test(other.firstElementChild.className);
+        if (sub && !ownLab) {
           var cs = window.getComputedStyle(sub);
           other.style.paddingTop =
             (sub.getBoundingClientRect().height + (parseFloat(cs.marginBottom) || 0)) + "px";
@@ -1589,6 +1633,10 @@
           var el = imgs[di]; if (!el) return;
           el.src = frameFor(d);
           el.alt = (d.label || "") + " - " + (sizes[i].format || "");
+          // one design paged through its formats: the frame takes the format's
+          // exact proportions straight away (no letterbox bars while a clip loads
+          // or when the row is a pixel short)
+          if (designs.length === 1) { var fq = /(\d+)\s*[×x]\s*(\d+)/.exec(sizes[i].format || ""); el.style.aspectRatio = fq ? fq[1] + " / " + fq[2] : ""; }
           if (el.tagName === "VIDEO") { el.load(); var pr = el.play(); if (pr && pr.catch) pr.catch(function () {}); }
         });
         var sz = sizes[i];
@@ -1603,7 +1651,11 @@
           var fmtKey = ((sz.format || "").match(/(\d+)\s*[×x]\s*(\d+)/) || [])
             .slice(1).join("x");
           if (fmtKey) stageEl.setAttribute("data-fmt", fmtKey);
+          stageEl._ssw = cfg;
         }
+        // "colsBySize": designs per row for each format (Scenario AI GIFs:
+        // 3 square posts a row, 4 stories a row)
+        if (gridEl && cfg.colsBySize && cfg.colsBySize[i]) gridEl.style.setProperty("--sw-cols", cfg.colsBySize[i]);
         // Counted from the format the switcher OPENS on, not from the array's
         // first entry: the one you see first is page 1, and the arrows take
         // you to 2, 3 … back round to 1. (With "start" set, counting from the
@@ -1623,6 +1675,25 @@
       }
       function prev() { i--; render(-1); }
       function next() { i++; render(1); }
+      // "toggle" (DESKTOP): the formats become a Post | Story switch on the
+      // section heading's line - both formats are the same set of clips, so
+      // naming them reads better than arrows and a "1 / 2" count.
+      if (cfg.toggle && stageEl && window.matchMedia("(min-width: 721px)").matches) (function () {
+        var names = sizes.map(function (z) { return /story/i.test(z.network || "") ? "Story" : "Post"; });
+        var gb = stageEl.closest(".guide-block"), lab = null;
+        for (var pb = gb && gb.previousElementSibling, h = 0; pb && h < 3 && !lab; pb = pb.previousElementSibling, h++) lab = pb.querySelector(".lp__label");
+        if (!lab) return;
+        var seg = document.createElement("div"); seg.className = "seg seg--" + sizes.length + " dseg"; seg.setAttribute("role", "tablist");
+        seg.innerHTML = '<i aria-hidden="true"></i>' + names.map(function (n, k) { return '<button type="button" data-k="' + k + '">' + n + '</button>'; }).join("");
+        var row = document.createElement("div"); row.className = "dhead";
+        lab.parentNode.insertBefore(row, lab); row.appendChild(lab); row.appendChild(seg);
+        stageEl.classList.add("ssw-toggle");
+        function sync() { seg.style.setProperty("--si", i); seg.querySelectorAll("button").forEach(function (b) { var on = +b.dataset.k === i; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); }); }
+        seg.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b || +b.dataset.k === i) return; var dir = +b.dataset.k > i ? 1 : -1; i = +b.dataset.k; render(dir); sync(); });
+        sync();
+        // mobile builds its own toggle; this one is desktop-only
+        window.matchMedia("(max-width: 720px)").addEventListener("change", function (m) { if (m.matches) seg.style.display = "none"; });
+      })();
       var prevBtn = document.getElementById(ids.prev), nextBtn = document.getElementById(ids.next);
       if (prevBtn) prevBtn.addEventListener("click", prev);
       if (nextBtn) nextBtn.addEventListener("click", next);
@@ -1929,7 +2000,7 @@
       if (!lap || !ph || getComputedStyle(ph).display === "none") return;
       grid.setAttribute("data-view", "web");
       var row = document.createElement("div"); row.className = "mobctl";
-      var seg = document.createElement("div"); seg.className = "seg"; seg.setAttribute("role", "tablist");
+      var seg = document.createElement("div"); seg.className = "seg seg--2"; seg.setAttribute("role", "tablist");
       seg.innerHTML = '<i aria-hidden="true"></i><button type="button" role="tab" class="on" aria-selected="true" data-v="web">Web</button><button type="button" role="tab" aria-selected="false" data-v="mobile">Mobile</button>';
       seg.addEventListener("click", function (e) {
         var b = e.target.closest("button"); if (!b) return;
@@ -2077,6 +2148,24 @@
     // arrows + page count (desktop), progress bar + swipe (phones)
     var lbStage = null, lbIdx = 0, lbCtl = null;
     function lbEl() { return document.querySelector(".lightbox"); }
+    // phone pagers (one design at a time, swiped - e.g. a booklet or a poster
+    // set) get the same paging in the enlarged view: next/prev are the same
+    // swipe the pager itself answers to, so a right-to-left booklet keeps its way
+    function swipePager(img) {
+      var w = img.closest(".mgifs"), box = w && w.querySelector(".mgifs__stage");
+      if (!box || !w.querySelector(".carousel__count")) return null;
+      if (!box._pg) {
+        var swipe = function (dx) {
+          if (typeof Touch === "undefined") return;
+          var r = box.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+          var T = function (X) { return new Touch({ identifier: Date.now(), target: box, clientX: X, clientY: y }); };
+          box.dispatchEvent(new TouchEvent("touchstart", { bubbles: true, touches: [T(x)], changedTouches: [T(x)] }));
+          box.dispatchEvent(new TouchEvent("touchend", { bubbles: true, touches: [], changedTouches: [T(x + dx)] }));
+        };
+        box._pg = { prev: { click: function () { swipe(120); } }, next: { click: function () { swipe(-120); } }, count: w.querySelector(".carousel__count") };
+      }
+      return box;
+    }
     function stageImgs(st) { return Array.prototype.filter.call(st.querySelectorAll("img"), function (i) { return i.offsetParent && !i.closest(".carousel__arrow"); }); }
     function lbDraw() {
       if (!lbStage || !lbCtl) return;
@@ -2118,7 +2207,7 @@
       var img = e.target.closest && e.target.closest(".media--img img");
       var lb = lbEl(); if (!lb) return;
       if (!img) { if (!lb.classList.contains("open")) lbStage = null; if (lbCtl) lbCtl.hidden = !lbStage || !lb.classList.contains("open"); return; }
-      var st = img.closest(".carousel__stage.has-pg");
+      var st = img.closest(".carousel__stage.has-pg") || swipePager(img);
       lbStage = st && st._pg ? st : null;
       if (!lbCtl) {
         lbCtl = document.createElement("div"); lbCtl.className = "lb-pg";
@@ -2270,6 +2359,73 @@
     var id = new URLSearchParams(location.search).get("id");
     var proj = ((window.PORTFOLIO || {}).projects || []).filter(function (x) { return x.id === id; })[0];
     if (!proj) return;
+    // Post | Story version (Data-driven / Evergreen): the heading follows the
+    // toggle, a size chip picks the post format, and extra designs of a
+    // format (the grid / GIF under the switcher) join that format's pages.
+    function buildPostStory(st, cfg, srcs, ratio) {
+      var sizes = cfg.sizes, extra = cfg.mobileMerge || {}, heads = cfg.mobileHeads || [];
+      var story = sizes.map(function (z, k) { return k; }).filter(function (k) { return /story/i.test(sizes[k].network || ""); });
+      var posts = sizes.map(function (z, k) { return k; }).filter(function (k) { return story.indexOf(k) < 0; }).sort(function (a, b) { return ratio[a] - ratio[b]; });
+      if (!story.length || !posts.length) return;
+      var pages = sizes.map(function (z, k) { return srcs[k].concat(extra[z.format] || []); });
+      function ratioName(k) { var q = /(\d+)\s*[×x]\s*(\d+)/.exec(sizes[k].format); if (!q) return ""; var a = +q[1], b = +q[2], g = function (x, y) { return y ? g(y, x % y) : x; }, d = g(a, b); return (a / d) + ":" + (b / d); }
+      // hide the switcher and the designs that now live inside it
+      var sub = st.previousElementSibling, meta = st.nextElementSibling;
+      [sub && sub.classList.contains("carousel__subtitle") ? sub : null, st, meta && meta.classList.contains("carousel__meta") ? meta : null]
+        .forEach(function (el) { if (el) el.classList.add("m-hidden"); });
+      Object.keys(extra).forEach(function (f) { extra[f].forEach(function (src) {
+        var im = document.querySelector('.project img[src="' + src + '"], img[src="' + src + '"]'); var blk = im && im.closest(".guide-block"); if (blk) blk.classList.add("m-hidden");
+      }); });
+      var w = document.createElement("div"); w.className = "mgifs mps";
+      w.innerHTML = '<div class="mps__line"></div>' +
+        '<div class="mgifs__stage"><img alt=""></div>' +
+        '<div class="carousel__meta mgifs__meta"><span class="pgbar"></span><span class="carousel__count"></span></div>';
+      st.parentNode.insertBefore(w, st);
+      var seg = document.createElement("div"); seg.className = "seg seg--2"; seg.setAttribute("role", "tablist");
+      seg.innerHTML = '<i aria-hidden="true"></i><button type="button" data-g="0">Post</button><button type="button" data-g="1">Story</button>';
+      // the toggle sits on the section heading's line
+      var gb = w.closest(".guide-block"), lab = null;
+      for (var pb = gb && gb.previousElementSibling, hops = 0; pb && hops < 3 && !lab; pb = pb.previousElementSibling, hops++) lab = pb.querySelector(".lp__label");
+      var head = document.createElement("div"); head.className = "mobhead";
+      if (lab) { lab.parentNode.insertBefore(head, lab); head.appendChild(lab); } else w.insertBefore(head, w.firstChild);
+      head.appendChild(seg);
+      var line = w.querySelector(".mps__line"), media = w.querySelector("img"), box = w.querySelector(".mgifs__stage");
+      var bar = w.querySelector(".pgbar"), cnt = w.querySelector(".carousel__count");
+      var grp = 0, s = posts[0], d = 0;
+      function fit() {
+        var colW = box.clientWidth || w.clientWidth, minR = Math.min.apply(null, ratio);
+        box.style.height = Math.min(colW / minR, colW * 1.25, window.innerHeight * 0.6).toFixed(1) + "px";
+      }
+      function show(dir) {
+        var list = pages[s]; if (d >= list.length) d = 0;
+        if (lab && heads[grp]) lab.textContent = heads[grp];
+        seg.style.setProperty("--si", grp);
+        seg.querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", +x.dataset.g === grp); x.setAttribute("aria-selected", +x.dataset.g === grp); });
+        line.innerHTML = grp === 0 && posts.length > 1
+          ? '<div class="mps__chips">' + posts.map(function (k) { return '<button type="button" data-s="' + k + '"' + (k === s ? ' class="on"' : "") + '>' + ratioName(k) + ' · ' + sizes[k].format + '</button>'; }).join("") + '</div>'
+          : '<span class="carousel__subtitle mgifs__fmt"><span class="mgifs__size">' + sizes[s].format + '</span>' + (sizes[s].network ? '<span class="mgifs__dash"> - </span><span class="mgifs__net">' + sizes[s].network + '</span>' : "") + '</span>';
+        if (bar.children.length !== list.length) { bar.innerHTML = ""; for (var b = 0; b < list.length; b++) bar.appendChild(document.createElement("i")); }
+        Array.prototype.forEach.call(bar.children, function (c, k) { c.classList.toggle("on", k === d); });
+        cnt.textContent = (d + 1) + " / " + list.length;
+        if (media.getAttribute("src") !== list[d]) {
+          media.src = list[d]; media.alt = (heads[grp] || "Design") + " " + (d + 1);
+          if (dir && media.animate) media.animate([{ transform: "translateX(" + (dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
+        }
+      }
+      seg.addEventListener("click", function (e) { var x = e.target.closest("button"); if (!x || +x.dataset.g === grp) return; grp = +x.dataset.g; s = grp ? story[0] : posts[0]; d = 0; show(0); });
+      line.addEventListener("click", function (e) { var x = e.target.closest("button[data-s]"); if (!x) return; s = +x.dataset.s; d = 0; show(0); });
+      var x0 = null, y0 = null;
+      box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+      box.addEventListener("touchend", function (e) {
+        if (x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0, n = pages[s].length; x0 = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) { d = (d + (dx < 0 ? 1 : -1) + n) % n; show(dx < 0 ? 1 : -1); }
+      }, { passive: true });
+      box._pg = { prev: { click: function () { var n = pages[s].length; d = (d - 1 + n) % n; show(-1); } }, next: { click: function () { d = (d + 1) % pages[s].length; show(1); } }, count: cnt };
+      // preload this block's pages once it's close
+      var pre = function () { pages.forEach(function (l) { l.forEach(function (src) { var im = new Image(); im.src = src; }); }); };
+      if (typeof whenNear === "function") whenNear(w, pre); else pre();
+      fit(); show(0); window.addEventListener("resize", fit);
+    }
     var cfgs = [];
     (proj.extraGuides || []).forEach(function (e) {
       [e.sizeSwitch, e.split && e.split.left && e.split.left.sizeSwitch, e.split && e.split.mid && e.split.mid.sizeSwitch, e.split && e.split.right && e.split.right.sizeSwitch]
@@ -2291,6 +2447,7 @@
         if (Math.abs(ratio[k] - 1) < .02) return sizes.length > 2 ? "Square" : "Post";
         return sizes.length > 2 ? "Portrait" : "Post";
       });
+      if (cfg.mobileMerge) { buildPostStory(st, cfg, srcs, ratio); return; }
       var isVid = /mp4$/i.test(srcs[0][0]);
       // toggle order: the tallest format first (the one the box is fitted to)
       var order = sizes.map(function (_, k) { return k; }).sort(function (a, b) { return ratio[a] - ratio[b]; });
@@ -2430,7 +2587,7 @@
         var colW = box.clientWidth || w.clientWidth;
         box.style.height = Math.min(colW / Math.min.apply(null, r), colW * 1.25, window.innerHeight * 0.6).toFixed(1) + "px";
       }
-      data.forEach(function (d, i) { var t = new Image(); t.onload = function () { ratios[i] = t.naturalWidth / t.naturalHeight; fit(); }; t.src = d.src; });
+      whenNear(w, function () { data.forEach(function (d, i) { var t = new Image(); t.onload = function () { ratios[i] = t.naturalWidth / t.naturalHeight; fit(); }; t.src = d.src; }); });
       function show(dir) {
         img.src = data[k].src;
         if (dir && img.animate) img.animate([{ transform: "translateX(" + (dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
@@ -2549,7 +2706,7 @@
           var colW = box.clientWidth || w.clientWidth;
           box.style.height = (opts.boxRatio ? colW / opts.boxRatio : Math.min(colW / Math.min.apply(null, r), colW * 1.25, window.innerHeight * 0.6)).toFixed(1) + "px";
         }
-        all.forEach(function (src, i) { var t = new Image(); t.onload = function () { ratios[i] = t.naturalWidth / t.naturalHeight; fit(); }; t.src = src; });
+        whenNear(w, function () { all.forEach(function (src, i) { var t = new Image(); t.onload = function () { ratios[i] = t.naturalWidth / t.naturalHeight; fit(); }; t.src = src; }); });
         function show(dir) {
           var gg = groups[s], n = gg.srcs.length;
           img.src = gg.srcs[d];
@@ -2600,13 +2757,13 @@
           ? ig.previousElementSibling.previousElementSibling : ig.previousElementSibling;
         window.mCombo([
           { name: "Post", size: "1080 × 1080", label: "Instagram post", srcs: ["images/pp_ig_post_1.jpg", "images/pp_ig_post_2.jpg"] },
-          { name: "Story", size: "1080 × 1920", label: "Instagram story", srcs: ["images/pp_ig_story.jpg"] },
+          { name: "Story", size: "1080 × 1920", label: "Instagram Story", srcs: ["images/pp_ig_story.jpg"] },
           { name: "Facebook", size: "1200 × 630", label: "Facebook post", srcs: ["images/pp_fb_post.jpg"] }
         ], beforeIg, { title: "Instagram & Facebook", sizeOnly: true });
         retire(ig); retire(soc);
         // the replay thumbnail isn't a social format - it stands on its own, under its own label
         var rp = document.createElement("div"); rp.className = "mrp";
-        rp.innerHTML = '<div class="carousel__subtitle">Thumbnail replay (1920×1080)</div><div class="media--img"><img src="images/pp_thumb_replay.jpg" alt=""></div>';
+        rp.innerHTML = '<div class="carousel__subtitle">1920 × 1080 - Replay thumbnail</div><div class="media--img"><img src="images/pp_thumb_replay.jpg" alt=""></div>';
         beforeIg.parentNode.insertBefore(rp, beforeIg);
       }
       // LinkedIn
@@ -2812,6 +2969,66 @@
   });
 </script>
 <script>
+  /* PHONES - The Waiters Protest: the banners and the GIFs are one campaign
+     set, so on phones they become ONE block - "Banners & GIFs" with a
+     Banners | GIFs toggle on the heading's line, one design at a time (large
+     enough to read), swipe + progress bar + count, one box height. */
+  window.addEventListener("load", function () {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    if (document.body.getAttribute("data-project") !== "waiters-protest") return;
+    var labels = Array.prototype.slice.call(document.querySelectorAll(".lp__label"));
+    var bl = labels.filter(function (l) { return /^banners?$/i.test(l.textContent.trim()); })[0];
+    var gl = labels.filter(function (l) { return /^gifs$/i.test(l.textContent.trim()); })[0];
+    if (!bl || !gl) return;
+    var bBlock = bl.closest(".guide-block") || bl.parentNode, gBlock = gl.closest(".guide-block") || gl.parentNode;
+    var banners = Array.prototype.map.call(bBlock.querySelectorAll("img"), function (i) { return i.getAttribute("src"); });
+    var gifs = Array.prototype.map.call(gBlock.querySelectorAll("video"), function (v) { return v.getAttribute("src"); });
+    if (!banners.length || !gifs.length) return;
+    var groups = [{ name: "Banners", srcs: banners }, { name: "GIFs", srcs: gifs }];
+    var w = document.createElement("div"); w.className = "guide-block mgifs mpager mwp-combo";
+    w.innerHTML = '<div class="mobhead"><div class="lp__label lp__label--guide">Banners &amp; GIFs</div>' +
+      '<div class="seg seg--2"><i aria-hidden="true"></i><button type="button" class="on">Banners</button><button type="button">GIFs</button></div></div>' +
+      '<div class="mgifs__stage media--img"></div>' +
+      '<div class="carousel__meta mgifs__meta"><span class="pgbar"></span><span class="carousel__count"></span></div>';
+    bBlock.parentNode.insertBefore(w, bBlock);
+    bBlock.classList.add("m-hidden"); gBlock.classList.add("m-hidden");
+    var box = w.querySelector(".mgifs__stage"), seg = w.querySelector(".seg"), bar = w.querySelector(".pgbar"), cnt = w.querySelector(".carousel__count");
+    var t = new Image(); t.onload = function () { var colW = box.clientWidth || w.clientWidth; box.style.height = (colW * t.naturalHeight / t.naturalWidth).toFixed(1) + "px"; }; t.src = banners[0];
+    var s = 0, d = 0;
+    function show(dir) {
+      var src = groups[s].srcs[d], el;
+      if (/\.mp4$/i.test(src)) { el = document.createElement("video"); el.muted = true; el.loop = true; el.autoplay = true; el.setAttribute("playsinline", ""); el.src = src; }
+      else { el = document.createElement("img"); el.alt = "The Waiters Protest - " + groups[s].name.toLowerCase() + " " + (d + 1); el.src = src; }
+      box.innerHTML = ""; box.appendChild(el);
+      if (el.play) { var pr = el.play(); if (pr && pr.catch) pr.catch(function () {}); }
+      if (dir && el.animate) el.animate([{ transform: "translateX(" + (dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
+      seg.style.setProperty("--si", s);
+      seg.querySelectorAll("button").forEach(function (b, bi) { b.classList.toggle("on", bi === s); });
+      var n = groups[s].srcs.length; bar.innerHTML = "";
+      for (var q = 0; q < n; q++) { var i = document.createElement("i"); if (q === d) i.className = "on"; bar.appendChild(i); }
+      cnt.textContent = (d + 1) + " / " + n;
+    }
+    seg.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      var n = Array.prototype.indexOf.call(seg.querySelectorAll("button"), b); if (n === s) return;
+      // the banners and the GIFs come in the same colour order, so switching
+      // keeps the colour you're on (pink banner → pink GIF)
+      var dir = n > s ? 1 : -1; s = n; d = Math.min(d, groups[s].srcs.length - 1); show(dir);
+    });
+    var x0 = null, y0 = null;
+    box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    box.addEventListener("touchend", function (e) {
+      if (x0 === null) return; var tt = e.changedTouches[0], dx = tt.clientX - x0, dy = tt.clientY - y0; x0 = null;
+      if (!(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3)) return;
+      var dir = dx < 0 ? 1 : -1, n = groups[s].srcs.length;
+      if (d + dir >= 0 && d + dir < n) d += dir;
+      else { s = (s + dir + groups.length) % groups.length; d = dir > 0 ? 0 : groups[s].srcs.length - 1; }   // past the last banner → the GIFs
+      show(dir);
+    }, { passive: true });
+    show(0);
+  });
+</script>
+<script>
   /* PHONES - The Waiters Protest: the six Instagram posts in a swipe carousel
      (progress bar + count), with the Instagram story/profile fixed on its right
      at the post's height, in proportion. */
@@ -2862,10 +3079,11 @@
       w.innerHTML = '<div class="mgifs__stage media--img"><img alt=""></div><div class="carousel__meta mgifs__meta"><span class="pgbar"></span><span class="carousel__count"></span></div>';
       row.parentNode.insertBefore(w, row); row.classList.add("m-hidden");
       var img = w.querySelector("img"), box = w.querySelector(".mgifs__stage"), bar = w.querySelector(".pgbar"), cnt = w.querySelector(".carousel__count"), k = 0, rs = [];
-      srcs.forEach(function (src, i) { bar.appendChild(document.createElement("i")); var t = new Image(); t.onload = function () {
+      srcs.forEach(function () { bar.appendChild(document.createElement("i")); });
+      whenNear(w, function () { srcs.forEach(function (src, i) { var t = new Image(); t.onload = function () {
         rs[i] = t.naturalWidth / t.naturalHeight; var ok = rs.filter(function (x) { return x > 0; });
         var colW = box.clientWidth || w.clientWidth; box.style.height = Math.min(colW / Math.min.apply(null, ok), colW * 1.25, window.innerHeight * 0.6).toFixed(1) + "px";
-      }; t.src = src; });
+      }; t.src = src; }); });
       function show(dir) {
         img.src = srcs[k];
         if (dir && img.animate) img.animate([{ transform: "translateX(" + (dir * 40) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(0,0,.2,1)" });
@@ -2897,9 +3115,18 @@
       var cfg = null; (function walk(o) { if (!o || typeof o !== "object" || cfg) return; if (o.key === km[1] && o.count) { cfg = o; return; } for (var k in o) walk(o[k]); })(proj);
       if (!cfg || cfg.count < 2) return;
       var rs = [], n = cfg.count;
-      for (var i = 0; i < n; i++) (function (i) {
+      // look at the first few pages first: if they all share one shape the
+      // carousel isn't a book and nothing else needs downloading now
+      var SAMPLE = n > 12 ? 3 : n, sampled = 0, all = SAMPLE === n;   // long carousels: sample first
+      function load(i) {
         var t = new Image(); t.onload = function () {
           rs[i] = t.naturalWidth / t.naturalHeight;
+          if (!all) {
+            if (++sampled < SAMPLE) return;
+            var sm = rs.filter(function (x) { return x > 0; });
+            if (Math.max.apply(null, sm) / Math.min.apply(null, sm) < 1.05) return;   // one shape - not a book
+            all = true; for (var j = SAMPLE; j < n; j++) load(j); return;
+          }
           var ok = rs.filter(function (x) { return x > 0; }); if (ok.length < n) return;
           var mn = Math.min.apply(null, ok), mx = Math.max.apply(null, ok); if (mx / mn < 1.05) return;
           var colW = st.clientWidth;
@@ -2912,7 +3139,8 @@
           st.classList.add("fixbox", "fixbox--book");
         };
         t.src = "images/sl_" + km[1] + "_" + (i < 10 ? "0" : "") + i + "." + km[2];
-      })(i);
+      }
+      whenNear(st, function () { for (var i = 0; i < SAMPLE; i++) load(i); });
     });
   });
 </script>
@@ -3008,6 +3236,54 @@
   });
 </script>
 <script>
+  /* DESKTOP - "Click & drag to scroll" sits on one line centred under the
+     laptop it refers to (not under the laptop + phone pair) */
+  (function () {
+    var mq = window.matchMedia("(min-width: 721px)");
+    function place() {
+      document.querySelectorAll(".lp__hint").forEach(function (h) {
+        h.style.width = ""; h.style.marginLeft = ""; h.style.whiteSpace = "";
+        if (!mq.matches) return;
+        var g = h.previousElementSibling, lap = g && g.querySelector(".mock--laptop"), ph = g && g.querySelector(".mock--phone");
+        if (!lap || !ph || !h.parentElement) return;
+        var lr = lap.getBoundingClientRect(), pr = h.parentElement.getBoundingClientRect();
+        if (!lr.width) return;
+        h.style.width = Math.round(lr.width) + "px";
+        h.style.marginLeft = Math.round(lr.left - pr.left - (parseFloat(getComputedStyle(h.parentElement).paddingLeft) || 0)) + "px";
+        h.style.whiteSpace = "nowrap";
+      });
+    }
+    window.addEventListener("load", function () { place(); setTimeout(place, 600); });
+    window.addEventListener("resize", place);
+  })();
+  /* DESKTOP - mouse drag pages any carousel: drag left for the next page,
+     right for the previous one (as a swipe does on touch). A drag doesn't
+     count as a click, so it never opens the enlarged view by accident. */
+  (function () {
+    var mq = window.matchMedia("(min-width: 721px)");
+    var st = null, x0 = 0, y0 = 0, moved = false;
+    function stageAt(t) {
+      if (!t || !t.closest || t.closest(".mock, iframe, button, a, .carousel__arrow, video[controls]")) return null;
+      var s = t.closest(".carousel__stage.has-pg, .mgifs__stage");
+      return s && s._pg ? s : null;
+    }
+    document.addEventListener("pointerdown", function (e) {
+      if (!mq.matches || e.pointerType !== "mouse" || e.button !== 0) return;
+      st = stageAt(e.target); if (!st) return;
+      x0 = e.clientX; y0 = e.clientY; moved = false;
+    });
+    document.addEventListener("pointermove", function (e) {
+      if (!st) return;
+      if (Math.abs(e.clientX - x0) > 8) { moved = true; st.classList.add("is-dragging"); }
+    });
+    document.addEventListener("pointerup", function (e) {
+      if (!st) return;
+      var s = st, dx = e.clientX - x0, dy = e.clientY - y0; st = null; s.classList.remove("is-dragging");
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.3) (dx < 0 ? s._pg.next : s._pg.prev).click();
+    });
+    document.addEventListener("click", function (e) { if (moved && e.isTrusted) { moved = false; e.stopPropagation(); e.preventDefault(); } }, true);
+    document.addEventListener("dragstart", function (e) { if (mq.matches && stageAt(e.target)) e.preventDefault(); });
+  })();
   /* DESKTOP - the page count sits under its design and ends on the design's
      own right edge (not the column's), whatever the design's width. */
   (function () {
@@ -3021,6 +3297,94 @@
       }
       return r;
     }
+    // Right edge the widest page of this carousel will reach.
+    // - format carousels (#gfStage, one box, each format drawn inside it):
+    //   from the formats in the project's data.
+    // - page-by-page carousels (books, card sets): each page file's own
+    //   proportions, measured once on an invisible copy of the stage showing
+    //   the widest page.
+    var fmtRatios = null;
+    function widestFmt(st, vis) {
+      if (vis.length !== 1) return null;
+      var el = vis[0], r = el.getBoundingClientRect();
+      if (st.id === "gfStage") {
+        if (!fmtRatios) {
+          var P = window.PORTFOLIO || {}, id = new URLSearchParams(location.search).get("id");
+          var proj = (P.projects || []).filter(function (x) { return x.id === id; })[0];
+          fmtRatios = ((proj && proj.gifs && proj.gifs.items) || []).map(function (it) {
+            var m = /(\d+)\s*[×x]\s*(\d+)/.exec(it.format || ""); return m ? m[1] / m[2] : 0;
+          }).filter(function (x) { return x > 0; });
+        }
+        if (fmtRatios.length < 2) return null;
+        // each format is drawn centred in the figure at the box height, as
+        // wide as the figure allows
+        var fg = (el.closest(".carousel__figure") || st).getBoundingClientRect();
+        var w = Math.min(fg.width, r.height * Math.max.apply(null, fmtRatios));
+        return fg.left + (fg.width + w) / 2;
+      }
+      return null;
+    }
+    function widest(st, vis) {
+      var ss = st._ssw;
+      // a size switcher whose designs share one fixed height: each format's
+      // row is (designs in a row) × height × ratio, plus the gaps
+      if (ss && ss.colsBySize) {
+        var grid = st.querySelector(".sizeswitch__grid"), cols = grid && grid.querySelectorAll(".sizeswitch__col");
+        if (!cols || !cols.length) return null;
+        var h = cols[0].getBoundingClientRect().height, gap = parseFloat(getComputedStyle(grid).columnGap) || 0, best = 0;
+        ss.sizes.forEach(function (z, k) {
+          var m = /(\d+)\s*[×x]\s*(\d+)/.exec(z.format || ""); if (!m) return;
+          var per = Math.min(ss.colsBySize[k] || ss.cols || cols.length, cols.length);
+          best = Math.max(best, per * h * m[1] / m[2] + (per - 1) * gap);
+        });
+        return best ? grid.getBoundingClientRect().left + best : null;
+      }
+      // a one-design size switcher (Scenario AI by Powtoon): the count stays
+      // on the CURRENT design's right edge - worked out from the format and
+      // the shared height, so it never waits for the clip to load
+      if (ss && (ss.designs || []).length === 1) {
+        var col = st.querySelector(".sizeswitch__col"), q = /(\d+)x(\d+)/.exec(st.getAttribute("data-fmt") || "");
+        if (col && q) { var cr = col.getBoundingClientRect(); if (cr.height) return { exact: cr.left + cr.height * q[1] / q[2] }; }
+        return null;
+      }
+      if (st.id === "gfStage") return widestFmt(st, vis);
+      return widestOne(st, vis);
+    }
+    function widestOne(st, vis) {
+      if (vis.length !== 1) return null;
+      var el = vis[0];
+      if (!st._frames || st._frames.length < 2 || el.tagName !== "IMG") return null;
+      if (st._wOff != null) { if (st._wOff === false) return null; var ss = st.getBoundingClientRect(); return (ss.left + ss.right) / 2 + st._wOff; }
+      if (st._wBusy) return null;
+      st._wBusy = true;
+      var left = st._frames.length, best = null, bestA = 0;
+      st._frames.forEach(function (src) {
+        var im = new Image();
+        im.onload = im.onerror = function () {
+          if (im.naturalWidth && im.naturalHeight && im.naturalWidth / im.naturalHeight > bestA) { bestA = im.naturalWidth / im.naturalHeight; best = src; }
+          if (--left) return;
+          if (!best || Math.abs(bestA - el.naturalWidth / el.naturalHeight) < .01) { st._wOff = false; return; }
+          var clone = st.cloneNode(true), list = st.querySelectorAll("img"), idx = Array.prototype.indexOf.call(list, el);
+          var cimg = clone.querySelectorAll("img")[idx];
+          clone.style.cssText += ";position:absolute;visibility:hidden;pointer-events:none;left:0;right:0;top:0;margin:0";
+          // (the ids stay for the moment the copy exists - the pages' sizing hangs on them;
+          // the original comes first in the page, so lookups still find it)
+          cimg.removeAttribute("loading");
+          cimg.src = best;
+          cimg.onload = function () {
+            if (cimg.getAttribute("src") !== best || !cimg.complete) return;
+            // the page sits centred under the stage, so half its width either side
+            var dr = drawn(cimg); st._wOff = (dr.right - dr.left) / 2;
+            clone.remove(); soon();
+          };
+          cimg.onerror = function () { st._wOff = false; clone.remove(); };
+          st.parentElement.appendChild(clone);
+          if (getComputedStyle(st.parentElement).position === "static") st.parentElement.style.position = "relative";
+        };
+        im.src = src;
+      });
+      return null;
+    }
     function stageOf(meta) {
       var st = meta.previousElementSibling;
       while (st && !(st.classList && st.classList.contains("carousel__stage"))) st = st.previousElementSibling;
@@ -3028,27 +3392,49 @@
     }
     function align() {
       Array.prototype.forEach.call(document.querySelectorAll(".carousel__meta .pg"), function (pg) {
-        pg.style.transform = "";
-        if (!mq.matches) return;
+        // (the count keeps its current place until the new one is known - it is
+        // never snapped back to the column's edge while a page is still sliding in)
+        if (!mq.matches) { pg.style.transform = ""; pg._tx = 0; return; }
         var meta = pg.closest(".carousel__meta"), st = meta && stageOf(meta); if (!st || !meta.offsetParent) return;
-        var sr = st.getBoundingClientRect(), R = -1e9;
+        var sr = st.getBoundingClientRect(), R = -1e9, pending = false, vis = [];
+        for (var an = st; an && an !== document.body; an = an.parentElement) { var at = getComputedStyle(an).transform; if (at && at !== "none") { pending = true; break; } }   // still animating in
         Array.prototype.forEach.call(st.querySelectorAll("img, video, iframe, canvas, .mock"), function (el) {
           var r = el.getBoundingClientRect(), cs = getComputedStyle(el);
           if (r.width < 20 || r.height < 20 || cs.visibility === "hidden" || +cs.opacity < .5) return;
           var cx = (r.left + r.right) / 2; if (cx < sr.left || cx > sr.right) return;
           var hid = false; for (var p = el.parentElement; p && p !== st; p = p.parentElement) { var pc = getComputedStyle(p); if (pc.display === "none" || pc.visibility === "hidden" || +pc.opacity < .5) { hid = true; break; } }
           if (hid) return;
-          R = Math.max(R, drawn(el).right);
+          if (el.tagName === "IMG" && !(el.complete && el.naturalWidth)) { pending = true; return; }   // not laid out yet
+          if (el.getAnimations && el.getAnimations().some(function (an) { return an.playState === "running"; })) pending = true;   // mid slide-in
+          R = Math.max(R, drawn(el).right); vis.push(el);
         });
-        if (R < 0) return;
-        var d = Math.round(R - pg.getBoundingClientRect().right);
-        if (Math.abs(d) > 1) pg.style.transform = "translateX(" + d + "px)";
+        // the number keeps one width for the whole carousel ("1 / 10" as wide as
+        // "10 / 10"), so neither arrow moves when the page changes
+        var cnt = pg.querySelector(".carousel__count");
+        if (cnt && !cnt.dataset.fixw) {
+          var m = /(\d+)\s*\/\s*(\d+)/.exec(cnt.textContent);
+          if (m) { var keep = cnt.textContent; cnt.textContent = m[2] + " / " + m[2]; cnt.style.minWidth = Math.ceil(cnt.getBoundingClientRect().width) + "px"; cnt.textContent = keep; cnt.dataset.fixw = "1"; }
+        }
+        var W = widest(st, vis);
+        if (W && W.exact != null) R = W.exact;
+        else {
+          if (R < 0) return;
+          // designs of different widths in one carousel: the count sits at the
+          // right edge of the WIDEST page from the start (worked out from every
+          // page's own proportions), so nothing moves while paging
+          if (pending) return;
+          if (W != null) R = Math.max(R, W);
+          R = st._pgR = Math.max(st._pgR || -1e9, R);
+        }
+        var d = Math.round(R - (pg.getBoundingClientRect().right - (pg._tx || 0)));
+        if (Math.abs(d) <= 1) d = 0;
+        if (d !== (pg._tx || 0)) { pg.style.transform = d ? "translateX(" + d + "px)" : ""; pg._tx = d; }
       });
     }
     var t1, t2;
     function soon() { clearTimeout(t1); clearTimeout(t2); t1 = setTimeout(align, 60); t2 = setTimeout(align, 500); }
     window.addEventListener("load", soon);
-    window.addEventListener("resize", soon);
+    window.addEventListener("resize", function () { document.querySelectorAll(".carousel__stage").forEach(function (st) { st._pgR = null; st._wOff = null; st._wBusy = false; }); soon(); });
     document.addEventListener("click", soon, true);
     document.addEventListener("keyup", soon, true);
     document.addEventListener("load", function (e) { if (e.target.tagName === "IMG") soon(); }, true);

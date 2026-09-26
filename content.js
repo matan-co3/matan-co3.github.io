@@ -99,6 +99,116 @@ window.PORTFOLIO = {
       ]
     },
     {
+      id: "secureot-labs",
+      title: "SecureOT Labs",
+      year: "2026",
+      category: "Web Design",
+      // The 3D-modeled industrial facility on the landing page (reacting to
+      // scroll/cursor) and the feature-selection product panel are real
+      // interaction/UX work, not just visual design - also answers to
+      // Product Design. And unlike the Powtoon work, the brand here was
+      // defined from scratch (values, concept, visual language), so it's
+      // honest Branding too.
+      altCategories: ["Product Design", "Branding"],
+      type: "work",
+      thumb: "images/secureot-labs-thumb.jpg",
+      cover: "",
+      layout: "strip",
+      sharedColumn: true,
+      tagline: "Transparent security. Concrete resilience.",
+      about: "SecureOT Labs is a speculative rebrand and landing page for an OT/ICS cybersecurity company, developed from audience and brand research through visual exploration to a coded animated website.",
+      tools: ["Claude Design", "NotebookLM", "Gemini", "Midjourney"],
+      extraGuides: [
+        { label: "Prototype", className: "guide-block--section" },
+        // The real coded landing page, running live in the page - the export
+        // lives in prototypes/secureot/ (its own index.html + runtime +
+        // assets), so it's scrollable and clickable here rather than a set
+        // of screenshots. "embedLink" opens it full-size in a new tab.
+        {
+          embed: "prototypes/secureot/index.html",
+          // No embedWidth/embedHeight here on purpose: those render the page
+          // at a 1440px viewport and shrink the whole frame to the column
+          // (~0.72), which made every bit of type inside come out a third
+          // smaller than the rest of the site - the page's own nav and its
+          // dense product labels read tiny next to the case study around them.
+          // The landing page has no width breakpoints (fluid clamp/auto-fit
+          // grids, capped at 1400px), so it lays itself out as a desktop page
+          // at the column width too - running it 1:1 there keeps the same
+          // composition at true size. Its proportion is set in styles.css.
+          embedLink: "prototypes/secureot/index.html",
+          embedLinkLabel: "Open the live prototype"
+        },
+        { label: "Research", className: "guide-block--section" },
+        {
+          className: "guide-block--spec",
+          label: "Target audience",
+          text: "CISOs, OT Managers, and Control Systems Engineers responsible for the systems behind critical, always-on infrastructure - energy, water, gas, and electricity."
+        },
+        {
+          className: "guide-block--spec",
+          label: "Core values for the company",
+          cardCols: 3,
+          cards: [
+            { title: "Proactive defense", text: "Address problems before they surface." },
+            { title: "Operational resilience", text: "Production that never has to stop." },
+            { title: "Continuous innovation", text: "Attackers evolve daily - AI is essential to stay ahead and protect the infrastructure." }
+          ]
+        },
+        {
+          className: "guide-block--spec",
+          label: "Brand values",
+          cardCols: 3,
+          cards: [
+            { title: "Resilient", text: "Proactive protection that supports operational continuity and stops threats before they reach production." },
+            { title: "Innovative", text: "Forward-thinking SCADA and ICS security, tailored to the operational DNA of each industrial environment." },
+            { title: "Technological", text: "Real-time monitoring of complex industrial protocols - visibility into the core of machines, systems and networks." },
+            { title: "Stability", text: "Reliable protection for strategic assets: uninterrupted operations, long-term continuity, peace of mind." },
+            { title: "Meticulous", text: "Rigorous governance, compliance and risk management built for the most demanding industrial standards." }
+          ]
+        },
+        { label: "Visual research", className: "guide-block--section" },
+        // One board per brand value, each labelled with the value it explores
+        // (the last one is the industry itself rather than a value). Every
+        // conclusion follows the same tight shape - what the board showed,
+        // what I took from it (bolded so it scans on its own), and where
+        // that landed in the finished page - instead of re-describing what's
+        // already visible in the image above it.
+        // "guide-block--note" keeps them as normal left-aligned paragraphs
+        // (see project.html) instead of centered captions, sitting close
+        // under the board they belong to.
+        { subLabels: ["Resilient"], image: "images/secureot-mood-resilience.jpg", fluid: true },
+        { className: "guide-block--note", text: "**Contrast between rigid materials and organic human elements** became central to the visual direction, expressing strength without losing the people behind the system. Layering, repeated geometry and connected structures reinforce the idea of resilience through support, continuity and growth." },
+        { subLabels: ["Innovative"], image: "images/secureot-mood-innovative.jpg", fluid: true },
+        { className: "guide-block--note", text: "**Pixels, small geometric units and illuminated details** suggest innovation by revealing how a larger system is built from smaller parts. These elements informed the modular digital language and glowing accents used throughout the design." },
+        { subLabels: ["Technological"], image: "images/secureot-mood-technological.jpg", fluid: true },
+        { className: "guide-block--note", text: "**Dark surfaces, cyan highlights, grids, geometric lines and perspective** define the technological visual language. Filled and outlined forms, together with line-based structures, create depth, movement and a sense of connected systems." },
+        { subLabels: ["Stability"], image: "images/secureot-mood-stability.jpg", fluid: true },
+        { className: "guide-block--note", text: "**Balance, strong foundations and clear geometric relationships** communicate stability. Structured alignment and controlled compositions create a sense of reliability while still allowing tension between balance and imbalance." },
+        { subLabels: ["Meticulous"], image: "images/secureot-mood-meticulous.jpg", fluid: true },
+        { className: "guide-block--note", text: "**Geometric forms, grids, repetition and symmetry** communicate precision and control. Repeated modular elements create a visual system that feels ordered, measured and deliberate." },
+        { subLabels: ["Manufacturing"], image: "images/secureot-mood-manufacturing.jpg", fluid: true },
+        { className: "guide-block--note", text: "**Industrial environments, strong structures and the combination of people with technology** shaped the visual direction. The photography keeps the brand grounded in real operational spaces, while unusual viewpoints reinforce the idea of constant visibility without interrupting the work itself." },
+        // What the research concluded - the concept and the design direction
+        // it produced. They close the research part (rather than opening the
+        // page) because they're its output, not its brief. The tagline gets
+        // its full weight back here as "statement" - a short bold line above
+        // the explanation, so the concept the research actually produced
+        // reads as the takeaway of the section rather than as a repeated
+        // header line.
+        {
+          className: "guide-block--spec",
+          label: "Concept",
+          statement: "Transparent Security. Concrete Resilience.",
+          text: "Security you can see through rather than security that walls you off - the network opened up layer by layer, and protection that grows inside the rigid industrial environment instead of fighting it."
+        },
+        {
+          className: "guide-block--spec",
+          label: "Design direction",
+          text: "Grid as the anchor - geometric shapes and straight lines carrying the order of the plant floor.\nDepth and transparency - layered typography and three-dimensional forms standing in for deep packet inspection, the ability to look inside the protocols.\nColor contrast - a near-black base for stability and authority, with neon cyan for the live traffic moving through the network."
+        },
+      ]
+    },
+    {
       id: "veo3-prompt-guide",
       title: "Veo 3 Prompt Writing Guide",
       // Content built inside Powtoon's existing brand system, not brand
@@ -289,6 +399,8 @@ window.PORTFOLIO = {
         { className: "scen-gifs", sizeSwitch: {
           ext: "mp4",
           cols: 3,
+          colsBySize: [3, 6],   // desktop: 3 square posts a row, all 6 stories in one row
+          toggle: true,         // desktop: a Post | Story toggle on the heading's line instead of arrows + "1 / 2"
           sizes: [
             { format: "1080 × 1080", network: "Instagram & Facebook post" },
             { format: "1080 × 1920", network: "Instagram & Facebook Story" }
@@ -309,7 +421,7 @@ window.PORTFOLIO = {
         // the tickets/meme row further down): two columns, matched on height
         // so each keeps its own proportions.
         { className: "scen-carousel-row", split: {
-          left: { carousel: { key: "scencar", count: 6 } },
+          left: { label: "1200 × 1500 - LinkedIn & Instagram carousel", carousel: { key: "scencar", count: 6 } },
           right: { sizeSwitch: {
             ext: "mp4",
             cols: 1,
@@ -331,7 +443,7 @@ window.PORTFOLIO = {
           } }
         } },
         { label: "Steal my prompt carousel", className: "guide-block--section" },
-        { split: {
+        { className: "scen-steal-row", split: {
           left: { label: "EC - LinkedIn", carousel: { key: "stealec", count: 5 } },
           right: { label: "SS - Instagram", carousel: { key: "stealss", count: 5, ext: "mp4" } }
         } },
@@ -465,7 +577,7 @@ window.PORTFOLIO = {
       about: "A collection of organic social posts for Powtoon's ongoing content. Data-driven posts turn industry research into statistics about AI and video in the workplace, while evergreen posts highlight Powtoon's features and use cases through concepts such as “Powtoonify” and a one-stop-shop view of the Powtoon Studio.",
       tools: ["Illustrator", "Photoshop"],
       extraGuides: [
-        { label: "Data driven posts", className: "guide-block--section" },
+        { label: "Data-driven social", className: "guide-block--section" },
         { sizeSwitch: {
           // Opens on the square (index 1); the arrows show the other formats.
           start: 1,
@@ -477,7 +589,12 @@ window.PORTFOLIO = {
           designs: [
             { key: "stat1in2" },
             { key: "stat49" }
-          ]
+          ],
+          // PHONES: one block with a Post | Story toggle (the heading follows
+          // it) and a size chip inside Post; the 4:5 stat posts below join the
+          // 4:5 pages instead of a separate grid
+          mobileMerge: { "1080 × 1350": ["images/sl_stat80.jpg", "images/sl_stat60.jpg", "images/sl_stat38.jpg", "images/sl_stat90.jpg"] },
+          mobileHeads: ["Data-driven posts", "Data-driven stories"]
         } },
         { className: "eg-stat-grid", imageGrid: {
           cols: 2,
@@ -488,7 +605,7 @@ window.PORTFOLIO = {
             "images/sl_stat90.jpg"
           ]
         } },
-        { label: "Evergreen posts", className: "guide-block--section" },
+        { label: "Evergreen social", className: "guide-block--section" },
         { sizeSwitch: {
           start: 1,
           sizes: [
@@ -499,7 +616,9 @@ window.PORTFOLIO = {
           designs: [
             { key: "eganything" },
             { key: "egavatars" }
-          ]
+          ],
+          mobileMerge: { "1080 × 1350": ["images/eg-shopping-basket.gif"] },
+          mobileHeads: ["Evergreen posts", "Evergreen stories"]
         } },
         { image: "images/eg-shopping-basket.gif", ownStage: true }
       ]
@@ -634,9 +753,8 @@ window.PORTFOLIO = {
       extraGuides: [
         { label: "Social", className: "guide-block--section" },
         { subLabels: ["Webinar cover"], image: "images/pp_cover.jpg", fluid: true },
-        { label: "PPC", className: "guide-block--section" },
         {
-          subLabels: ["Instagram posts (1080×1080)"],
+          subLabels: ["1080 × 1080 - Instagram post"],
           imageGrid: {
             cols: 2,
             images: ["images/pp_ig_post_1.jpg", "images/pp_ig_post_2.jpg"]
@@ -654,9 +772,9 @@ window.PORTFOLIO = {
             // on the same line as the replay thumbnail beside it.
             fitFirstToRest: true,
             images: [
-              { image: "images/pp_ig_story.jpg", label: "Instagram story (1080×1920)" },
-              { image: "images/pp_fb_post.jpg", label: "Facebook post (1200×630)" },
-              { image: "images/pp_thumb_replay.jpg", label: "Thumbnail replay (1920×1080)" }
+              { image: "images/pp_ig_story.jpg", label: "1080 × 1920 - Instagram Story" },
+              { image: "images/pp_fb_post.jpg", label: "1200 × 630 - Facebook post" },
+              { image: "images/pp_thumb_replay.jpg", label: "1920 × 1080 - Replay thumbnail" }
             ]
           }
         },
@@ -664,24 +782,24 @@ window.PORTFOLIO = {
           imageGrid: {
             cols: 2,
             images: [
-              { image: "images/pp_li_post_wide.jpg", label: "LinkedIn post (1350×1080)" },
-              { image: "images/pp_li_event_cover.jpg", label: "LinkedIn event cover (1920×1080)" }
+              { image: "images/pp_li_post_wide.jpg", label: "1350 × 1080 - LinkedIn post" },
+              { image: "images/pp_li_event_cover.jpg", label: "1920 × 1080 - LinkedIn event cover" }
             ]
           }
         },
         {
-          subLabels: ["LinkedIn post (1080×1350)"],
+          subLabels: ["1080 × 1350 - LinkedIn post"],
           imageGrid: {
             cols: 3,
             images: ["images/pp_li_stat_1.jpg", "images/pp_li_stat_2.jpg", "images/pp_li_stat_3.jpg"]
           }
         },
         {
-          subLabels: ["LinkedIn carousel (1350×1080)"],
+          subLabels: ["1350 × 1080 - LinkedIn carousel"],
           carousel: { key: "ppcarousel", count: 4 }
         },
         {
-          subLabels: ["LinkedIn post (1200×1200)"],
+          subLabels: ["1200 × 1200 - LinkedIn post"],
           imageGrid: {
             cols: 3,
             images: ["images/pp_li_sq_1.jpg", "images/pp_li_sq_2.jpg", "images/pp_li_sq_3.jpg"]
@@ -692,8 +810,8 @@ window.PORTFOLIO = {
           imageGrid: {
             cols: 2,
             images: [
-              { image: "images/pp_email_invite.jpg", label: "Email invitation (600×338)" },
-              { image: "images/pp_email_replay.jpg", label: "Email replay (600×338)" }
+              { image: "images/pp_email_invite.jpg", label: "600 × 338 - Email invitation" },
+              { image: "images/pp_email_replay.jpg", label: "600 × 338 - Email replay" }
             ]
           }
         }
@@ -740,7 +858,7 @@ window.PORTFOLIO = {
       // keeping its own proportion - the way every other paired set on the
       // site does, instead of two separate stacked sections.
       extraGuides: [
-        { label: "Social posts", className: "guide-block--section" },
+        { label: "Social", className: "guide-block--section" },
         { className: "uw-social-row", split: {
           left: { label: "Instagram post (1080×1080)", carousel: { key: "unboxwebinar3", count: 3 } },
           right: { label: "Instagram story", carousel: { key: "unboxwebinar4", count: 1 } }
@@ -897,6 +1015,40 @@ window.PORTFOLIO = {
         }
       }
     },
+    {
+      id: "tango",
+      title: "It Takes 2 for Tango",
+      category: "Branding",
+      type: "work",
+      year: "2024",
+      thumb: "images/tango-thumb.jpg",
+      cover: "",
+      layout: "strip",
+      about: "It Takes 2 for Tango is branding for a dog trainer. The main concept is to create a common language between the dog and its owner - this way, they will understand each other and be able to develop as a team, much like in the tango dance. The identity carries that idea through a single continuous line-drawing style (echoing the dance's connected steps), used across a logo, business cards, and a guide booklet for new dog owners.",
+      tools: ["Illustrator", "Photoshop", "Procreate"],
+      stack: {
+        label: "New customer training guide",
+        images: [
+          "images/tango-guide-00-cover.jpg",
+          "images/tango-guide-01.jpg",
+          "images/tango-guide-02.jpg",
+          "images/tango-guide-03.jpg",
+          "images/tango-guide-04.jpg"
+        ]
+      },
+      extraGuides: [
+        { label: "Business card", image: "images/tango-bizcard.jpg" },
+        { label: "T-shirt design", image: "images/tango-tshirt.jpg" },
+        {
+          label: "Visual language",
+          align: "left",
+          parts: [
+            { image: "images/tango-visual-top.png", subLabels: ["Color palette", "Logo"] },
+            { image: "images/tango-visual-bottom.png", subLabels: ["Typography"] }
+          ]
+        }
+      ]
+    },
     /* The Offbeat newsletter banner used to be its own project here. It's a
        single asset from the same May 2026 event as Triple Unboxing Webinar
        (matching year, same launch), so it now lives inside that project's
@@ -935,7 +1087,7 @@ window.PORTFOLIO = {
             cols: 2,
             images: [
               { video: "images/tactit-flow-alarm.mp4", label: "Tactless alarm + AI flow" },
-              { video: "images/tactit-flow-analize.mp4", label: "Analize flow" }
+              { video: "images/tactit-flow-analize.mp4", label: "Analyze flow" }
             ]
           }
         },
@@ -956,7 +1108,7 @@ window.PORTFOLIO = {
             ]
           }
         },
-        { subLabels: ["Posters"], image: "images/tactit-posters-lite.webp", fluid: true },
+        { className: "labels-as-sections", subLabels: ["Posters"], image: "images/tactit-posters-lite.webp", fluid: true },
         { label: "Graphic language", className: "guide-block--section" },
         {
           imageGrid: {
@@ -1045,8 +1197,9 @@ window.PORTFOLIO = {
             }
           ]
         },
-        { subLabels: ["Prototype"], video: "images/glamorous-prototype.mp4", fluid: true },
+        { className: "labels-as-sections", subLabels: ["Prototype"], video: "images/glamorous-prototype.mp4", fluid: true },
         {
+          className: "labels-as-sections",
           subLabels: ["Try it yourself"],
           // "content-scaling=fixed" (Figma's default share-link setting)
           // renders the prototype at its real 1440×1024 pixel size and lets
@@ -1059,6 +1212,7 @@ window.PORTFOLIO = {
           embedLink: "https://www.figma.com/proto/bjZobCbC0vyakVW25PrVQW/VirtualFashion?content-scaling=scale-down&kind=proto&node-id=1014-27898&page-id=0%3A1&scaling=scale-down&show-proto-sidebar=1&starting-point-node-id=1014%3A27151&t=9bUpbgJVtaLdJcYa-1&viewport=493%2C1468%2C0.17"
         },
         {
+          className: "labels-as-sections",
           subLabels: ["Screenshots"],
           imageGrid: {
             cols: 2,
@@ -1073,13 +1227,15 @@ window.PORTFOLIO = {
           }
         },
         {
-          subLabels: ["Look&Fill"],
+          className: "labels-as-sections",
+          subLabels: ["Look & Feel"],
           imageGrid: {
             cols: 1,
             images: ["images/glamorous-lookfill-1.png", "images/glamorous-lookfill-2.png"]
           }
         },
         {
+          className: "labels-as-sections",
           subLabels: ["Wireframes"],
           imageGrid: {
             cols: 1,
@@ -1089,7 +1245,7 @@ window.PORTFOLIO = {
         { label: "Design kit", className: "guide-block--section" },
         { subLabels: ["Color palette"], image: "images/glamorous-palette.png", fluid: true },
         { subLabels: ["Typography"], image: "images/glamorous-typography.png", fluid: true },
-        { subLabels: ["Icons&features"], image: "images/glamorous-icons.png", fluid: true },
+        { subLabels: ["Icons & features"], image: "images/glamorous-icons.png", fluid: true },
         { label: "Research", className: "guide-block--section" },
         { subLabels: ["Process"], image: "images/glamorous-process.png", fluid: true },
         {
@@ -1166,7 +1322,7 @@ window.PORTFOLIO = {
       // static image sections are here for now.
       extraGuides: [
         {
-          subLabels: ["Landing page"],
+          label: "Landing page",
           video: "images/killbill-landing-video.mp4",
           fluid: true
         },
@@ -1177,7 +1333,7 @@ window.PORTFOLIO = {
         },
         {
           label: "Web prototype",
-          embed: "https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FDXDzpKvntoYlNtEoNAfxEs%2FKill-Bill---Website%3Fkind%3Dproto%26node-id%3D665-12757%26page-id%3D665%253A7905%26scaling%3Dscale-down%26starting-point-node-id%3D665%253A12757%26t%3D8QkY3I1ABXjWAViB-1%26type%3Ddesign%26viewport%3D72%252C-1374%252C0.08",
+          embed: "https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FDXDzpKvntoYlNtEoNAfxEs%2FKill-Bill---Website%3Fkind%3Dproto%26node-id%3D665-12757%26page-id%3D665%253A7905%26scaling%3Dscale-down-width%26starting-point-node-id%3D665%253A12757%26t%3D8QkY3I1ABXjWAViB-1%26type%3Ddesign%26viewport%3D72%252C-1374%252C0.08",
           embedLink: "https://www.figma.com/proto/DXDzpKvntoYlNtEoNAfxEs/Kill-Bill---Website?kind=proto&node-id=665-12757&page-id=665%3A7905&scaling=scale-down&starting-point-node-id=665%3A12757&t=8QkY3I1ABXjWAViB-1&type=design&viewport=72%2C-1374%2C0.08"
         },
         {
@@ -1313,7 +1469,7 @@ window.PORTFOLIO = {
         },
         {
           label: "Highlight - #Waiters_share",
-          video: "images/waiters-highlights.mp4",
+          video: "images/waiters-highlights-bg.mp4",
           fluid: true
         },
         // Process sections close the page, after the campaign itself. The
@@ -1355,9 +1511,10 @@ window.PORTFOLIO = {
           label: "Brand values",
           chips: ["Authentic", "Eco-conscious", "Spiritual", "Innovative", "Communal"]
         },
-        { subLabels: ["Entrance sign"], image: "images/yorafest-entrance.png", fluid: true },
-        { subLabels: ["Wristbands and entrance tickets"], image: "images/yorafest-wristbands.png", fluid: true },
+        { className: "labels-as-sections", subLabels: ["Entrance sign"], image: "images/yorafest-entrance.png", fluid: true },
+        { className: "labels-as-sections", subLabels: ["Wristbands and entrance tickets"], image: "images/yorafest-wristbands.png", fluid: true },
         {
+          className: "labels-as-sections",
           subLabels: ["Posters"],
           row: {
             images: [
@@ -1370,6 +1527,7 @@ window.PORTFOLIO = {
           }
         },
         {
+          className: "labels-as-sections",
           imageGrid: {
             cols: 2,
             images: [
@@ -1378,48 +1536,14 @@ window.PORTFOLIO = {
             ]
           }
         },
-        { subLabels: ["Teaser"], video: "images/yorafest-teaser.mp4", fluid: true },
-        { subLabels: ["Presentation"], image: "images/yorafest-presentation-lite.webp", fluid: true },
+        { className: "labels-as-sections", subLabels: ["Teaser"], video: "images/yorafest-teaser.mp4", fluid: true },
+        { className: "labels-as-sections", subLabels: ["Presentation"], image: "images/yorafest-presentation-lite.webp", fluid: true },
         { label: "Visual research", className: "guide-block--section" },
         { image: "images/yorafest-research.png", fluid: true },
         { label: "Graphic language", className: "guide-block--section" },
         { subLabels: ["Colors"], image: "images/yorafest-colors.png", fluid: true },
         { subLabels: ["Typography"], image: "images/yorafest-typography.png", fluid: true },
         { subLabels: ["Figurative language"], image: "images/yorafest-figurative.png", fluid: true }
-      ]
-    },
-    {
-      id: "tango",
-      title: "It Takes 2 for Tango",
-      category: "Branding",
-      type: "playground",
-      year: "",
-      thumb: "images/tango-thumb.jpg",
-      cover: "",
-      layout: "strip",
-      about: "It Takes 2 for Tango is branding for a dog trainer. The main concept is to create a common language between the dog and its owner - this way, they will understand each other and be able to develop as a team, much like in the tango dance. The identity carries that idea through a single continuous line-drawing style (echoing the dance's connected steps), used across a logo, business cards, and a guide booklet for new dog owners.",
-      tools: ["Illustrator", "Photoshop", "Procreate"],
-      stack: {
-        label: "New customer training guide",
-        images: [
-          "images/tango-guide-00-cover.jpg",
-          "images/tango-guide-01.jpg",
-          "images/tango-guide-02.jpg",
-          "images/tango-guide-03.jpg",
-          "images/tango-guide-04.jpg"
-        ]
-      },
-      extraGuides: [
-        { label: "Business card", image: "images/tango-bizcard.jpg" },
-        { label: "T-shirt design", image: "images/tango-tshirt.jpg" },
-        {
-          label: "Visual language",
-          align: "left",
-          parts: [
-            { image: "images/tango-visual-top.png", subLabels: ["Color palette", "Logo"] },
-            { image: "images/tango-visual-bottom.png", subLabels: ["Typography"] }
-          ]
-        }
       ]
     },
     {
@@ -1465,15 +1589,15 @@ window.PORTFOLIO = {
       sharedColumn: true,
       extraGuides: [
         {
-          className: "herstory-video-row",
+          className: "herstory-video-row labels-as-sections",
           columns: {
             images: [
               { video: "images/herstory-teaser.mp4", label: "Teaser", controls: true },
-              { video: "images/herstory-story.mp4", label: "Frida's Kahlo story", controls: true }
+              { video: "images/herstory-story.mp4", label: "Frida Kahlo's story", controls: true }
             ]
           }
         },
-        { label: "Frida's Kahlo bio", video: "images/herstory-bio.mp4", fluid: true }
+        { label: "Frida Kahlo's bio", video: "images/herstory-bio.mp4", fluid: true }
       ]
     },
     {
@@ -1679,6 +1803,9 @@ window.PORTFOLIO = {
       extraGuides: [
         {
           split: {
+            // these two open the page - they're section headings (capitals),
+            // not the small sub-labels a split usually carries
+            sectionLabels: true,
             left: {
               label: "Stickers for WhatsApp",
               note: "https://getstickerpack.com/stickers/sugarstickers",
@@ -1716,7 +1843,7 @@ window.PORTFOLIO = {
           }
         },
         {
-          label: "Graphic language.",
+          label: "Graphic language",
           align: "left",
           columns: {
             images: [
@@ -1768,8 +1895,8 @@ window.PORTFOLIO = {
             ]
           }
         },
-        { subLabels: ["Posters"], image: "images/nbc-posters-lite.webp", fluid: true },
-        { subLabels: ["Images from the exhibition"], image: "images/nbc-exhibition-lite.webp", fluid: true },
+        { className: "labels-as-sections", subLabels: ["Posters"], image: "images/nbc-posters-lite.webp", fluid: true },
+        { className: "labels-as-sections", subLabels: ["Images from the exhibition"], image: "images/nbc-exhibition-lite.webp", fluid: true },
         {
           className: "nbc-exh-row",
           imageGrid: {
@@ -1860,117 +1987,6 @@ window.PORTFOLIO = {
         }
       ]
     },
-    {
-      id: "secureot-labs",
-      title: "SecureOT Labs",
-      hideCardYear: true,
-      category: "Web Design",
-      // The 3D-modeled industrial facility on the landing page (reacting to
-      // scroll/cursor) and the feature-selection product panel are real
-      // interaction/UX work, not just visual design - also answers to
-      // Product Design. And unlike the Powtoon work, the brand here was
-      // defined from scratch (values, concept, visual language), so it's
-      // honest Branding too.
-      altCategories: ["Product Design", "Branding"],
-      type: "playground",
-      year: "",
-      thumb: "images/secureot-labs-thumb.jpg",
-      cover: "",
-      layout: "strip",
-      sharedColumn: true,
-      tagline: "Transparent security. Concrete resilience.",
-      about: "SecureOT Labs is a speculative rebrand and landing page for an OT/ICS cybersecurity company, developed from audience and brand research through visual exploration to a coded animated website.",
-      tools: ["Claude Design", "NotebookLM", "Gemini", "Midjourney"],
-      extraGuides: [
-        { label: "Prototype", className: "guide-block--section" },
-        // The real coded landing page, running live in the page - the export
-        // lives in prototypes/secureot/ (its own index.html + runtime +
-        // assets), so it's scrollable and clickable here rather than a set
-        // of screenshots. "embedLink" opens it full-size in a new tab.
-        {
-          embed: "prototypes/secureot/index.html",
-          // No embedWidth/embedHeight here on purpose: those render the page
-          // at a 1440px viewport and shrink the whole frame to the column
-          // (~0.72), which made every bit of type inside come out a third
-          // smaller than the rest of the site - the page's own nav and its
-          // dense product labels read tiny next to the case study around them.
-          // The landing page has no width breakpoints (fluid clamp/auto-fit
-          // grids, capped at 1400px), so it lays itself out as a desktop page
-          // at the column width too - running it 1:1 there keeps the same
-          // composition at true size. Its proportion is set in styles.css.
-          embedLink: "prototypes/secureot/index.html",
-          embedLinkLabel: "Open the live prototype"
-        },
-        { label: "Research", className: "guide-block--section" },
-        {
-          className: "guide-block--spec",
-          label: "Target audience",
-          text: "CISOs, OT Managers, and Control Systems Engineers responsible for the systems behind critical, always-on infrastructure - energy, water, gas, and electricity."
-        },
-        {
-          className: "guide-block--spec",
-          label: "Core values for the company",
-          cardCols: 3,
-          cards: [
-            { title: "Proactive defense", text: "Address problems before they surface." },
-            { title: "Operational resilience", text: "Production that never has to stop." },
-            { title: "Continuous innovation", text: "Attackers evolve daily - AI is essential to stay ahead and protect the infrastructure." }
-          ]
-        },
-        {
-          className: "guide-block--spec",
-          label: "Brand values",
-          cardCols: 3,
-          cards: [
-            { title: "Resilient", text: "Proactive protection that supports operational continuity and stops threats before they reach production." },
-            { title: "Innovative", text: "Forward-thinking SCADA and ICS security, tailored to the operational DNA of each industrial environment." },
-            { title: "Technological", text: "Real-time monitoring of complex industrial protocols - visibility into the core of machines, systems and networks." },
-            { title: "Stability", text: "Reliable protection for strategic assets: uninterrupted operations, long-term continuity, peace of mind." },
-            { title: "Meticulous", text: "Rigorous governance, compliance and risk management built for the most demanding industrial standards." }
-          ]
-        },
-        { label: "Visual research", className: "guide-block--section" },
-        // One board per brand value, each labelled with the value it explores
-        // (the last one is the industry itself rather than a value). Every
-        // conclusion follows the same tight shape - what the board showed,
-        // what I took from it (bolded so it scans on its own), and where
-        // that landed in the finished page - instead of re-describing what's
-        // already visible in the image above it.
-        // "guide-block--note" keeps them as normal left-aligned paragraphs
-        // (see project.html) instead of centered captions, sitting close
-        // under the board they belong to.
-        { subLabels: ["Resilient"], image: "images/secureot-mood-resilience.jpg", fluid: true },
-        { className: "guide-block--note", text: "**Contrast between rigid materials and organic human elements** became central to the visual direction, expressing strength without losing the people behind the system. Layering, repeated geometry and connected structures reinforce the idea of resilience through support, continuity and growth." },
-        { subLabels: ["Innovative"], image: "images/secureot-mood-innovative.jpg", fluid: true },
-        { className: "guide-block--note", text: "**Pixels, small geometric units and illuminated details** suggest innovation by revealing how a larger system is built from smaller parts. These elements informed the modular digital language and glowing accents used throughout the design." },
-        { subLabels: ["Technological"], image: "images/secureot-mood-technological.jpg", fluid: true },
-        { className: "guide-block--note", text: "**Dark surfaces, cyan highlights, grids, geometric lines and perspective** define the technological visual language. Filled and outlined forms, together with line-based structures, create depth, movement and a sense of connected systems." },
-        { subLabels: ["Stability"], image: "images/secureot-mood-stability.jpg", fluid: true },
-        { className: "guide-block--note", text: "**Balance, strong foundations and clear geometric relationships** communicate stability. Structured alignment and controlled compositions create a sense of reliability while still allowing tension between balance and imbalance." },
-        { subLabels: ["Meticulous"], image: "images/secureot-mood-meticulous.jpg", fluid: true },
-        { className: "guide-block--note", text: "**Geometric forms, grids, repetition and symmetry** communicate precision and control. Repeated modular elements create a visual system that feels ordered, measured and deliberate." },
-        { subLabels: ["Manufacturing"], image: "images/secureot-mood-manufacturing.jpg", fluid: true },
-        { className: "guide-block--note", text: "**Industrial environments, strong structures and the combination of people with technology** shaped the visual direction. The photography keeps the brand grounded in real operational spaces, while unusual viewpoints reinforce the idea of constant visibility without interrupting the work itself." },
-        // What the research concluded - the concept and the design direction
-        // it produced. They close the research part (rather than opening the
-        // page) because they're its output, not its brief. The tagline gets
-        // its full weight back here as "statement" - a short bold line above
-        // the explanation, so the concept the research actually produced
-        // reads as the takeaway of the section rather than as a repeated
-        // header line.
-        {
-          className: "guide-block--spec",
-          label: "Concept",
-          statement: "Transparent Security. Concrete Resilience.",
-          text: "Security you can see through rather than security that walls you off - the network opened up layer by layer, and protection that grows inside the rigid industrial environment instead of fighting it."
-        },
-        {
-          className: "guide-block--spec",
-          label: "Design direction",
-          text: "Grid as the anchor - geometric shapes and straight lines carrying the order of the plant floor.\nDepth and transparency - layered typography and three-dimensional forms standing in for deep packet inspection, the ability to look inside the protocols.\nColor contrast - a near-black base for stability and authority, with neon cyan for the live traffic moving through the network."
-        },
-      ]
-    }
   ],
 
   about: {

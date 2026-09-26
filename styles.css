@@ -892,7 +892,7 @@ body[data-project="scenario-ai"] #gfStage + .carousel__meta {
 }
 /* Plain (not bold) format caption for "simple" gifs (see gfFormat markup) —
    just the format text itself, no section heading above it. */
-.carousel__format { font-family: var(--font-display); font-weight: 400; font-size: 16px; color: var(--ink-soft); text-align: center; max-width: 640px; margin: 0 auto 12px; }
+.carousel__format { font-family: var(--font-display); font-weight: 400; font-size: 13px; color: var(--ink-soft); text-align: center; max-width: 640px; margin: 0 auto 12px; }
 /* AI Avatar — left-align the whole format-switcher block (caption, image,
    page count) with the page's text column instead of centering it on the
    page, matching the .guide-block--left pattern used elsewhere. */
@@ -1469,10 +1469,7 @@ body[data-project="tango"] .carousel__collabels .carousel__subtitle:nth-child(2)
    thing a scanning eye should catch first, so it reads as a small heading
    rather than the soft, low-contrast photo-caption style used for a sublabel
    elsewhere on the site — full ink color and a step up in size/weight. */
-body[data-project="secureot-labs"] .carousel__subtitle {
-  color: var(--ink); opacity: 1; font-size: 14px; font-weight: 600;
-  letter-spacing: .08em; margin-bottom: 14px;
-}
+/* (now the same sublabel style as every other project - consistency first) */
 /* The conclusion under each board is the "so what", not more description —
    set a notch smaller than the spec paragraphs above it (Target audience,
    Concept) so the two read as different kinds of text at a glance, and
@@ -1697,9 +1694,7 @@ body[data-project="scenario-ai"] .scen-gifs .sizeswitch__col img,
 body[data-project="scenario-ai"] .scen-gifs .sizeswitch__col video {
   height: 100% !important; width: auto; max-width: 100%; margin: 0 auto 0 0;
 }
-body[data-project="scenario-ai"] .scen-gifs [data-fmt="1080x1920"] .sizeswitch__grid--cols {
-  grid-template-columns: repeat(2, auto);
-}
+/* stories 4 + 2 a row (set from "colsBySize" in the data): two rows, as tall as the square posts' 3 + 3 */
 /* Scenario AI carousel + "Scenario AI by Powtoon" switcher in one row. The
    heights are solved in JS, not here (see "matchSibling" in project.html):
    one height for the carousel and for every format of the switcher, worked out
@@ -3807,3 +3802,112 @@ body.is-project main { padding-bottom: clamp(56px, 8vw, 96px) !important; }
 @media (max-width: 720px) {
   h1, h2, h3, h4, .lp__label, .carousel__subtitle, .cv__role { text-wrap: balance; }
 }
+/* phones: a design in a size switcher always sits in the middle of its box,
+   whatever its format (a narrow 9:16 or a wide LinkedIn/Facebook post) */
+@media (max-width: 720px) {
+  .sizeswitch__grid, .sizeswitch__grid--cols { justify-content: center !important; justify-items: center; }
+  .sizeswitch__col { margin-left: auto; margin-right: auto; justify-self: center; }
+  .sizeswitch__col img, .sizeswitch__col video { margin-left: auto; margin-right: auto; }
+}
+
+/* phones: quicker page-to-page wipe (the project opens sooner) */
+@media (max-width: 720px) {
+  .page-fade { animation-duration: .45s; }
+  body.leaving .page-fade { transition-duration: .28s; }
+}
+@media (max-width: 720px) { .lbl-fmt { display: block; } }
+/* a split whose labels are the section headings themselves (e.g. Sugar's
+   Stickers / Brochure): capitals like every other section heading */
+.guide-split--sections .lp__label { text-transform: uppercase !important; letter-spacing: .07em !important; }
+/* labels that open a section themselves (HerStory's Teaser / Story): the
+   section-heading look - capitals - not the small sub-label */
+.labels-as-sections .carousel__subtitle { font-family: var(--font-display); font-size: 13px; letter-spacing: .07em !important; text-transform: uppercase !important; color: var(--ink-soft); }
+/* phones: Waiters Protest Banners & GIFs block */
+@media (max-width: 720px) {
+  .mwp-combo .mgifs__stage { display: flex; align-items: center; justify-content: center; }
+  .mwp-combo .mgifs__stage img, .mwp-combo .mgifs__stage video { max-width: 100%; max-height: 100%; width: auto; height: auto; display: block; margin: 0 auto; object-fit: contain; }
+}
+/* desktop page count: fixed-width digits, centred between the arrows */
+.pg .carousel__count { font-variant-numeric: tabular-nums; display: inline-block; text-align: center; }
+/* Learning Technologies GIFs: centred in the column (their heading stays left) */
+@media (min-width: 721px) {
+  body[data-project="learning-technologies-conferences"] .lt-gifs .carousel__stage { margin-left: auto !important; margin-right: auto !important; }
+}
+
+/* PHONES - Post | Story block (Data-driven / Evergreen): size chips inside Post */
+@media (max-width: 720px) {
+  .mps__line { min-height: 26px; margin-bottom: 12px; display: flex; align-items: center; }
+  .mps__line .mgifs__fmt { margin: 0 !important; }
+  .mps__chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mps__chips button { background: none; border: 1px solid var(--line); border-radius: 100px; padding: 4px 10px; font-family: var(--font-display); font-size: 12px; line-height: 1.35; color: var(--ink-soft); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: color .25s, border-color .25s; }
+  .mps__chips button.on { color: var(--ink); border-color: var(--ink); }
+}
+
+/* DESKTOP - carousels page by mouse drag too */
+@media (min-width: 721px) {
+  .carousel__stage.has-pg img, .carousel__stage.has-pg video:not([controls]) { -webkit-user-drag: none; user-select: none; }
+  .carousel__stage.has-pg.is-dragging { cursor: grabbing; }
+}
+
+/* DESKTOP - a film on its own (Lockheed Martin, Sac-TMT): the frame is the
+   film's own height, so no empty band sits between the text and the video */
+@media (min-width: 721px) {
+  .carousel__figure--film { height: auto !important; min-height: 0 !important; margin-top: 28px; }
+  .carousel__figure--film > video { height: auto !important; max-height: none !important; width: 100%; }
+}
+
+/* DESKTOP - SecureOT: the live-prototype link sits as far from the design as
+   the heading above it does (same as on phones) */
+@media (min-width: 721px) {
+  body[data-project="secureot-labs"] .guide-embed ~ .guide-note--link { margin-top: 12px !important; }
+}
+
+/* Scenario AI GIFs: each clip's width is known before the file loads, so the
+   row never widens for a moment while a format is switching */
+body[data-project="scenario-ai"] .scen-gifs [data-fmt="1080x1080"] .sizeswitch__col video { aspect-ratio: 1 / 1; }
+body[data-project="scenario-ai"] .scen-gifs [data-fmt="1080x1920"] .sizeswitch__col video { aspect-ratio: 9 / 16; }
+
+/* DESKTOP - a size switcher shown as a Post | Story toggle on its heading's
+   line (Scenario AI GIFs) instead of arrows + "1 / 2" */
+@media (min-width: 721px) {
+  .dhead { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .dhead > .lp__label { margin-bottom: 0 !important; }
+  .guide-block:has(> .dhead) { margin-bottom: 12px; }
+  .dseg { position: relative; display: inline-grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--line); border-radius: 100px; padding: 0; flex: 0 0 auto; }
+  .dseg button { position: relative; z-index: 1; background: none; border: 0; padding: 4px 12px; font-family: var(--font-display); font-size: 12px; line-height: 19.2px; color: var(--ink-soft); cursor: pointer; transition: color .3s; }
+  .dseg button.on { color: var(--paper); }
+  .dseg i { position: absolute; top: 0; bottom: 0; left: 0; width: 50%; border-radius: 100px; background: var(--ink); transition: transform .35s cubic-bezier(.7,0,.2,1); }
+  .ssw-toggle > .carousel__arrow { display: none !important; }
+  .ssw-toggle + .carousel__meta { display: none !important; }
+  .ssw-toggle { width: 100%; }
+  /* stories: all six in one row, the full width, a tighter gap */
+  body[data-project="scenario-ai"] .scen-gifs .ssw-toggle[data-fmt="1080x1920"] .sizeswitch__grid--cols {
+    grid-template-columns: repeat(6, 1fr) !important; width: 100%; gap: 12px;
+  }
+  body[data-project="scenario-ai"] .scen-gifs .ssw-toggle[data-fmt="1080x1920"] .sizeswitch__col { height: auto !important; width: auto !important; }
+  body[data-project="scenario-ai"] .scen-gifs .ssw-toggle[data-fmt="1080x1920"] .sizeswitch__col video { width: 100% !important; height: auto !important; max-width: none; }
+}
+@media (min-width: 721px) {
+  .dhead > .lp__label { margin: 0 !important; }
+  .ssw-toggle { justify-content: flex-start !important; }
+  /* Scenario AI carousel row: the book's format line is the same small style as the switcher's beside it */
+  body[data-project="scenario-ai"] .scen-carousel-row .guide-split__col > .lp__label:first-child { font-size: 13px; letter-spacing: normal; text-transform: none; color: var(--ink-soft); margin: 0 0 12px !important; }
+}
+
+/* DESKTOP - Scenario AI: the Steal my prompt and Ticket posts & meme pairs sit
+   as close together as the Scenario AI carousel pair above them (same gap) */
+@media (min-width: 721px) {
+  body[data-project="scenario-ai"] .guide-block:not(.scen-carousel-row) > .guide-split {
+    gap: clamp(32px, 3.6vw, 56px); justify-content: flex-start;
+  }
+  body[data-project="scenario-ai"] .guide-block:not(.scen-carousel-row) > .guide-split > .guide-split__col { flex: 0 0 auto; }
+}
+@media (min-width: 721px) {
+  /* the pair keeps one height (the 4:5 LinkedIn page's), the square clip at its own width */
+  body[data-project="scenario-ai"] .scen-steal-row .carousel__figure { height: min(52vh, 460px); width: auto; }
+  body[data-project="scenario-ai"] .scen-steal-row .carousel__figure img,
+  body[data-project="scenario-ai"] .scen-steal-row .carousel__figure video { height: 100% !important; width: auto !important; max-width: none; max-height: none; }
+  body[data-project="scenario-ai"] .scen-steal-row .carousel__figure video { aspect-ratio: 1 / 1; }
+}
+/* Scenario AI by Powtoon: never a black letterbox bar around a clip */
+body[data-project="scenario-ai"] .scen-carousel-row .sizeswitch__col video { object-fit: cover; background: transparent; }

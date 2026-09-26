@@ -133,7 +133,7 @@
       e.preventDefault();
       document.body.classList.remove("ready");
       document.body.classList.add("leaving");
-      setTimeout(function () { window.location.href = href; }, 520);
+      setTimeout(function () { window.location.href = href; }, window.matchMedia("(max-width: 720px)").matches ? 280 : 520);
     });
     // handle back/forward cache
     window.addEventListener("pageshow", function (ev) {
@@ -149,6 +149,15 @@
   // longer heading are tied together (only where the pair still fits the line)
   PF.noWidows = function () {
     if (!window.matchMedia("(max-width: 720px)").matches) return;
+    // a section heading that ends with its format in brackets - e.g.
+    // "Social carousel (LinkedIn & Instagram)" - keeps the name on the first
+    // line and puts only the format on the second
+    document.querySelectorAll(".lp__label").forEach(function (el) {
+      if (el.dataset.fmt || el.children.length) return;
+      var m = /^(.*\S)\s+(\([^()]*\))$/.exec(el.textContent.trim()); if (!m) return;
+      el.dataset.fmt = "1"; el.textContent = m[1];
+      var sp = document.createElement("span"); sp.className = "lbl-fmt"; sp.textContent = m[2]; el.appendChild(sp);
+    });
     document.querySelectorAll("h1, h2, h3, h4, .lp__label, .carousel__subtitle, .project__next strong, .cv__role").forEach(function (el) {
       if (el.dataset.nw || !el.offsetParent) return;
       var words = el.textContent.trim().split(/\s+/);
@@ -166,6 +175,26 @@
     });
   };
   window.addEventListener("load", function () { PF.noWidows(); setTimeout(PF.noWidows, 700); });
+
+  // TOUCH - while a carousel is being swiped sideways the page itself holds
+  // still (no accidental up/down scroll); a gesture that starts vertically
+  // scrolls the page as usual. Decided once per gesture, from its first move.
+  (function () {
+    var ZONES = ".carousel__stage, .mgifs__stage, .mpager, .mgifs, .lightbox";
+    var x0 = 0, y0 = 0, zone = null, mode = "";
+    document.addEventListener("touchstart", function (e) {
+      zone = e.target.closest ? e.target.closest(ZONES) : null; mode = "";
+      if (!zone || e.touches.length !== 1) { zone = null; return; }
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+    }, { passive: true, capture: true });
+    document.addEventListener("touchmove", function (e) {
+      if (!zone || e.touches.length !== 1) return;
+      var dx = Math.abs(e.touches[0].clientX - x0), dy = Math.abs(e.touches[0].clientY - y0);
+      if (!mode) { if (dx < 6 && dy < 6) return; mode = dx > dy ? "x" : "y"; }
+      if (mode === "x" && e.cancelable) e.preventDefault();
+    }, { passive: false, capture: true });
+    document.addEventListener("touchend", function () { zone = null; mode = ""; }, { passive: true, capture: true });
+  })();
 
   window.PF = PF;
 })();
