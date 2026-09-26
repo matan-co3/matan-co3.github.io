@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300;400;500;600&family=Outfit:wght@200..500&family=Caveat:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20261002f" />
+  <link rel="stylesheet" href="styles.css?v=20261002i" />
   <!-- favicon: the drawn M from the nav/hero -->
   <link rel="icon" type="image/png" sizes="64x64" href="images/favicon-m-64.png?v=20260923d" />
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-m-32.png?v=20260923d" />
@@ -153,8 +153,8 @@
     <span class="footer__year"></span>
   </footer>
 
-  <script src="content.js?v=20261002f"></script>
-  <script src="app.js?v=20261002f"></script>
+  <script src="content.js?v=20261002i"></script>
+  <script src="app.js?v=20261002i"></script>
   <script>
   /* ---- HOME PAGE RENDER ---- */
   (function () {
@@ -183,7 +183,10 @@
     if (withThumb.length) {
       var items = withThumb.concat(withThumb).map(function (p) {
         return '<a class="marq__item" href="project.html?id=' + p.id + '" data-nav="1">' +
-               '<img loading="lazy" src="' + esc(p.thumb) + '" alt="' + esc(p.title) + '">' +
+               // a light copy made for the strip (images/marq/), loaded right away: a
+               // lazy image inside a moving strip can be skipped by phone browsers,
+               // which left the strip empty; the full thumbnail is the fallback
+               '<img decoding="async" src="images/marq/' + esc(p.id) + '.webp" onerror="this.onerror=null;this.src=\'' + esc(p.thumb) + '\'" alt="' + esc(p.title) + '">' +
                '<span>' + esc(p.title) + '</span></a>';
       }).join("");
       document.getElementById("marquee").innerHTML = '<div class="marq__track">' + items + '</div>';
@@ -1103,7 +1106,13 @@
       // steps aside so nothing lands on it
       (function () {
         var hint = document.querySelector(".hero__hint"); if (!hint) return;
-        var taps = 0; try { taps = +sessionStorage.getItem("tapCount") || 0; } catch (e) {}
+        // opening the link again (reload, new tab, another browser) starts the
+        // count over and shows the hint again; coming back from a project keeps
+        // it, so a visitor who has already played isn't nagged again
+        var nav = (performance.getEntriesByType && performance.getEntriesByType("navigation")[0]) || {};
+        var fromProject = nav.type === "back_forward" || /\/project\.html/.test(document.referrer || "");
+        var taps = 0;
+        try { taps = fromProject ? (+sessionStorage.getItem("tapCount") || 0) : 0; sessionStorage.setItem("tapCount", taps); } catch (e) {}
         if (taps >= 3) { hint.classList.add("is-done"); return; }
         hint.classList.add("is-blinking");
         hero.addEventListener("click", function (e) {
