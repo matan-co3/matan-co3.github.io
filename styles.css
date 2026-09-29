@@ -3911,3 +3911,53 @@ body[data-project="scenario-ai"] .scen-gifs [data-fmt="1080x1920"] .sizeswitch__
 }
 /* Scenario AI by Powtoon: never a black letterbox bar around a clip */
 body[data-project="scenario-ai"] .scen-carousel-row .sizeswitch__col video { object-fit: cover; background: transparent; }
+
+/* HOME HERO (mouse) - the pointer (hand) cursor, as on the logo and buttons, over every spot that draws a doodle
+   (the M, the o, the full stop, the empty spots, [what I do], Hey I'm, the
+   intro), so visitors can tell there's something to find there */
+@media (hover: hover) and (pointer: fine) {
+  body.newhome .on-doodle,
+  body.newhome .hero__introlabel, body.newhome .hero__hey, body.newhome #heroIntro {
+    cursor: pointer;
+  }
+}
+
+/* WORKS FILTER - the categories as plain text tabs under "All Works": the
+   chosen one in ink with a thin underline, the rest soft grey (darken on
+   hover). One line on desktop; on phones the row scrolls sideways, with a
+   fade on the right edge while there's more to see. */
+.catfilter__trigger { cursor: default; }
+body.newhome .catfilter__trigger:hover { color: inherit; }
+.worktabs {
+  display: flex; flex-wrap: wrap; gap: 6px 28px; margin-top: clamp(16px, 2vw, 22px);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.4;
+}
+.worktab {
+  position: relative; background: none; border: 0; padding: 4px 0; margin: 0;
+  font: inherit; color: var(--ink-soft); cursor: pointer; white-space: nowrap;
+  transition: color .2s; -webkit-tap-highlight-color: transparent;
+}
+.worktab:hover { color: var(--ink); }
+.worktab::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .3s cubic-bezier(.2,.7,.2,1);
+}
+.worktab.is-active { color: var(--ink); }
+.worktab.is-active::after { transform: scaleX(1); }
+.worktab:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+@media (max-width: 720px) {
+  .worktabs {
+    flex-wrap: nowrap; overflow-x: auto; gap: 22px; font-size: 14px;
+    margin-right: calc(-1 * var(--pad, 20px)); padding-right: var(--pad, 20px);
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .worktabs::-webkit-scrollbar { display: none; }
+  .worktabs.has-more { -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
+  .worktab { padding: 10px 0 6px; }   /* a comfortable tap height */
+  .worktab::after { bottom: 2px; }
+}
+/* touch screens (iPad included): the same 44px tap height as the other controls */
+@media (hover: none) and (min-width: 721px) {
+  .worktab { padding: 12px 0 11px; }
+  .worktabs { row-gap: 0; }
+}

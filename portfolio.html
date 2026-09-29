@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300;400;500;600&family=Outfit:wght@200..500&family=Caveat:wght@400..700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20261002i" />
+  <link rel="stylesheet" href="styles.css?v=20261002n" />
   <!-- favicon: the drawn M from the nav/hero -->
   <link rel="icon" type="image/png" sizes="64x64" href="images/favicon-m-64.png?v=20260923d" />
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-m-32.png?v=20260923d" />
@@ -121,16 +121,10 @@
       <div class="marquee" id="marquee" aria-label="Selected images"></div>
       <div class="section__head reveal">
         <h2 class="section__title">
-          <span class="catfilter" id="catFilter">
-            <button class="catfilter__trigger" id="catFilterTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <svg class="catfilter__arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
-                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <span class="catfilter__label" id="catFilterLabel">All Works</span>
-            </button>
-            <ul class="catfilter__menu" id="catFilterMenu" role="listbox"></ul>
-          </span>
+          <span class="catfilter" id="catFilter"><span class="catfilter__trigger" id="catFilterTrigger"><span class="catfilter__label" id="catFilterLabel">Works</span></span></span>
         </h2>
+        <!-- the categories as text tabs: all in view, the chosen one dark + underlined -->
+        <div class="worktabs" id="workTabs" role="tablist" aria-label="Filter works"></div>
       </div>
       <div class="pgrid" id="pgrid"></div>
     </section>
@@ -153,8 +147,8 @@
     <span class="footer__year"></span>
   </footer>
 
-  <script src="content.js?v=20261002i"></script>
-  <script src="app.js?v=20261002i"></script>
+  <script src="content.js?v=20261002n"></script>
+  <script src="app.js?v=20261002n"></script>
   <script>
   /* ---- HOME PAGE RENDER ---- */
   (function () {
@@ -201,7 +195,11 @@
     // match a group on their own and rely entirely on altCategories (or, for
     // Hypoxia/Wedding Invitation/Hayao Miyazaki, just the Playground rule
     // below) for their filter membership.
-    var GROUP_ORDER = ["Product Design", "Branding", "Web Design", "Content & Campaigns", "Motion", "Illustration", "Game Design", "Playground"];
+    // Web Design and Product Design show as one group, "Web & Product"
+    // (landing pages and sites + apps and systems); Game Design has no group of
+    // its own - both its pieces are Playground work and are found there.
+    var GROUP_ORDER = ["Content & Campaigns", "Web & Product", "Branding", "Illustration", "Motion", "Playground"];
+    var GROUP_ALIAS = { "Web Design": "Web & Product", "Product Design": "Web & Product" };
 
     // Every playground-type project also answers to "Playground" on top of
     // whatever group(s) its category/altCategories give it - one project,
@@ -209,6 +207,7 @@
     function groupsFor(p) {
       var groups = [];
       [p.category].concat(p.altCategories || []).filter(Boolean).forEach(function (c) {
+        c = GROUP_ALIAS[c] || c;
         if (GROUP_ORDER.indexOf(c) !== -1 && groups.indexOf(c) === -1) groups.push(c);
       });
       if (p.type === "playground" && groups.indexOf("Playground") === -1) groups.push("Playground");
@@ -240,58 +239,32 @@
       '</a>';
     }).join("");
 
-    // CATEGORY FILTER (dropdown) - fixed group order (not alphabetical),
-    // "All" first.
-    var catFilter = document.getElementById("catFilter");
-    var catTrigger = document.getElementById("catFilterTrigger");
-    var catLabel = document.getElementById("catFilterLabel");
-    var catMenu = document.getElementById("catFilterMenu");
-
-    catMenu.innerHTML = ['<li role="option" aria-selected="true"><button type="button" class="catfilter__option is-active" data-cat="all">All</button></li>']
-      .concat(GROUP_ORDER.map(function (g) {
-        return '<li role="option" aria-selected="false"><button type="button" class="catfilter__option" data-cat="' + esc(g) + '">' + esc(g) + '</button></li>';
-      })).join("");
-
-    function closeCatMenu() {
-      catFilter.classList.remove("is-open");
-      catTrigger.setAttribute("aria-expanded", "false");
-    }
-    function openCatMenu() {
-      catFilter.classList.add("is-open");
-      catTrigger.setAttribute("aria-expanded", "true");
-    }
-
-    catTrigger.addEventListener("click", function (e) {
-      e.stopPropagation();
-      if (catFilter.classList.contains("is-open")) closeCatMenu(); else openCatMenu();
-    });
-    document.addEventListener("click", function (e) {
-      if (!catFilter.contains(e.target)) closeCatMenu();
-    });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") { closeCatMenu(); catTrigger.focus(); }
-    });
-
-    catMenu.addEventListener("click", function (e) {
-      var b = e.target.closest(".catfilter__option"); if (!b) return;
-      catMenu.querySelectorAll(".catfilter__option").forEach(function (x) {
-        x.classList.remove("is-active");
-        x.closest("li").setAttribute("aria-selected", "false");
-      });
-      b.classList.add("is-active");
-      b.closest("li").setAttribute("aria-selected", "true");
-
+    // CATEGORY FILTER - text tabs under the heading, "All" first, then the
+    // groups in a fixed order. Picking one shows only its works; the heading
+    // itself stays "Works" (the underlined tab already says what's showing).
+    var tabsEl = document.getElementById("workTabs");
+    tabsEl.innerHTML = [["all", "All"]].concat(GROUP_ORDER.map(function (g) { return [g, g]; })).map(function (t, k) {
+      return '<button type="button" role="tab" class="worktab' + (k ? '' : ' is-active') + '" aria-selected="' + (k ? 'false' : 'true') + '" data-cat="' + esc(t[0]) + '">' + esc(t[1]) + '</button>';
+    }).join("");
+    tabsEl.addEventListener("click", function (e) {
+      var b = e.target.closest(".worktab"); if (!b || b.classList.contains("is-active")) return;
+      tabsEl.querySelectorAll(".worktab").forEach(function (x) { var on = x === b; x.classList.toggle("is-active", on); x.setAttribute("aria-selected", on); });
       var cat = b.dataset.cat;
-      catLabel.textContent = cat === "all" ? "All Works" : b.textContent;
-
       document.querySelectorAll("#pgrid .pcard").forEach(function (c) {
         var cardGroups = c.dataset.groups ? c.dataset.groups.split("|") : [];
         c.style.display = (cat === "all" || cardGroups.indexOf(cat) !== -1) ? "" : "none";
       });
-
-      closeCatMenu();
-      catTrigger.focus();
+      // phones: the chosen tab slides fully into view
+      if (tabsEl.scrollWidth > tabsEl.clientWidth) {
+        var tr = tabsEl.getBoundingClientRect(), br = b.getBoundingClientRect();
+        var l = tabsEl.scrollLeft + br.left - tr.left - 20, r = tabsEl.scrollLeft + br.right - tr.left + 20;
+        if (l < tabsEl.scrollLeft) tabsEl.scrollTo({ left: l, behavior: "smooth" });
+        else if (r > tabsEl.scrollLeft + tabsEl.clientWidth) tabsEl.scrollTo({ left: r - tabsEl.clientWidth, behavior: "smooth" });
+      }
     });
+    // the fade on the right edge (there's more) only while there is more
+    function tabsFade() { tabsEl.classList.toggle("has-more", tabsEl.scrollLeft + tabsEl.clientWidth < tabsEl.scrollWidth - 2); }
+    tabsEl.addEventListener("scroll", tabsFade, { passive: true }); window.addEventListener("resize", tabsFade); tabsFade();
 
     // ABOUT - same skills/experience/education table as the original site;
     // only the intro paragraph is swapped for this page, leaning marketing
@@ -728,7 +701,7 @@
       ];
       function draw() {
         var lab = document.getElementById("catFilterLabel") || title;
-        if (lab.textContent.trim() !== "All Works") return;   // only on "All Works", not on a filtered category
+        if (lab.textContent.trim() !== "Works") return;
         if (on) return; on = true;
         var t = lab.getBoundingClientRect(), hb = head.getBoundingClientRect();
         var fs = parseFloat(getComputedStyle(lab).fontSize), lh = t.height;
@@ -750,7 +723,7 @@
       // switching to a category clears a sign that is still on screen
       var labEl = document.getElementById("catFilterLabel");
       if (labEl && window.MutationObserver) new MutationObserver(function () {
-        if (labEl.textContent.trim() !== "All Works") head.querySelectorAll(".works-sign").forEach(function (sv) { sv.remove(); });
+        if (labEl.textContent.trim() !== "Works") head.querySelectorAll(".works-sign").forEach(function (sv) { sv.remove(); });
         on = false;
       }).observe(labEl, { childList: true, characterData: true, subtree: true });
       // only when the pointer is on the words themselves, not the whole row
@@ -1044,6 +1017,8 @@
           else if (Math.hypot(x - S.ttt.x, y - S.ttt.y) < S.ttt.r) spot = "ttt";
           else if (Math.hypot(x - S.vibe.x, y - S.vibe.y) < S.vibe.r) spot = "vibe";
           else if (Math.hypot(x - S.flow.x, y - S.flow.y) < S.flow.r) spot = "flow";
+          // the cursor turns into a pencil over every spot that draws something
+          hero.classList.toggle("on-doodle", !!spot);
           if (spot === lastSpot) return;
           clearTimeout(tmr);
           if (!spot) { lastSpot = ""; return; }
@@ -1060,7 +1035,7 @@
             else done(vibe(S.vibe.x, S.vibe.y));
           }, spot === "ttt" || spot === "vibe" || spot === "flow" ? 60 : 0);
         });
-        hero.addEventListener("mouseleave", function () { clearTimeout(tmr); lastSpot = ""; });
+        hero.addEventListener("mouseleave", function () { clearTimeout(tmr); lastSpot = ""; hero.classList.remove("on-doodle"); });
       })();
 
       var map = [

@@ -1862,7 +1862,7 @@ window.PORTFOLIO = {
       // (the posters/screens are illustrated) and Product Design (the flow
       // itself is a UX exercise).
       category: "Interactive",
-      altCategories: ["Illustration", "Product Design"],
+      altCategories: ["Illustration"],   // an installation, not a web or digital product - not under Web & Product
       type: "playground",
       year: "",
       thumb: "images/nbc-thumb.jpg",
